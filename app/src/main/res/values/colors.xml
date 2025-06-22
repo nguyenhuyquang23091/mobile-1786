@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="colorPrimary">#2A6F6C</color> <!-- Deep Teal -->
+    <color name="colorAccent">#5C6B8B</color> <!-- Dusty Indigo/Purple -->
+    <color name="colorBackground">#F8F8F4</color> <!-- Off-white from previous design -->
+    <color name="textColorPrimary">#333333</color> <!-- Dark Grey from previous design -->
+</resources>
