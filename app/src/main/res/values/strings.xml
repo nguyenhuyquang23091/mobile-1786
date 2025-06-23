@@ -16,5 +16,22 @@
         <item>Aerial Yoga</item>
         <item>Family Yoga</item>
     </string-array>
+    <string name="confirmation_screen_title">Confirm Class Details</string>
+    <string name="confirmation_card_description">Contains all details for the class being confirmed.</string>
+
+    <string name="label_class_type">Class Type:</string>
+    <string name="label_day">Day:</string>
+    <string name="label_time">Time:</string>
+    <string name="label_capacity">Capacity:</string>
+    <string name="label_duration">Duration:</string>
+    <string name="label_price">Price:</string>
+    <string name="label_intensity">Intensity:</string>
+    <string name="label_description">Description:</string>
+    <string name="no_description">No description provided.</string>
+
+
+
+    <string name="action_edit">Edit</string>
+    <string name="action_confirm">Confirm</string>
 
 </resources>

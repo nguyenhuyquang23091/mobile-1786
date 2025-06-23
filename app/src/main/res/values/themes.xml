@@ -1,11 +1,36 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+
+    <!-- Base theme extending Material3 -->
     <style name="Base.Theme.COURSEWORK" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <!-- Removed colorAccent (deprecated in Material3) -->
     </style>
 
+    <!-- App theme referencing base -->
     <style name="Theme.COURSEWORK" parent="Base.Theme.COURSEWORK" />
+
+    <!-- Custom title for confirmation card -->
+    <style name="ConfirmationCardTitle">
+        <item name="android:textAppearance">@style/TextAppearance.Material3.TitleLarge</item>
+        <item name="android:textColor">@color/textColorPrimary</item>
+    </style>
+
+    <!-- Label style -->
+    <style name="ConfirmationLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAppearance">@style/TextAppearance.Material3.BodyLarge</item>
+    </style>
+
+    <style name="ConfirmationValue">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/textColorPrimary</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.Material3.BodyLarge</item>
+    </style>
+
+
 </resources>
