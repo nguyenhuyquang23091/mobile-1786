@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Using ViewBinding to avoid findViewById and make code safer
     private ActivityMainBinding binding;
+    private boolean isVisible;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         // Setup dropdown menus and click listeners
         setupAdapters();
         setupClickListeners();
+        setupFabMenu();
     }
 
     private void setupAdapters() {
@@ -65,9 +68,6 @@ public class MainActivity extends AppCompatActivity {
         binding.classTypeInput.setAdapter(typeAdapter);
     }
 
-    /**
-     * Sets up click listeners for the time field and the main submit button.
-     */
     private void setupClickListeners() {
         // Listener to show a TimePickerDialog when the time field is clicked
         binding.timeInput.setOnClickListener(v -> showTimePickerDialog());
@@ -192,5 +192,34 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("intensity", "Not specified");
         }
         startActivity(intent);
+    }
+    private void setupFabMenu(){
+        isVisible = false;
+        binding.mainFab.setRotation(0);
+
+        binding.mainFab.setOnClickListener(view -> {
+            if(!isVisible){
+                binding.viewAllClassesFab.show();
+                binding.resetDatabaseFab.show();
+                binding.viewAllClassesText.setVisibility(View.VISIBLE);
+                binding.resetDatabaseText.setVisibility(View.VISIBLE);
+
+                binding.mainFab.animate().rotation(135f).setInterpolator(new OvershootInterpolator()).setDuration(300).start();
+            } else {
+                binding.viewAllClassesFab.hide();
+                binding.resetDatabaseFab.hide();
+                binding.viewAllClassesText.setVisibility(View.GONE);
+                binding.resetDatabaseText.setVisibility(View.GONE);
+
+                binding.mainFab.animate().rotation(0).setInterpolator(new OvershootInterpolator()).setDuration(300).start();
+
+            }
+            isVisible = !isVisible;
+        });
+        binding.viewAllClassesFab.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, ClassListActivity.class);
+            startActivity(intent);
+        });
+
     }
 }

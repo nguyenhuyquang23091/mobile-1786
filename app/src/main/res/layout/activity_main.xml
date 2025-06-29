@@ -221,6 +221,69 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:lottie_loop="true" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/viewAllClassesFab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:visibility="gone"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toTopOf="@+id/mainFab"
+            app:layout_constraintEnd_toEndOf="@+id/mainFab"
+            app:layout_constraintStart_toStartOf="@+id/mainFab"
+            app:srcCompat="@drawable/setting_button"
+            tools:visibility="visible"/>
 
+        <TextView
+            android:id="@+id/viewAllClassesText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:padding="8dp"
+            android:text="View All"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/viewAllClassesFab"
+            app:layout_constraintEnd_toStartOf="@+id/viewAllClassesFab"
+            app:layout_constraintTop_toTopOf="@+id/viewAllClassesFab"
+            tools:visibility="visible"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/resetDatabaseFab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:visibility="gone"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toTopOf="@+id/viewAllClassesFab"
+            app:layout_constraintEnd_toEndOf="@+id/viewAllClassesFab"
+            app:layout_constraintStart_toStartOf="@+id/viewAllClassesFab"
+            app:srcCompat="@drawable/edit_button"
+            tools:visibility="visible"/>
+
+        <TextView
+            android:id="@+id/resetDatabaseText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:padding="8dp"
+            android:text="Reset Database"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/resetDatabaseFab"
+            app:layout_constraintEnd_toStartOf="@+id/resetDatabaseFab"
+            app:layout_constraintTop_toTopOf="@+id/resetDatabaseFab"
+            tools:visibility="visible"/>
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/mainFab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/setting_button" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

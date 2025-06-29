@@ -7,7 +7,6 @@ import com.example.coursework.data.local.DAO.YogaClassDAO;
 import com.example.coursework.data.local.entities.YogaClass;
 import com.example.coursework.data.local.repository.YogaClassRepository;
 
-import java.util.Collections;
 import java.util.List;
 
 public class YogaRepositoryImplementation implements YogaClassRepository {
@@ -24,9 +23,7 @@ public class YogaRepositoryImplementation implements YogaClassRepository {
 
     @Override
     public void update(YogaClass yogaClass) {
-
         AppDatabase.databaseWriteExecutor.execute(() -> yogaClassDAO.update(yogaClass));
-
     }
 
     @Override
