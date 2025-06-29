@@ -93,9 +93,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Shows a TimePickerDialog for easy time selection.
-     */
     private void showTimePickerDialog() {
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -163,10 +160,6 @@ public class MainActivity extends AppCompatActivity {
 
         return valid;
     }
-
-    /**
-     * Clears all validation errors from the input layouts.
-     */
     private void clearAllErrors() {
         // FIX: Get the parent TextInputLayout to clear the error
         ((TextInputLayout) binding.dayOfWeekInput.getParent().getParent()).setError(null);
@@ -180,6 +173,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void passDataToConfirmation() {
         Intent intent = new Intent(MainActivity.this, ConfirmationActivity.class);
+        //store intent information in object
+
         intent.putExtra("day", binding.dayOfWeekInput.getText().toString());
         intent.putExtra("time", Objects.requireNonNull(binding.timeInput.getText()).toString());
         intent.putExtra("capacity", Objects.requireNonNull(binding.capacityInput.getText()).toString());

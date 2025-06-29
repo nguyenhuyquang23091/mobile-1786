@@ -53,4 +53,6 @@ dependencies {
     implementation(libs.compose.material3)
     implementation(libs.compose.material3.window)
     implementation(libs.compose.material3.adaptive)
+    implementation(libs.room.runtime)
+    annotationProcessor(libs.room.compiler)
 }

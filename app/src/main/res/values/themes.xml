@@ -31,6 +31,31 @@
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:textAppearance">@style/TextAppearance.Material3.BodyLarge</item>
     </style>
+    <style name="Widget.App.Button.Split.Start" parent="Widget.Material3.Button">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.App.Button.Split.Start</item>
+    </style>
+
+    <style name="ShapeAppearance.App.Button.Split.Start" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">24dp</item>
+        <item name="cornerSizeBottomLeft">24dp</item>
+        <item name="cornerSizeTopRight">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
+
+    <style name="Widget.App.Button.Split.End" parent="Widget.Material3.Button.Icon">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.App.Button.Split.End</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+    </style>
+
+    <style name="ShapeAppearance.App.Button.Split.End" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeTopRight">24dp</item>
+        <item name="cornerSizeBottomRight">24dp</item>
+    </style>
 
 
 </resources>
