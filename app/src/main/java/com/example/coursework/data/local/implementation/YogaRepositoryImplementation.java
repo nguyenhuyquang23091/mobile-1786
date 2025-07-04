@@ -35,4 +35,9 @@ public class YogaRepositoryImplementation implements YogaClassRepository {
     public List<YogaClass> getAll() {
         return yogaClassDAO.getAllClasses();
     }
+
+    @Override
+    public YogaClass findById(int uid) {
+        return yogaClassDAO.getClassById(uid);
+    }
 }

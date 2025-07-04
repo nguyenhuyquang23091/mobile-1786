@@ -231,7 +231,7 @@
             app:layout_constraintBottom_toTopOf="@+id/mainFab"
             app:layout_constraintEnd_toEndOf="@+id/mainFab"
             app:layout_constraintStart_toStartOf="@+id/mainFab"
-            app:srcCompat="@drawable/setting_button"
+            app:srcCompat="@drawable/edit_button"
             tools:visibility="visible"/>
 
         <TextView

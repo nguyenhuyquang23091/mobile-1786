@@ -9,4 +9,6 @@ public interface YogaClassRepository {
     void delete(YogaClass yogaClass);
     List<YogaClass> getAll();
 
+    YogaClass findById(int id);
+
 }

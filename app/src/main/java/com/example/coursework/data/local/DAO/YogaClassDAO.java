@@ -22,6 +22,6 @@ public interface YogaClassDAO {
 
     @Query("SELECT * FROM yoga_classes ORDER BY day, time")
     List<YogaClass> getAllClasses();
-    @Query("SELECT * FROM yoga_classes WHERE uid = :userId")
-    YogaClass getClassById(int userId);
+    @Query("SELECT * FROM yoga_classes WHERE uid = :uid")
+    YogaClass getClassById(int uid);
 }

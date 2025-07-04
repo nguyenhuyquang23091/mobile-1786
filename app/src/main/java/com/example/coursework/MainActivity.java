@@ -16,6 +16,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.coursework.data.local.AppDatabase;
+import com.example.coursework.data.local.entities.YogaClass;
+import com.example.coursework.data.local.implementation.YogaRepositoryImplementation;
+import com.example.coursework.data.local.repository.YogaClassRepository;
 import com.example.coursework.databinding.ActivityMainBinding;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -30,7 +34,9 @@ public class MainActivity extends AppCompatActivity {
 
     // Using ViewBinding to avoid findViewById and make code safer
     private ActivityMainBinding binding;
+    private YogaClass editYogaClass = null;
     private boolean isVisible;
+    private YogaClassRepository yogaClassRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,18 +44,43 @@ public class MainActivity extends AppCompatActivity {
         // Inflate layout using ViewBinding
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        yogaClassRepository = new YogaRepositoryImplementation(getApplication());
         // Keep padding for system bars (EdgeToEdge) - Your original code
         ViewCompat.setOnApplyWindowInsetsListener(binding.main, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        if(getIntent().hasExtra("uid")){
+            int uid = getIntent().getIntExtra("uid", -1);
+            if(uid != -1){
+                loadEditClass(uid);
+            }
+        }
 
         // Setup dropdown menus and click listeners
         setupAdapters();
         setupClickListeners();
         setupFabMenu();
+    }
+
+    private void loadEditClass(int classId){
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            editYogaClass = yogaClassRepository.findById(classId);
+           runOnUiThread(()-> populateForm(editYogaClass));
+
+        });
+    }
+
+    private void populateForm(YogaClass yogaClass){
+        if (yogaClass == null ) return;
+        binding.dayOfWeekInput.setText(yogaClass.day, false);
+        binding.classTypeInput.setText(yogaClass.type, false);
+        binding.timeInput.setText(yogaClass.time);
+        binding.capacityInput.setText(String.valueOf(yogaClass.capacity));
+        binding.durationInput.setText(String.valueOf(yogaClass.duration));
+        binding.priceInput.setText(String.valueOf(yogaClass.price));
+        binding.descriptionInput.setText(yogaClass.description);
     }
 
     private void setupAdapters() {
@@ -86,11 +117,31 @@ public class MainActivity extends AppCompatActivity {
                 new Handler(Looper.getMainLooper()).postDelayed(() -> {
                     binding.lvAnimation.cancelAnimation();
                     binding.lvAnimation.setVisibility(View.GONE);
-                    // Pass data to the next activity AFTER the animation has had time to show
-                    passDataToConfirmation();
+                    if (editYogaClass != null) {
+                        // UPDATE existing class
+                        updateClass();
+                        Toast.makeText(MainActivity.this, "Class Updated!", Toast.LENGTH_SHORT).show();
+                        // Go back to the list after updating
+                        startActivity(new Intent(MainActivity.this, ClassListActivity.class));
+                        finish();
+                    } else {
+                        // INSERT new class
+                        passDataToConfirmation(); // Your existing flow for new classes
+                    }
                 }, 2500); // 2500 ms = 2.5 seconds
             }
         });
+    }
+    private void updateClass() {
+        editYogaClass.day = binding.dayOfWeekInput.getText().toString();
+        editYogaClass.type = binding.classTypeInput.getText().toString();
+        editYogaClass.time = Objects.requireNonNull(binding.timeInput.getText()).toString();
+        editYogaClass.capacity = Integer.parseInt(Objects.requireNonNull(binding.capacityInput.getText()).toString());
+        editYogaClass.duration = Integer.parseInt(Objects.requireNonNull(binding.durationInput.getText()).toString());
+        editYogaClass.price = Double.parseDouble(Objects.requireNonNull(binding.priceInput.getText()).toString());
+        editYogaClass.description = Objects.requireNonNull(binding.descriptionInput.getText()).toString();
+
+        yogaClassRepository.update(editYogaClass);
     }
 
     private void showTimePickerDialog() {
