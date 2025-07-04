@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.example.coursework.data.local.AppDatabase;
 import com.example.coursework.data.local.DAO.YogaClassDAO;
+import com.example.coursework.data.local.entities.ClassInstance;
 import com.example.coursework.data.local.entities.YogaClass;
 import com.example.coursework.data.local.repository.YogaClassRepository;
 
@@ -39,5 +40,10 @@ public class YogaRepositoryImplementation implements YogaClassRepository {
     @Override
     public YogaClass findById(int uid) {
         return yogaClassDAO.getClassById(uid);
+    }
+
+    @Override
+    public List<ClassInstance> getInstance(int courseId) {
+        return yogaClassDAO.getInstances(courseId);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.coursework.data.local.repository;
 
+import com.example.coursework.data.local.entities.ClassInstance;
 import com.example.coursework.data.local.entities.YogaClass;
 
 import java.util.List;
@@ -10,5 +11,7 @@ public interface YogaClassRepository {
     List<YogaClass> getAll();
 
     YogaClass findById(int id);
+
+    List<ClassInstance> getInstance(int courseId);
 
 }
