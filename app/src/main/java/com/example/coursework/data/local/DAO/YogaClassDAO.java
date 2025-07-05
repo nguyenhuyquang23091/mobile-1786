@@ -26,6 +26,14 @@ public interface YogaClassDAO {
     @Query("SELECT * FROM yoga_classes WHERE uid = :uid")
     YogaClass getClassById(int uid);
 
+    @Insert
+    void insertInstance(ClassInstance classInstance); // <-- ADD
+
+    @Update
+    void updateInstance(ClassInstance classInstance); // <-- ADD
+
+    @Delete
+    void deleteInstance(ClassInstance classInstance);
     @Query("SELECT * FROM class_instance WHERE courseId = :courseId")
     List<ClassInstance> getInstances(int courseId);
 }

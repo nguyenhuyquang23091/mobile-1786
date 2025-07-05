@@ -32,5 +32,9 @@
 
     <string name="action_edit">Edit</string>
     <string name="action_confirm">Confirm</string>
+    <string name="detail">Detail</string>
+    <string name="storage">Storage</string>
+    <string name="manage">Manage</string>
+    <string name="search">Search</string>
 
 </resources>

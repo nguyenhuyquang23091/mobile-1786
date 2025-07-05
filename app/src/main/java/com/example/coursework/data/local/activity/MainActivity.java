@@ -5,11 +5,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -17,11 +20,17 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.coursework.R;
 import com.example.coursework.data.local.AppDatabase;
+import com.example.coursework.data.local.entities.ClassInstance;
 import com.example.coursework.data.local.entities.YogaClass;
 import com.example.coursework.data.local.implementation.YogaRepositoryImplementation;
 import com.example.coursework.data.local.repository.YogaClassRepository;
 import com.example.coursework.databinding.ActivityMainBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomnavigation.LabelVisibilityMode;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.android.material.transition.MaterialFadeThrough;
+
 
 import java.util.Locale;
 import java.util.Objects;
@@ -61,7 +70,9 @@ public class MainActivity extends AppCompatActivity {
         // Setup dropdown menus and click listeners
         setupAdapters();
         setupClickListeners();
-        setupFabMenu();
+        setUpFab();
+
+
     }
 
     private void loadEditClass(int classId){
@@ -110,13 +121,9 @@ public class MainActivity extends AppCompatActivity {
                 // Your original success toast
                 Toast.makeText(MainActivity.this, "Form submitted", Toast.LENGTH_SHORT).show();
 
-                binding.lvAnimation.setAnimationFromUrl("https://lottie.host/1b344cc0-b4b0-4af7-8310-a8fbb260448a/4n8jLj6c1R.lottie");
-                binding.lvAnimation.setVisibility(View.VISIBLE);
-                binding.lvAnimation.playAnimation();
+
 
                 new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                    binding.lvAnimation.cancelAnimation();
-                    binding.lvAnimation.setVisibility(View.GONE);
                     if (editYogaClass != null) {
                         // UPDATE existing class
                         updateClass();
@@ -244,33 +251,27 @@ public class MainActivity extends AppCompatActivity {
         }
         startActivity(intent);
     }
-    private void setupFabMenu(){
-        isVisible = false;
-        binding.mainFab.setRotation(0);
+    private void setUpFab(){
+        BottomNavigationView bottomNavigationView = binding.bottomNavigation;
+        bottomNavigationView.setLabelVisibilityMode(NavigationBarView.LABEL_VISIBILITY_LABELED);
+        getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
 
-        binding.mainFab.setOnClickListener(view -> {
-            if(!isVisible){
-                binding.viewAllClassesFab.show();
-                binding.resetDatabaseFab.show();
-                binding.viewAllClassesText.setVisibility(View.VISIBLE);
-                binding.resetDatabaseText.setVisibility(View.VISIBLE);
 
-                binding.mainFab.animate().rotation(135f).setInterpolator(new OvershootInterpolator()).setDuration(300).start();
-            } else {
-                binding.viewAllClassesFab.hide();
-                binding.resetDatabaseFab.hide();
-                binding.viewAllClassesText.setVisibility(View.GONE);
-                binding.resetDatabaseText.setVisibility(View.GONE);
 
-                binding.mainFab.animate().rotation(0).setInterpolator(new OvershootInterpolator()).setDuration(300).start();
 
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if(id == R.id.item_2){
+                var exit = new MaterialFadeThrough;
+                startActivity(new Intent(MainActivity.this, ClassListActivity.class));
+                return true;
+            } else if(id == R.id.item_3){
+                startActivity(new Intent(MainActivity.this, ClassInstanceActivity.class));
+                return true;
             }
-            isVisible = !isVisible;
-        });
-        binding.viewAllClassesFab.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, ClassListActivity.class);
-            startActivity(intent);
+            return false;
         });
 
     }
+
 }

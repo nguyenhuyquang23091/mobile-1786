@@ -33,8 +33,6 @@ public class ClassInstance {
     @ColumnInfo(name = "teacher")
     public String teacher;
 
-    @ColumnInfo(name = "comments")
-    public List<String> comment;
 
 
 

@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+
 import com.example.coursework.R;
 import com.example.coursework.data.local.AppDatabase;
 import com.example.coursework.data.local.adapter.YogaClassAdapter;
@@ -50,9 +51,10 @@ public class ClassListActivity extends AppCompatActivity {
 
             @Override
             public void onEditCLick(YogaClass yogaClass) {
-                Intent intent = new Intent(ClassListActivity.this, MainActivity.class);
-                intent.putExtra("uid", yogaClass.uid);
+                Intent intent = new Intent(ClassListActivity.this, ClassInstanceActivity.class);
+                intent.putExtra(ClassInstanceActivity.EXTRA_COURSE_ID, yogaClass.uid);
                 startActivity(intent);
+
 
             }
         });

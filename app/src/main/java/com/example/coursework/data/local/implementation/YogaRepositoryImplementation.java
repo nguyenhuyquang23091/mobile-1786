@@ -41,9 +41,27 @@ public class YogaRepositoryImplementation implements YogaClassRepository {
     public YogaClass findById(int uid) {
         return yogaClassDAO.getClassById(uid);
     }
+    ///INSTANCE IMPLEMENTATION
+    @Override
+    public void insertInstance(ClassInstance classInstance) {
+        AppDatabase.databaseWriteExecutor.execute(() -> yogaClassDAO.insertInstance(classInstance));
+
+    }
 
     @Override
     public List<ClassInstance> getInstance(int courseId) {
         return yogaClassDAO.getInstances(courseId);
+    }
+
+    @Override
+    public void updateInstance(ClassInstance classInstance) {
+        AppDatabase.databaseWriteExecutor.execute(() -> yogaClassDAO.updateInstance(classInstance));
+
+    }
+
+    @Override
+    public void deleteInstance(ClassInstance classInstance) {
+        AppDatabase.databaseWriteExecutor.execute(() -> yogaClassDAO.deleteInstance(classInstance));
+
     }
 }

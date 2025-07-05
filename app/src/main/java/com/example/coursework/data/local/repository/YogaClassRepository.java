@@ -12,6 +12,12 @@ public interface YogaClassRepository {
 
     YogaClass findById(int id);
 
+    void insertInstance(ClassInstance classInstance);
     List<ClassInstance> getInstance(int courseId);
+    void updateInstance(ClassInstance classInstance);
+    void deleteInstance(ClassInstance classInstance);
+
+
+
 
 }

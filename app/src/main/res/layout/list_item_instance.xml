@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <com.google.android.material.textview.MaterialTextView
+        <TextView
             android:id="@+id/instance_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
             android:layout_marginEnd="8dp"
             tools:text="July 14, 2025" />
 
-        <com.google.android.material.textview.MaterialTextView
+        <TextView
             android:id="@+id/instance_teacher"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -46,20 +46,23 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/edit_instance_button"
-                style="@style/Widget.Material3.Button"
+            <Button
+                android:id="@+id/edit_button"
+                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Edit" />
+                android:text="Edit"
+                />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/delete_instance_button"
-                style="@style/Widget.Material3.Button"
+            <Button
+                android:id="@+id/delete_button"
+                style="@style/Widget.Material3.Button.Icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="Delete" />
+                android:text="Delete"
+               />
+
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
