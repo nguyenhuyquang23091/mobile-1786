@@ -3,8 +3,14 @@ package com.example.coursework.data.local.fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,6 +19,7 @@ import com.example.coursework.data.local.AppDatabase;
 import com.example.coursework.data.local.adapter.ClassInstanceAdapter;
 import com.example.coursework.data.local.entities.ClassInstance;
 import com.example.coursework.data.local.implementation.YogaRepositoryImplementation;
+import com.example.coursework.databinding.FragmentCreateClassBinding;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -24,7 +31,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.TimeZone;
 
-public class ClassInstanceActivity extends AppCompatActivity {
+public class ClassInstanceFragment extends Fragment {
 
     public static final String EXTRA_COURSE_ID = "com.example.coursework.EXTRA_COURSE_ID";
     private YogaRepositoryImplementation repository;
@@ -33,14 +40,22 @@ public class ClassInstanceActivity extends AppCompatActivity {
 
     private ExtendedFloatingActionButton addInstanceFab;
     private RecyclerView recyclerViewInstances;
+    private FragmentCreateClassBinding binding;
 
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = FragmentCreateClassBinding.inflate(inflater, container, false);
+
+        return binding.getRoot();
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_class_instance);
-        addInstanceFab = findViewById(R.id.add_instance_fab);
-        recyclerViewInstances = findViewById(R.id.recyclerViewInstances);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        addInstanceFab = binding.getRoot().findViewById(R.id.add_instance_fab);
+        recyclerViewInstances = view.findViewById(R.id.recyclerViewInstances);
 
         recyclerViewInstances.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -53,33 +68,34 @@ public class ClassInstanceActivity extends AppCompatActivity {
                 }
             }
         });
-        repository = new YogaRepositoryImplementation(getApplication());
-        courseId = getIntent().getIntExtra(EXTRA_COURSE_ID, -1);
+        repository = new YogaRepositoryImplementation(requireActivity().getApplication());
+        courseId = requireActivity().getIntent().getIntExtra(EXTRA_COURSE_ID, -1);
 
         if (courseId == -1) {
-            Toast.makeText(this, "Error: Course ID not found.", Toast.LENGTH_SHORT).show();
-            finish();
+            Toast.makeText(getContext(), "Error: Course ID not found.", Toast.LENGTH_SHORT).show();
+            //go back if no return
+            Navigation.findNavController(view).popBackStack();
             return;
         }
         setupRecyclerView();
         setupFab();
     }
 
+
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         loadInstances();
     }
 
     private void setupRecyclerView() {
-        RecyclerView recyclerView = findViewById(R.id.recyclerViewInstances);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewInstances.setLayoutManager(new LinearLayoutManager(getContext()));
 
         adapter = new ClassInstanceAdapter(new ClassInstanceAdapter.OnItemClickListener() {
             @Override
             public void onDeleteClick(ClassInstance classInstance) {
                 repository.deleteInstance(classInstance);
-                Toast.makeText(ClassInstanceActivity.this, "Instance Deleted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Instance Deleted", Toast.LENGTH_SHORT).show();
                 loadInstances();
             }
 
@@ -88,11 +104,11 @@ public class ClassInstanceActivity extends AppCompatActivity {
                 showAddEditInstanceDialog(classInstance);
             }
         });
-        recyclerView.setAdapter(adapter);
+        recyclerViewInstances.setAdapter(adapter);
     }
 
     private void setupFab() {
-        ExtendedFloatingActionButton fab = findViewById(R.id.add_instance_fab);
+        ExtendedFloatingActionButton fab = binding.getRoot().findViewById(R.id.add_instance_fab);
         fab.setOnClickListener(v -> showAddEditInstanceDialog(null));
     }
 
@@ -113,14 +129,14 @@ public class ClassInstanceActivity extends AppCompatActivity {
             sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
             dateInput.setText(sdf.format(new Date(selection)));
         });
-        dateInput.setOnClickListener(v -> datePicker.show(getSupportFragmentManager(), "DATE_PICKER"));
+        dateInput.setOnClickListener(v -> datePicker.show(getParentFragmentManager(), "DATE_PICKER"));
 
         if (instanceToEdit != null) {
             dateInput.setText(instanceToEdit.date);
             teacherInput.setText(instanceToEdit.teacher);
         }
 
-        new MaterialAlertDialogBuilder(this)
+        new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(instanceToEdit == null ? "Add Instance" : "Edit Instance")
                 .setView(dialogView)
                 .setPositiveButton("Save", (dialog, which) -> {
@@ -128,7 +144,7 @@ public class ClassInstanceActivity extends AppCompatActivity {
                     String teacher = Objects.requireNonNull(teacherInput.getText()).toString();
 
                     if (date.isEmpty() || teacher.isEmpty()) {
-                        Toast.makeText(this, "Fields cannot be empty", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Fields cannot be empty", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     if (instanceToEdit == null) {
@@ -137,12 +153,12 @@ public class ClassInstanceActivity extends AppCompatActivity {
                         newInstance.teacher = teacher;
                         newInstance.courseId = this.courseId;
                         repository.insertInstance(newInstance);
-                        Toast.makeText(this, "Instance Saved", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Instance Saved", Toast.LENGTH_SHORT).show();
                     } else {
                         instanceToEdit.date = date;
                         instanceToEdit.teacher = teacher;
                         repository.updateInstance(instanceToEdit);
-                        Toast.makeText(this, "Instance Updated", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Instance Updated", Toast.LENGTH_SHORT).show();
                     }
                     loadInstances();
                 })
@@ -153,7 +169,7 @@ public class ClassInstanceActivity extends AppCompatActivity {
     private void loadInstances() {
         AppDatabase.databaseWriteExecutor.execute(() -> {
             List<ClassInstance> instances = repository.getInstance(courseId);
-            runOnUiThread(() -> adapter.setClasses(instances));
+            requireActivity().runOnUiThread(() -> adapter.setClasses(instances));
         });
     }
 }

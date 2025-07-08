@@ -24,6 +24,7 @@ import com.example.coursework.data.local.repository.YogaClassRepository;
 import com.example.coursework.databinding.FragmentCreateClassBinding;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ClassListFragment extends Fragment {
     private YogaClassRepository yogaClassRepository;
@@ -35,19 +36,24 @@ public class ClassListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentCreateClassBinding.inflate(inflater, container, false);
-        return binding.getRoot();
+        return inflater.inflate(R.layout.fragment_class_list, container, false);
+
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        recyclerView= view.findViewById(R.id.recyclerViewClasses);
         yogaClassRepository = new YogaRepositoryImplementation(requireActivity().getApplication());
         setupRecyclerView();
-    }
 
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadClasses();
+    }
     private void setupRecyclerView() {
-        recyclerView = binding.getRoot().findViewById(R.id.recyclerViewClasses);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         yogaClassAdapter = new YogaClassAdapter(new YogaClassAdapter.OnItemClickListener() {
             @Override
@@ -59,15 +65,17 @@ public class ClassListFragment extends Fragment {
 
             @Override
             public void onEditCLick(YogaClass yogaClass) {
-                Intent intent = new Intent(requireActivity(), ClassInstanceActivity.class);
-                intent.putExtra(ClassInstanceActivity.EXTRA_COURSE_ID, yogaClass.uid);
-                startActivity(intent);
+                ClassListFragmentDirections.ActionClassListFragmentToClassInstanceFragment action =
+                        ClassListFragmentDirections.actionClassListFragmentToClassInstanceFragment(yogaClass.uid);
+
+                recyclerView.setAdapter(yogaClassAdapter);
+
+
 
             }
         });
-
-        recyclerView.setAdapter(yogaClassAdapter);
     }
+
     private void loadClasses(){
         AppDatabase.databaseWriteExecutor.execute(() -> {
             List<YogaClass> classes = yogaClassRepository.getAll();

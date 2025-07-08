@@ -15,6 +15,20 @@
         android:id="@+id/classListFragment"
         android:name="com.example.coursework.data.local.fragment.ClassListFragment"
         android:label="fragment_class_list"
-        tools:layout="@layout/fragment_class_list" />
+        tools:layout="@layout/fragment_class_list">
+        <action
+            android:id="@+id/action_classListFragment_to_classInstanceFragment"
+            app:destination="@id/classInstanceFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/classInstanceFragment"
+        android:name="com.example.coursework.data.local.fragment.ClassInstanceFragment"
+        android:label="fragment_class_instance"
+        tools:layout="@layout/fragment_class_instance">
+        <argument
+            android:name="courseId"
+            app:argType="integer" />
+    </fragment>
 
 </navigation>

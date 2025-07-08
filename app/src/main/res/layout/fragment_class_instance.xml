@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".data.local.fragment.ClassInstanceActivity">
+    tools:context=".data.local.fragment.ClassInstanceFragment">
 
     <!-- RecyclerView with bottom padding to avoid overlap -->
     <androidx.recyclerview.widget.RecyclerView
