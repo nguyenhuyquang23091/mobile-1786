@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/item_1"
+        android:id="@+id/createClassFragment"
         android:title="@string/detail"
         android:icon="@drawable/ic_detail_selector"/>
     <item
-        android:id="@+id/item_2"
+        android:id="@+id/classListFragment"
         android:title="@string/storage"
         android:icon="@drawable/ic_storage_selector"/>
     <item

@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:background="@color/colorBackground"
         android:fillViewport="true"
-        tools:context=".data.local.activity.ConfirmationActivity">
+        tools:context=".data.local.fragment.ConfirmationActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/main"

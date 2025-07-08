@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_nav_graph"
+    app:startDestination="@id/createClassFragment">
+
+    <fragment
+        android:id="@+id/createClassFragment"
+        android:name="com.example.coursework.data.local.fragment.CreateClassFragment"
+        android:label="fragment_create_class"
+        tools:layout="@layout/fragment_create_class" />
+
+    <fragment
+        android:id="@+id/classListFragment"
+        android:name="com.example.coursework.data.local.fragment.ClassListFragment"
+        android:label="fragment_class_list"
+        tools:layout="@layout/fragment_class_list" />
+
+</navigation>

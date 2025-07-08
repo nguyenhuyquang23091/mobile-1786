@@ -1,4 +1,4 @@
-package com.example.coursework.data.local.activity;
+package com.example.coursework.data.local.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import com.example.coursework.R;
+import com.example.coursework.data.local.MainActivity;
 import com.example.coursework.data.local.entities.YogaClass;
 import com.example.coursework.data.local.implementation.YogaRepositoryImplementation;
 import com.example.coursework.data.local.repository.YogaClassRepository;

@@ -1,4 +1,4 @@
-package com.example.coursework.data.local.activity;
+package com.example.coursework.data.local.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

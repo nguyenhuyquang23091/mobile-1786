@@ -1,84 +1,66 @@
-package com.example.coursework.data.local.activity;
+package com.example.coursework.data.local.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.animation.OvershootInterpolator;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.example.coursework.R;
 import com.example.coursework.data.local.AppDatabase;
-import com.example.coursework.data.local.entities.ClassInstance;
 import com.example.coursework.data.local.entities.YogaClass;
 import com.example.coursework.data.local.implementation.YogaRepositoryImplementation;
 import com.example.coursework.data.local.repository.YogaClassRepository;
-import com.example.coursework.databinding.ActivityMainBinding;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.bottomnavigation.LabelVisibilityMode;
-import com.google.android.material.navigation.NavigationBarView;
+import com.example.coursework.databinding.FragmentCreateClassBinding;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.android.material.transition.MaterialFadeThrough;
-
-
-import java.util.Locale;
-import java.util.Objects;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
+
 import java.util.Calendar;
+import java.util.Locale;
+import java.util.Objects;
 
-
-public class MainActivity extends AppCompatActivity {
-
-    // Using ViewBinding to avoid findViewById and make code safer
-    private ActivityMainBinding binding;
-    private YogaClass editYogaClass = null;
-    private boolean isVisible;
+public class CreateClassFragment extends Fragment {
+    private FragmentCreateClassBinding binding;
     private YogaClassRepository yogaClassRepository;
+    private YogaClass editYogaClass = null;
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = FragmentCreateClassBinding.inflate(inflater, container, false);
+
+        return binding.getRoot();
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // Inflate layout using ViewBinding
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-        yogaClassRepository = new YogaRepositoryImplementation(getApplication());
-        // Keep padding for system bars (EdgeToEdge) - Your original code
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main, (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-        if(getIntent().hasExtra("uid")){
-            int uid = getIntent().getIntExtra("uid", -1);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        yogaClassRepository = new YogaRepositoryImplementation(requireActivity().getApplication());
+        setupAdapters();
+        setupClickListeners();
+        if(requireActivity().getIntent().hasExtra("uid")){
+            int uid = requireActivity().getIntent().getIntExtra("uid", -1);
             if(uid != -1){
                 loadEditClass(uid);
             }
         }
 
-        // Setup dropdown menus and click listeners
-        setupAdapters();
-        setupClickListeners();
-        setUpFab();
-
-
     }
-
     private void loadEditClass(int classId){
         AppDatabase.databaseWriteExecutor.execute(() -> {
             editYogaClass = yogaClassRepository.findById(classId);
-           runOnUiThread(()-> populateForm(editYogaClass));
+            requireActivity().runOnUiThread(()-> populateForm(editYogaClass));
 
         });
     }
@@ -96,14 +78,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupAdapters() {
         ArrayAdapter<CharSequence> dayAdapter = ArrayAdapter.createFromResource(
-                this,
+                //cant use this as context
+                requireContext(),
                 R.array.days_array,
                 android.R.layout.simple_spinner_dropdown_item
         );
         binding.dayOfWeekInput.setAdapter(dayAdapter);
 
         ArrayAdapter<CharSequence> typeAdapter = ArrayAdapter.createFromResource(
-                this,
+                requireContext(),
                 R.array.type_array,
                 android.R.layout.simple_spinner_dropdown_item
         );
@@ -119,18 +102,16 @@ public class MainActivity extends AppCompatActivity {
         binding.saveCourseButton.setOnClickListener(v -> {
             if (validateForm()) {
                 // Your original success toast
-                Toast.makeText(MainActivity.this, "Form submitted", Toast.LENGTH_SHORT).show();
-
-
+                Toast.makeText(getContext(), "Form submitted", Toast.LENGTH_SHORT).show();
 
                 new Handler(Looper.getMainLooper()).postDelayed(() -> {
                     if (editYogaClass != null) {
                         // UPDATE existing class
                         updateClass();
-                        Toast.makeText(MainActivity.this, "Class Updated!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Class Updated!", Toast.LENGTH_SHORT).show();
                         // Go back to the list after updating
-                        startActivity(new Intent(MainActivity.this, ClassListActivity.class));
-                        finish();
+                        startActivity(new Intent(requireActivity(), ClassListFragment.class));
+                        requireActivity().finish();
                     } else {
                         // INSERT new class
                         passDataToConfirmation(); // Your existing flow for new classes
@@ -161,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                 .setMinute(minute)
                 .setTitleText("Select Time")
                 .build();
-        picker.show(getSupportFragmentManager(), "MATERIAL_TIME_PICKER");
+        picker.show(getParentFragmentManager(), "MATERIAL_TIME_PICKER");
         // add on listener
         picker.addOnPositiveButtonClickListener(dialog -> {
             int selectedHour = picker.getHour();
@@ -230,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void passDataToConfirmation() {
-        Intent intent = new Intent(MainActivity.this, ConfirmationActivity.class);
+        Intent intent = new Intent(requireActivity(), ConfirmationActivity.class);
         //store intent information in object
 
         intent.putExtra("day", binding.dayOfWeekInput.getText().toString());
@@ -244,34 +225,16 @@ public class MainActivity extends AppCompatActivity {
         // Find the selected chip's text from the ChipGroup
         int selectedChipId = binding.intensityChipGroup.getCheckedChipId();
         if (selectedChipId != View.NO_ID) {
-            com.google.android.material.chip.Chip selectedChip = findViewById(selectedChipId);
+            Chip selectedChip = binding.getRoot().findViewById(selectedChipId);
             intent.putExtra("intensity", selectedChip.getText().toString());
         } else {
             intent.putExtra("intensity", "Not specified");
         }
         startActivity(intent);
     }
-    private void setUpFab(){
-        BottomNavigationView bottomNavigationView = binding.bottomNavigation;
-        bottomNavigationView.setLabelVisibilityMode(NavigationBarView.LABEL_VISIBILITY_LABELED);
-        getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
-
-
-
-
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            int id = item.getItemId();
-            if(id == R.id.item_2){
-                var exit = new MaterialFadeThrough;
-                startActivity(new Intent(MainActivity.this, ClassListActivity.class));
-                return true;
-            } else if(id == R.id.item_3){
-                startActivity(new Intent(MainActivity.this, ClassInstanceActivity.class));
-                return true;
-            }
-            return false;
-        });
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
-
 }

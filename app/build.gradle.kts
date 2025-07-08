@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -55,4 +56,10 @@ dependencies {
     implementation(libs.compose.material3.adaptive)
     implementation(libs.room.runtime)
     annotationProcessor(libs.room.compiler)
+    implementation(libs.navigation.compose)
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.ui)
+    implementation(libs.navigation.dynamic.features.fragment)
+    androidTestImplementation(libs.navigation.testing)
+    implementation(libs.kotlinx.serialization.json)
 }
