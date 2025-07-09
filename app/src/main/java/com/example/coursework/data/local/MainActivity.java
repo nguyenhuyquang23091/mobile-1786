@@ -21,7 +21,6 @@ import com.google.android.material.navigation.NavigationBarView;
 public class MainActivity extends AppCompatActivity {
 
     // Using ViewBinding to avoid findViewById with wrong syntax and make code safer
-    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

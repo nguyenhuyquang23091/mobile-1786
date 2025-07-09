@@ -40,22 +40,20 @@ public class ClassInstanceFragment extends Fragment {
 
     private ExtendedFloatingActionButton addInstanceFab;
     private RecyclerView recyclerViewInstances;
-    private FragmentCreateClassBinding binding;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentCreateClassBinding.inflate(inflater, container, false);
-
-        return binding.getRoot();
+        return inflater.inflate(R.layout.fragment_class_instance, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        addInstanceFab = binding.getRoot().findViewById(R.id.add_instance_fab);
+        addInstanceFab = view.findViewById(R.id.add_instance_fab);
         recyclerViewInstances = view.findViewById(R.id.recyclerViewInstances);
+        repository = new YogaRepositoryImplementation(requireActivity().getApplication());
 
         recyclerViewInstances.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -68,9 +66,9 @@ public class ClassInstanceFragment extends Fragment {
                 }
             }
         });
-        repository = new YogaRepositoryImplementation(requireActivity().getApplication());
-        courseId = requireActivity().getIntent().getIntExtra(EXTRA_COURSE_ID, -1);
-
+        if (getArguments() != null) {
+            courseId = ClassInstanceFragmentArgs.fromBundle(getArguments()).getCourseId();
+        }
         if (courseId == -1) {
             Toast.makeText(getContext(), "Error: Course ID not found.", Toast.LENGTH_SHORT).show();
             //go back if no return
@@ -108,7 +106,7 @@ public class ClassInstanceFragment extends Fragment {
     }
 
     private void setupFab() {
-        ExtendedFloatingActionButton fab = binding.getRoot().findViewById(R.id.add_instance_fab);
+        ExtendedFloatingActionButton fab = requireView().findViewById(R.id.add_instance_fab);
         fab.setOnClickListener(v -> showAddEditInstanceDialog(null));
     }
 

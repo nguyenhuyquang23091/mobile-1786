@@ -22,7 +22,7 @@ public class YogaClassAdapter extends RecyclerView.Adapter<YogaClassAdapter.Yoga
 
     public interface OnItemClickListener {
         void onDeleteClick(YogaClass yogaClass);
-        void onEditCLick(YogaClass yogaClass);
+        void onItemClick(YogaClass yogaClass);
 
     }
     public YogaClassAdapter(OnItemClickListener listener){
@@ -97,9 +97,9 @@ public class YogaClassAdapter extends RecyclerView.Adapter<YogaClassAdapter.Yoga
                     listener.onDeleteClick(yogaClass);
                 }
             });
-            editButton.setOnClickListener(v -> {
+            itemView.setOnClickListener(v -> {
                 if(listener != null){
-                    listener.onEditCLick(yogaClass);
+                    listener.onItemClick(yogaClass);
                 }
             });
         }

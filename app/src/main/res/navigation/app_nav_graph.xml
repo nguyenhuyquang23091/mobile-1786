@@ -30,5 +30,10 @@
             android:name="courseId"
             app:argType="integer" />
     </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.coursework.data.local.fragment.SearchFragment"
+        android:label="Search"
+        tools:layout="@layout/fragment_search" />
 
 </navigation>

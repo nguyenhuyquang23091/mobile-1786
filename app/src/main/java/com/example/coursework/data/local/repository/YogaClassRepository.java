@@ -17,6 +17,8 @@ public interface YogaClassRepository {
     void updateInstance(ClassInstance classInstance);
     void deleteInstance(ClassInstance classInstance);
 
+    List<ClassInstance> searchByTeacher(String teacher);
+
 
 
 

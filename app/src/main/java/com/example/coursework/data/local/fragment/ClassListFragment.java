@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -52,6 +53,7 @@ public class ClassListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         loadClasses();
+
     }
     private void setupRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -64,18 +66,16 @@ public class ClassListFragment extends Fragment {
             }
 
             @Override
-            public void onEditCLick(YogaClass yogaClass) {
+            public void onItemClick(YogaClass yogaClass) {
                 ClassListFragmentDirections.ActionClassListFragmentToClassInstanceFragment action =
                         ClassListFragmentDirections.actionClassListFragmentToClassInstanceFragment(yogaClass.uid);
-
-                recyclerView.setAdapter(yogaClassAdapter);
-
-
+                Navigation.findNavController(requireView()).navigate(action);
 
             }
         });
-    }
+        recyclerView.setAdapter(yogaClassAdapter);
 
+    }
     private void loadClasses(){
         AppDatabase.databaseWriteExecutor.execute(() -> {
             List<YogaClass> classes = yogaClassRepository.getAll();
@@ -84,9 +84,5 @@ public class ClassListFragment extends Fragment {
             });
         });
     }
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
+
 }

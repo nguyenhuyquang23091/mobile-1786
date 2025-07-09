@@ -8,6 +8,7 @@ import com.example.coursework.data.local.entities.ClassInstance;
 import com.example.coursework.data.local.entities.YogaClass;
 import com.example.coursework.data.local.repository.YogaClassRepository;
 
+import java.util.Collections;
 import java.util.List;
 
 public class YogaRepositoryImplementation implements YogaClassRepository {
@@ -64,4 +65,10 @@ public class YogaRepositoryImplementation implements YogaClassRepository {
         AppDatabase.databaseWriteExecutor.execute(() -> yogaClassDAO.deleteInstance(classInstance));
 
     }
+
+    @Override
+    public List<ClassInstance> searchByTeacher(String teacher) {
+        return yogaClassDAO.searchByTeacher(teacher);
+    }
+
 }

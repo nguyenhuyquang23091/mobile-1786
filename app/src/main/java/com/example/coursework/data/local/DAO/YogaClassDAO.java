@@ -27,13 +27,18 @@ public interface YogaClassDAO {
     YogaClass getClassById(int uid);
 
     @Insert
-    void insertInstance(ClassInstance classInstance); // <-- ADD
+    void insertInstance(ClassInstance classInstance);
 
     @Update
-    void updateInstance(ClassInstance classInstance); // <-- ADD
+    void updateInstance(ClassInstance classInstance);
 
     @Delete
     void deleteInstance(ClassInstance classInstance);
     @Query("SELECT * FROM class_instance WHERE courseId = :courseId")
     List<ClassInstance> getInstances(int courseId);
+
+    @Query("SELECT * FROM class_instance WHERE teacher LIKE :teacher || '%'")
+    List<ClassInstance> searchByTeacher(String teacher);
+
+
 }
