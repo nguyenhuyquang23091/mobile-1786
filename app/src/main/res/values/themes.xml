@@ -3,7 +3,6 @@
     <!-- Base theme extending Material3 -->
     <style name="Base.Theme.COURSEWORK" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
-        <!-- Removed colorAccent (deprecated in Material3) -->
     </style>
 
     <!-- App theme referencing base -->

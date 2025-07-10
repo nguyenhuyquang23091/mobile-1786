@@ -19,6 +19,10 @@ public interface YogaClassRepository {
 
     List<ClassInstance> searchByTeacher(String teacher);
 
+    List<ClassInstance> searchByDate(String date);
+    List<ClassInstance> searchByDay(String day);
+
+
 
 
 

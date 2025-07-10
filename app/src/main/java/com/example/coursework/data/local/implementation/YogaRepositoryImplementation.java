@@ -71,4 +71,14 @@ public class YogaRepositoryImplementation implements YogaClassRepository {
         return yogaClassDAO.searchByTeacher(teacher);
     }
 
+    @Override
+    public List<ClassInstance> searchByDate(String date) {
+        return yogaClassDAO.searchByDate(date);
+    }
+
+    @Override
+    public List<ClassInstance> searchByDay(String day) {
+        return yogaClassDAO.searchByDay(day);
+    }
+
 }
