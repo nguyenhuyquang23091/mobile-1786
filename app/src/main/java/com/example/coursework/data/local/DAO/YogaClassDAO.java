@@ -40,9 +40,9 @@ public interface YogaClassDAO {
     @Query("SELECT * FROM class_instance WHERE teacher LIKE :teacher || '%'")
     List<ClassInstance> searchByTeacher(String teacher);
 
-    @Query("SELECT * FROM class_instance WHERE date = :date")
+    @Query("SELECT * FROM class_instance WHERE date LIKE '%' || :date || '%'")
     List<ClassInstance> searchByDate(String date);
-    @Query("SELECT ci.* FROM class_instance ci JOIN yoga_classes yc ON ci.courseId = yc.uid WHERE yc.day = :day")
+    @Query("SELECT ci.* FROM class_instance ci JOIN yoga_classes yc ON ci.courseId = yc.uid WHERE yc.day LIKE '%' || :day || '%'")
     List<ClassInstance> searchByDay(String day);
 
 

@@ -123,6 +123,7 @@ public class ClassInstanceFragment extends Fragment {
                 .build();
 
         datePicker.addOnPositiveButtonClickListener(selection -> {
+            // *** FIX: Use UTC timezone to match the search format ***
             SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault());
             sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
             dateInput.setText(sdf.format(new Date(selection)));
