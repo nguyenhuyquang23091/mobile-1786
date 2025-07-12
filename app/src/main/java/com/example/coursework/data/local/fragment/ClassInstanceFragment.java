@@ -88,28 +88,12 @@ public class ClassInstanceFragment extends Fragment {
 
     private void setupRecyclerView() {
         recyclerViewInstances.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        adapter = new ClassInstanceAdapter(new ClassInstanceAdapter.OnItemClickListener() {
-            @Override
-            public void onDeleteClick(ClassInstance classInstance) {
-                repository.deleteInstance(classInstance);
-                Toast.makeText(getContext(), "Instance Deleted", Toast.LENGTH_SHORT).show();
-                loadInstances();
-            }
-
-            @Override
-            public void onEditCLick(ClassInstance classInstance) {
-                showAddEditInstanceDialog(classInstance);
-            }
-        });
         recyclerViewInstances.setAdapter(adapter);
     }
-
     private void setupFab() {
         ExtendedFloatingActionButton fab = requireView().findViewById(R.id.add_instance_fab);
         fab.setOnClickListener(v -> showAddEditInstanceDialog(null));
     }
-
     private void showAddEditInstanceDialog(final ClassInstance instanceToEdit) {
         LayoutInflater inflater = this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_add_edit_instance, null);

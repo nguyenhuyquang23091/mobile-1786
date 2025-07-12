@@ -3,7 +3,6 @@ package com.example.coursework.data.local.fragment;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,14 +29,12 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 public class SearchFragment extends Fragment {
-    private static final String TAG = "SearchFragment"; // Tag for logging
     private YogaClassRepository yogaClassRepository;
     private ClassInstanceAdapter adapter;
     private SearchView searchView;
     private SearchBar searchBar;
 
-    // *** FIX: Add a boolean flag to guard the TextWatcher ***
-    private boolean isProgrammaticTextChange = false;
+    private boolean allowTextChange = false;
 
     @Nullable
     @Override
@@ -57,11 +54,15 @@ public class SearchFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_search_results);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new ClassInstanceAdapter(new ClassInstanceAdapter.OnItemClickListener() {
+
             @Override
-            public void onDeleteClick(ClassInstance classInstance) { /* Not needed here */ }
+            public void onDeleteClick(ClassInstance classInstance) {
+            }
             @Override
-            public void onEditCLick(ClassInstance classInstance) { /* Not needed here */ }
-        });
+            public void onEditCLick(ClassInstance classInstance) {
+
+            }
+        }, false);
         recyclerView.setAdapter(adapter);
     }
 
@@ -76,8 +77,7 @@ public class SearchFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) { }
             @Override
             public void afterTextChanged(Editable s) {
-                // *** FIX: Only search if the change was not programmatic ***
-                if (!isProgrammaticTextChange) {
+                if (!allowTextChange) {
                     performSearchByTeacher(s.toString());
                 }
             }
@@ -137,46 +137,39 @@ public class SearchFragment extends Fragment {
     }
 
     private void performSearchByTeacher(String query){
-        Log.d(TAG, "Searching for teacher: " + query);
         if (query.isEmpty()) {
             adapter.setClasses(Collections.emptyList());
             return;
         }
         AppDatabase.databaseWriteExecutor.execute(() -> {
             List<ClassInstance> results = yogaClassRepository.searchByTeacher(query);
-            Log.d(TAG, "Found " + results.size() + " teachers matching '" + query + "'");
             requireActivity().runOnUiThread(() -> adapter.setClasses(results));
         });
     }
 
     private void performSearchByDate(String date) {
-        Log.d(TAG, "Searching for date: " + date);
         AppDatabase.databaseWriteExecutor.execute(() -> {
             List<ClassInstance> results = yogaClassRepository.searchByDate(date);
-            Log.d(TAG, "Found " + results.size() + " classes on date '" + date + "'");
             requireActivity().runOnUiThread(() -> {
+                searchView.show();
                 adapter.setClasses(results);
                 updateSearchBarText("Date: " + date);
             });
         });
     }
-
     private void performSearchByDay(String day) {
-        Log.d(TAG, "Searching for day: " + day);
         AppDatabase.databaseWriteExecutor.execute(() -> {
             List<ClassInstance> results = yogaClassRepository.searchByDay(day);
-            Log.d(TAG, "Found " + results.size() + " classes on day '" + day + "'");
             requireActivity().runOnUiThread(() -> {
+                searchView.show();
                 adapter.setClasses(results);
                 updateSearchBarText("Day: " + day);
             });
         });
     }
-
-    // *** FIX: Helper method to safely update search bar text ***
     private void updateSearchBarText(String text) {
-        isProgrammaticTextChange = true;
+        allowTextChange = true;
         searchBar.setText(text);
-        isProgrammaticTextChange = false;
+        allowTextChange = false;
     }
 }

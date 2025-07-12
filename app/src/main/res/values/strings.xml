@@ -36,5 +36,8 @@
     <string name="storage">Storage</string>
     <string name="manage">Manage</string>
     <string name="search">Search</string>
+    <string name="view">View Detail</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
 
 </resources>
