@@ -14,6 +14,7 @@ import com.example.coursework.data.local.MainActivity;
 import com.example.coursework.data.local.entities.YogaCourse;
 import com.example.coursework.data.local.implementation.YogaRepositoryImplementation;
 import com.example.coursework.data.local.repository.YogaClassRepository;
+import com.example.coursework.data.local.util.SyncFirebaseListener;
 import com.example.coursework.databinding.ActivityConfirmationBinding;
 
 import java.util.Objects;
@@ -28,17 +29,12 @@ public class ConfirmationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_confirmation);
 
-        // Initialize the repository
         yogaClassRepository = new YogaRepositoryImplementation(getApplication());
 
-        // Set up the UI
         getData();
-        setupClickListeners(); // Changed from confirmAction() to a more descriptive name
+        setupClickListeners();
     }
 
-    /**
-     * Retrieves data from the Intent and populates the TextViews.
-     */
     private void getData() {
         Intent intent = getIntent();
         binding.valType.setText(intent.getStringExtra("type"));
@@ -59,27 +55,19 @@ public class ConfirmationActivity extends AppCompatActivity {
         if (description != null && !description.isEmpty()) {
             binding.valDescription.setText(description);
         } else {
-            binding.valDescription.setText("No description provided.");
+            binding.valDescription.setText(R.string.no_description_provided);
         }
     }
 
-    /**
-     * Sets up the OnClickListeners for the new split button.
-     */
+
     private void setupClickListeners() {
-        // The main "Confirm" button's logic is now in a helper method.
         binding.confirmButton.setOnClickListener(v -> {
             saveAndFinish();
         });
 
-        // The new dropdown button shows a menu with the "Edit" option.
         binding.moreActionsButton.setOnClickListener(this::showMoreActionsMenu);
     }
 
-    /**
-     * Creates and shows a PopupMenu for the "Edit" action.
-     * @param anchor The view to which the popup menu should be anchored.
-     */
     private void showMoreActionsMenu(View anchor) {
         PopupMenu popup = new PopupMenu(this, anchor);
         // This inflates the menu we created earlier.
@@ -96,10 +84,6 @@ public class ConfirmationActivity extends AppCompatActivity {
 
         popup.show();
     }
-
-    /**
-     * A helper method to create the YogaClass object, save it, and finish the activity.
-     */
     private void saveAndFinish() {
         YogaCourse yogaCourse = new YogaCourse();
         Intent intent = getIntent();
@@ -115,11 +99,29 @@ public class ConfirmationActivity extends AppCompatActivity {
         yogaCourse.description = intent.getStringExtra("description");
 
         // Use the repository to insert the class.
-        yogaClassRepository.insert(yogaCourse);
+        yogaClassRepository.insert(yogaCourse, new SyncFirebaseListener() {
+            @Override
+            public void syncFailure(String errorMessage) {
+                runOnUiThread(() -> {
+                    Toast.makeText(ConfirmationActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+                    navigateToMain();
+                });
+            }
+            @Override
+            public void syncSuccess() {
+                runOnUiThread(() -> {
+                    Toast.makeText(ConfirmationActivity.this, "Class saved and synced successfully!", Toast.LENGTH_LONG).show();
+                    navigateToMain();
+                });
+            }
+        });
+
 
         Toast.makeText(this, "Class saved successfully!", Toast.LENGTH_LONG).show();
 
-        // Navigate back to the main activity.
+    }
+
+    private void navigateToMain(){
         Intent mainActivityIntent = new Intent(ConfirmationActivity.this, MainActivity.class);
         mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(mainActivityIntent);

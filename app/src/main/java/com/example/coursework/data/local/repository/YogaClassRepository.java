@@ -3,11 +3,13 @@ package com.example.coursework.data.local.repository;
 import com.example.coursework.data.local.entities.ClassInstance;
 import com.example.coursework.data.local.entities.ClassInstanceWIthDetail;
 import com.example.coursework.data.local.entities.YogaCourse;
+import com.example.coursework.data.local.util.SyncFirebaseListener;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 public interface YogaClassRepository {
-    void insert(YogaCourse yogaCourse);
+    void insert(YogaCourse yogaCourse, SyncFirebaseListener syncFirebaseListener);
+
     void update(YogaCourse yogaCourse);
     void delete(YogaCourse yogaCourse);
     List<YogaCourse> getAll();

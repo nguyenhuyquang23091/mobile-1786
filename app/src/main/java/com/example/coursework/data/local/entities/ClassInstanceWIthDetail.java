@@ -5,8 +5,6 @@ import androidx.room.Relation;
 
 public class ClassInstanceWIthDetail {
 
-
-
     @Embedded
     public ClassInstance classInstance;
     @Relation(

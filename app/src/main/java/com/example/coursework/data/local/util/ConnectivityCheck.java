@@ -5,7 +5,6 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
-import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -16,8 +15,6 @@ import java.util.logging.Level;
 public class ConnectivityCheck {
         private Context context;
         private boolean isConnected = false;
-
-
 
     public ConnectivityCheck(Context context){
             this.context = context;
@@ -45,9 +42,7 @@ public class ConnectivityCheck {
                                 + "Connected " + isConnected
                                 );
                             }
-
                     }
-
                     @Override
                     public void onLost(@NonNull Network network) {
                         Log.d("ConnectivityCheck", "onLost");
@@ -59,6 +54,5 @@ public class ConnectivityCheck {
                 Log.d(String.valueOf(Level.WARNING), e.getMessage(), e);
             }
         }
-
 
 }

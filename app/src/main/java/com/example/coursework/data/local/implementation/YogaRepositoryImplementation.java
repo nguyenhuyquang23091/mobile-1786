@@ -11,6 +11,7 @@ import com.example.coursework.data.local.entities.YogaCourse;
 import com.example.coursework.data.local.repository.YogaClassRepository;
 import com.example.coursework.data.local.repository.FirebaseRepository;
 import com.example.coursework.data.local.util.ConnectivityCheck;
+import com.example.coursework.data.local.util.SyncFirebaseListener;
 
 import java.util.List;
 
@@ -30,19 +31,26 @@ public class YogaRepositoryImplementation implements YogaClassRepository {
         return connectivityCheck.isConnected();
     }
     @Override
-    public void insert(YogaCourse yogaCourse) {
+    public void insert(YogaCourse yogaCourse, SyncFirebaseListener syncFirebaseListener) {
         AppDatabase.databaseWriteExecutor.execute(() -> {
             yogaClassDAO.insert(yogaCourse);
             if(isConnected()) {
                 YogaCourse recentCreatedYoga = yogaClassDAO.getCourseById(yogaCourse.uid);
                 if(recentCreatedYoga != null ){
                     firebaseRepository.syncYogaCourse(recentCreatedYoga);
+                    if(syncFirebaseListener != null){
+                        syncFirebaseListener.syncSuccess();
+                    }
                 } else {
-                    Log.e("InsertError", "Yoga course not found after insertion.");
+                    if(syncFirebaseListener != null ){
+                        syncFirebaseListener.syncFailure("No Network Connection");
+                    }
                 }
             }
         });
     }
+
+
 
     @Override
     public void update(YogaCourse yogaCourse) {
