@@ -1,46 +1,78 @@
 package com.example.coursework.data.local.implementation;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.example.coursework.data.local.AppDatabase;
 import com.example.coursework.data.local.DAO.YogaClassDAO;
 import com.example.coursework.data.local.entities.ClassInstance;
-import com.example.coursework.data.local.entities.YogaClass;
+import com.example.coursework.data.local.entities.ClassInstanceWIthDetail;
+import com.example.coursework.data.local.entities.YogaCourse;
 import com.example.coursework.data.local.repository.YogaClassRepository;
+import com.example.coursework.data.local.repository.FirebaseRepository;
+import com.example.coursework.data.local.util.ConnectivityCheck;
 
-import java.util.Collections;
 import java.util.List;
 
 public class YogaRepositoryImplementation implements YogaClassRepository {
     private YogaClassDAO yogaClassDAO;
+    private FirebaseRepository firebaseRepository;
+    private ConnectivityCheck connectivityCheck;
+
     public YogaRepositoryImplementation(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
         this.yogaClassDAO = db.yogaClassDAO();
-
+        this.connectivityCheck = new ConnectivityCheck(application);
+        this.firebaseRepository = new FirebaseRepository();
+        this.connectivityCheck.RegisterNetworkCallback();
+    }
+    public boolean isConnected(){
+        return connectivityCheck.isConnected();
     }
     @Override
-    public void insert(YogaClass yogaClass) {
-        AppDatabase.databaseWriteExecutor.execute(() -> yogaClassDAO.insert(yogaClass));
+    public void insert(YogaCourse yogaCourse) {
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            yogaClassDAO.insert(yogaCourse);
+            if(isConnected()) {
+                YogaCourse recentCreatedYoga = yogaClassDAO.getCourseById(yogaCourse.uid);
+                if(recentCreatedYoga != null ){
+                    firebaseRepository.syncYogaCourse(recentCreatedYoga);
+                } else {
+                    Log.e("InsertError", "Yoga course not found after insertion.");
+                }
+            }
+        });
     }
 
     @Override
-    public void update(YogaClass yogaClass) {
-        AppDatabase.databaseWriteExecutor.execute(() -> yogaClassDAO.update(yogaClass));
+    public void update(YogaCourse yogaCourse) {
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            yogaClassDAO.update(yogaCourse);});
+        if(isConnected()) {
+
+
+        }
     }
 
     @Override
-    public void delete(YogaClass yogaClass) {
-        AppDatabase.databaseWriteExecutor.execute(() -> yogaClassDAO.delete(yogaClass));
-    }
+    public void delete(YogaCourse yogaCourse) {
+        if(isConnected()) {
+            AppDatabase.databaseWriteExecutor.execute(() -> {
+                yogaClassDAO.delete(yogaCourse);
+                firebaseRepository.deteleYogaCourse(yogaCourse);
+            });
+        } else {
+            AppDatabase.databaseWriteExecutor.execute(() -> yogaClassDAO.delete(yogaCourse));
+        }    }
 
     @Override
-    public List<YogaClass> getAll() {
+    public List<YogaCourse> getAll() {
         return yogaClassDAO.getAllClasses();
     }
 
     @Override
-    public YogaClass findById(int uid) {
-        return yogaClassDAO.getClassById(uid);
+    public YogaCourse findById(int uid) {
+        return yogaClassDAO.getCourseById(uid);
     }
     ///INSTANCE IMPLEMENTATION
     @Override
@@ -80,5 +112,11 @@ public class YogaRepositoryImplementation implements YogaClassRepository {
     public List<ClassInstance> searchByDay(String day) {
         return yogaClassDAO.searchByDay(day);
     }
+
+    @Override
+    public ClassInstanceWIthDetail getInstanceWithDetails(int instanceId) {
+       return yogaClassDAO.getInstanceWithDetails(instanceId);
+    }
+
 
 }

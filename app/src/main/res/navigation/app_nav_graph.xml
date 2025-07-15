@@ -34,6 +34,20 @@
         android:id="@+id/searchFragment"
         android:name="com.example.coursework.data.local.fragment.SearchFragment"
         android:label="Search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <!-- *** ADD THIS ACTION *** -->
+        <action
+            android:id="@+id/search_to_detail"
+            app:destination="@id/classDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/classDetailFragment"
+        android:name="com.example.coursework.data.local.fragment.ClassDetailFragment"
+        android:label="fragment_class_detail"
+        tools:layout="@layout/fragment_class_detail" >
+        <argument
+            android:name="instanceId"
+            app:argType="integer" />
+    </fragment>
 
 </navigation>

@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.serialization)
     id("androidx.navigation.safeargs")
+    id("com.google.gms.google-services")
 
 }
 
@@ -35,6 +36,7 @@ android {
     }
     buildFeatures{
         dataBinding = true
+        viewBinding = true
         compose = true
     }
     composeOptions {
@@ -50,6 +52,7 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.lottie)
     implementation(libs.constraintlayout)
+    implementation(libs.firebase.firestore)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -64,4 +67,6 @@ dependencies {
     implementation(libs.navigation.dynamic.features.fragment)
     androidTestImplementation(libs.navigation.testing)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.firebase.analytics)
+    implementation(platform(libs.firebase.bom))
 }

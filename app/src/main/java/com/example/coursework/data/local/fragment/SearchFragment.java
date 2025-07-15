@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.coursework.R;
@@ -60,6 +61,13 @@ public class SearchFragment extends Fragment {
             }
             @Override
             public void onEditCLick(ClassInstance classInstance) {
+
+            }
+
+            @Override
+            public void onItemClick(ClassInstance classInstance) {
+                SearchFragmentDirections.SearchToDetail action = SearchFragmentDirections.searchToDetail(classInstance.id);
+                Navigation.findNavController(requireView()).navigate(action);
 
             }
         }, false);

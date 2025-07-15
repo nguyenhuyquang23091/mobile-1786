@@ -1,6 +1,5 @@
 package com.example.coursework.data.local.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,20 +18,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.coursework.R;
 import com.example.coursework.data.local.AppDatabase;
 import com.example.coursework.data.local.adapter.YogaClassAdapter;
-import com.example.coursework.data.local.entities.YogaClass;
+import com.example.coursework.data.local.entities.YogaCourse;
 import com.example.coursework.data.local.implementation.YogaRepositoryImplementation;
 import com.example.coursework.data.local.repository.YogaClassRepository;
-import com.example.coursework.databinding.FragmentCreateClassBinding;
 
 import java.util.List;
-import java.util.Objects;
 
 public class ClassListFragment extends Fragment {
     private YogaClassRepository yogaClassRepository;
     private YogaClassAdapter yogaClassAdapter;
     private RecyclerView recyclerView;
 
-    private FragmentCreateClassBinding binding;
 
     @Nullable
     @Override
@@ -59,16 +55,16 @@ public class ClassListFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         yogaClassAdapter = new YogaClassAdapter(new YogaClassAdapter.OnItemClickListener() {
             @Override
-            public void onDeleteClick(YogaClass yogaClass) {
-                yogaClassRepository.delete(yogaClass);
+            public void onDeleteClick(YogaCourse yogaCourse) {
+                yogaClassRepository.delete(yogaCourse);
                 Toast.makeText(getContext(), "Class deleted", Toast.LENGTH_SHORT).show();
                 loadClasses();
             }
 
             @Override
-            public void onItemClick(YogaClass yogaClass) {
+            public void onItemClick(YogaCourse yogaCourse) {
                 ClassListFragmentDirections.ActionClassListFragmentToClassInstanceFragment action =
-                        ClassListFragmentDirections.actionClassListFragmentToClassInstanceFragment(yogaClass.uid);
+                        ClassListFragmentDirections.actionClassListFragmentToClassInstanceFragment(yogaCourse.uid);
                 Navigation.findNavController(requireView()).navigate(action);
 
             }
@@ -78,7 +74,7 @@ public class ClassListFragment extends Fragment {
     }
     private void loadClasses(){
         AppDatabase.databaseWriteExecutor.execute(() -> {
-            List<YogaClass> classes = yogaClassRepository.getAll();
+            List<YogaCourse> classes = yogaClassRepository.getAll();
             requireActivity().runOnUiThread(() -> {
                 yogaClassAdapter.setClasses(classes);
             });

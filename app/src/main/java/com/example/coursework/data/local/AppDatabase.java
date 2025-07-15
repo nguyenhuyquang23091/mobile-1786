@@ -9,12 +9,12 @@ import androidx.room.RoomDatabase;
 
 import com.example.coursework.data.local.DAO.YogaClassDAO;
 import com.example.coursework.data.local.entities.ClassInstance;
-import com.example.coursework.data.local.entities.YogaClass;
+import com.example.coursework.data.local.entities.YogaCourse;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {YogaClass.class, ClassInstance.class}, version = 2, exportSchema = false)
+@Database(entities = {YogaCourse.class, ClassInstance.class}, version = 2, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract YogaClassDAO  yogaClassDAO();
     public static volatile  AppDatabase INSTANCE;

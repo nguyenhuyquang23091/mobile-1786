@@ -11,7 +11,7 @@ import androidx.databinding.DataBindingUtil;
 
 import com.example.coursework.R;
 import com.example.coursework.data.local.MainActivity;
-import com.example.coursework.data.local.entities.YogaClass;
+import com.example.coursework.data.local.entities.YogaCourse;
 import com.example.coursework.data.local.implementation.YogaRepositoryImplementation;
 import com.example.coursework.data.local.repository.YogaClassRepository;
 import com.example.coursework.databinding.ActivityConfirmationBinding;
@@ -101,21 +101,21 @@ public class ConfirmationActivity extends AppCompatActivity {
      * A helper method to create the YogaClass object, save it, and finish the activity.
      */
     private void saveAndFinish() {
-        YogaClass yogaClass = new YogaClass();
+        YogaCourse yogaCourse = new YogaCourse();
         Intent intent = getIntent();
 
         // **BUG FIX:** We now correctly parse the string data into numbers.
-        yogaClass.type = intent.getStringExtra("type");
-        yogaClass.day = intent.getStringExtra("day");
-        yogaClass.time = intent.getStringExtra("time");
-        yogaClass.intensity = intent.getStringExtra("intensity");
-        yogaClass.capacity = Integer.parseInt(Objects.requireNonNull(intent.getStringExtra("capacity")));
-        yogaClass.duration = Integer.parseInt(Objects.requireNonNull(intent.getStringExtra("duration")));
-        yogaClass.price = Double.parseDouble(Objects.requireNonNull(intent.getStringExtra("price")));
-        yogaClass.description = intent.getStringExtra("description");
+        yogaCourse.type = intent.getStringExtra("type");
+        yogaCourse.day = intent.getStringExtra("day");
+        yogaCourse.time = intent.getStringExtra("time");
+        yogaCourse.intensity = intent.getStringExtra("intensity");
+        yogaCourse.capacity = Integer.parseInt(Objects.requireNonNull(intent.getStringExtra("capacity")));
+        yogaCourse.duration = Integer.parseInt(Objects.requireNonNull(intent.getStringExtra("duration")));
+        yogaCourse.price = Double.parseDouble(Objects.requireNonNull(intent.getStringExtra("price")));
+        yogaCourse.description = intent.getStringExtra("description");
 
         // Use the repository to insert the class.
-        yogaClassRepository.insert(yogaClass);
+        yogaClassRepository.insert(yogaCourse);
 
         Toast.makeText(this, "Class saved successfully!", Toast.LENGTH_LONG).show();
 

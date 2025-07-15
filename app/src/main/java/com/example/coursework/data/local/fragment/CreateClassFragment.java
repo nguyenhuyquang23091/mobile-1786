@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.coursework.R;
 import com.example.coursework.data.local.AppDatabase;
-import com.example.coursework.data.local.entities.YogaClass;
+import com.example.coursework.data.local.entities.YogaCourse;
 import com.example.coursework.data.local.implementation.YogaRepositoryImplementation;
 import com.example.coursework.data.local.repository.YogaClassRepository;
 import com.example.coursework.databinding.FragmentCreateClassBinding;
@@ -33,7 +33,7 @@ import java.util.Objects;
 public class CreateClassFragment extends Fragment {
     private FragmentCreateClassBinding binding;
     private YogaClassRepository yogaClassRepository;
-    private YogaClass editYogaClass = null;
+    private YogaCourse editYogaCourse = null;
 
     @Nullable
     @Override
@@ -59,21 +59,21 @@ public class CreateClassFragment extends Fragment {
     }
     private void loadEditClass(int classId){
         AppDatabase.databaseWriteExecutor.execute(() -> {
-            editYogaClass = yogaClassRepository.findById(classId);
-            requireActivity().runOnUiThread(()-> populateForm(editYogaClass));
+            editYogaCourse = yogaClassRepository.findById(classId);
+            requireActivity().runOnUiThread(()-> populateForm(editYogaCourse));
 
         });
     }
 
-    private void populateForm(YogaClass yogaClass){
-        if (yogaClass == null ) return;
-        binding.dayOfWeekInput.setText(yogaClass.day, false);
-        binding.classTypeInput.setText(yogaClass.type, false);
-        binding.timeInput.setText(yogaClass.time);
-        binding.capacityInput.setText(String.valueOf(yogaClass.capacity));
-        binding.durationInput.setText(String.valueOf(yogaClass.duration));
-        binding.priceInput.setText(String.valueOf(yogaClass.price));
-        binding.descriptionInput.setText(yogaClass.description);
+    private void populateForm(YogaCourse yogaCourse){
+        if (yogaCourse == null ) return;
+        binding.dayOfWeekInput.setText(yogaCourse.day, false);
+        binding.classTypeInput.setText(yogaCourse.type, false);
+        binding.timeInput.setText(yogaCourse.time);
+        binding.capacityInput.setText(String.valueOf(yogaCourse.capacity));
+        binding.durationInput.setText(String.valueOf(yogaCourse.duration));
+        binding.priceInput.setText(String.valueOf(yogaCourse.price));
+        binding.descriptionInput.setText(yogaCourse.description);
     }
 
     private void setupAdapters() {
@@ -105,7 +105,7 @@ public class CreateClassFragment extends Fragment {
                 Toast.makeText(getContext(), "Form submitted", Toast.LENGTH_SHORT).show();
 
                 new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                    if (editYogaClass != null) {
+                    if (editYogaCourse != null) {
                         // UPDATE existing class
                         updateClass();
                         Toast.makeText(getContext(), "Class Updated!", Toast.LENGTH_SHORT).show();
@@ -121,15 +121,14 @@ public class CreateClassFragment extends Fragment {
         });
     }
     private void updateClass() {
-        editYogaClass.day = binding.dayOfWeekInput.getText().toString();
-        editYogaClass.type = binding.classTypeInput.getText().toString();
-        editYogaClass.time = Objects.requireNonNull(binding.timeInput.getText()).toString();
-        editYogaClass.capacity = Integer.parseInt(Objects.requireNonNull(binding.capacityInput.getText()).toString());
-        editYogaClass.duration = Integer.parseInt(Objects.requireNonNull(binding.durationInput.getText()).toString());
-        editYogaClass.price = Double.parseDouble(Objects.requireNonNull(binding.priceInput.getText()).toString());
-        editYogaClass.description = Objects.requireNonNull(binding.descriptionInput.getText()).toString();
-
-        yogaClassRepository.update(editYogaClass);
+        editYogaCourse.day = binding.dayOfWeekInput.getText().toString();
+        editYogaCourse.type = binding.classTypeInput.getText().toString();
+        editYogaCourse.time = Objects.requireNonNull(binding.timeInput.getText()).toString();
+        editYogaCourse.capacity = Integer.parseInt(Objects.requireNonNull(binding.capacityInput.getText()).toString());
+        editYogaCourse.duration = Integer.parseInt(Objects.requireNonNull(binding.durationInput.getText()).toString());
+        editYogaCourse.price = Double.parseDouble(Objects.requireNonNull(binding.priceInput.getText()).toString());
+        editYogaCourse.description = Objects.requireNonNull(binding.descriptionInput.getText()).toString();
+        yogaClassRepository.update(editYogaCourse);
     }
 
     private void showTimePickerDialog() {

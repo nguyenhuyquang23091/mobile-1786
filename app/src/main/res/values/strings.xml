@@ -39,5 +39,7 @@
     <string name="view">View Detail</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
+    <string name="please_bring_your_own_yoga_mat_water_bottles_will_be_provided">Please bring your own yoga mat. Water bottles will be provided.</string>
+    <string name="additional_comments">ADDITIONAL COMMENTS</string>
 
 </resources>

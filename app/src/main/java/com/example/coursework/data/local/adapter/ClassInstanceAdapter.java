@@ -27,6 +27,8 @@ public class ClassInstanceAdapter extends RecyclerView.Adapter<ClassInstanceAdap
 
         void onEditCLick(ClassInstance classInstance);
 
+        void onItemClick(ClassInstance classInstance);
+
     }
 
     public ClassInstanceAdapter(OnItemClickListener listener, boolean showButtons) {
@@ -96,7 +98,11 @@ public class ClassInstanceAdapter extends RecyclerView.Adapter<ClassInstanceAdap
             } else {
                 actions_layout.setVisibility(View.GONE);
                 viewDetailButton.setVisibility(View.VISIBLE);
-
+                itemView.setOnClickListener(v -> {
+                    if(listener != null ){
+                        listener.onItemClick(classInstance);
+                    }
+                });
             }
 
         }

@@ -3,12 +3,15 @@ package com.example.coursework.data.local.entities;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
+import com.google.firebase.firestore.Exclude;
+
+
 @Entity(tableName = "yoga_classes")
-public class YogaClass {
+public class YogaCourse {
     @PrimaryKey(autoGenerate = true)
+    @Exclude
     public int uid;
     @ColumnInfo(name = "day")
     public String day;
@@ -27,5 +30,7 @@ public class YogaClass {
     @ColumnInfo(name = "intensity")
     public String intensity;
 
+    public YogaCourse(){
 
+    }
 }

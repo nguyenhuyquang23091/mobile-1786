@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1010970611780",
+    "project_id": "mobile-3faac",
+    "storage_bucket": "mobile-3faac.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1010970611780:android:8e82c553ecc1f62fa12c11",
+        "android_client_info": {
+          "package_name": "com.example.coursework"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANnwOQIRddA9RkiBmfc6mNAdEWEkMrO6k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

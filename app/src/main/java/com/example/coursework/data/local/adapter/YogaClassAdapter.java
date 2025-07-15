@@ -10,19 +10,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.coursework.R;
-import com.example.coursework.data.local.entities.YogaClass;
+import com.example.coursework.data.local.entities.YogaCourse;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class YogaClassAdapter extends RecyclerView.Adapter<YogaClassAdapter.YogaClassViewHolder> {
 
-    private List<YogaClass> yogaClasses = new ArrayList<>();
+    private List<YogaCourse> yogaCourses = new ArrayList<>();
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onDeleteClick(YogaClass yogaClass);
-        void onItemClick(YogaClass yogaClass);
+        void onDeleteClick(YogaCourse yogaCourse);
+        void onItemClick(YogaCourse yogaCourse);
 
     }
     public YogaClassAdapter(OnItemClickListener listener){
@@ -40,18 +40,18 @@ public class YogaClassAdapter extends RecyclerView.Adapter<YogaClassAdapter.Yoga
 
     @Override
     public void onBindViewHolder(@NonNull YogaClassViewHolder holder, int position) {
-        YogaClass currentClass = yogaClasses.get(position);
+        YogaCourse currentClass = yogaCourses.get(position);
         holder.bind(currentClass, listener);
 
     }
 
     @Override
     public int getItemCount() {
-        return yogaClasses.size();
+        return yogaCourses.size();
     }
 
-    public void setClasses(List<YogaClass> classes) {
-        this.yogaClasses = classes;
+    public void setClasses(List<YogaCourse> classes) {
+        this.yogaCourses = classes;
         notifyDataSetChanged();
     }
     static class YogaClassViewHolder extends RecyclerView.ViewHolder {
@@ -83,23 +83,23 @@ public class YogaClassAdapter extends RecyclerView.Adapter<YogaClassAdapter.Yoga
             deleteButton = itemView.findViewById(R.id.delete_button);
             editButton = itemView.findViewById(R.id.edit_button);
         }
-        public void bind(final YogaClass yogaClass, final OnItemClickListener listener){
-            itemClassType.setText((yogaClass.type));
-            String dayTime = yogaClass.day + " at " + yogaClass.time;
+        public void bind(final YogaCourse yogaCourse, final OnItemClickListener listener){
+            itemClassType.setText((yogaCourse.type));
+            String dayTime = yogaCourse.day + " at " + yogaCourse.time;
             itemDayTime.setText(dayTime);
-            itemDescription.setText(yogaClass.description);
-            itemIntensity.setText(yogaClass.intensity);
-            itemCapacity.setText(yogaClass.capacity + " people");
-            duration.setText(yogaClass.duration + "minutes");
-            price.setText("£" + yogaClass.price);
+            itemDescription.setText(yogaCourse.description);
+            itemIntensity.setText(yogaCourse.intensity);
+            itemCapacity.setText(yogaCourse.capacity + " people");
+            duration.setText(yogaCourse.duration + "minutes");
+            price.setText("£" + yogaCourse.price);
             deleteButton.setOnClickListener(v -> {
                 if(listener != null){
-                    listener.onDeleteClick(yogaClass);
+                    listener.onDeleteClick(yogaCourse);
                 }
             });
             itemView.setOnClickListener(v -> {
                 if(listener != null){
-                    listener.onItemClick(yogaClass);
+                    listener.onItemClick(yogaCourse);
                 }
             });
         }

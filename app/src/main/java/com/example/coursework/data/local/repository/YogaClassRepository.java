@@ -1,16 +1,18 @@
 package com.example.coursework.data.local.repository;
 
 import com.example.coursework.data.local.entities.ClassInstance;
-import com.example.coursework.data.local.entities.YogaClass;
+import com.example.coursework.data.local.entities.ClassInstanceWIthDetail;
+import com.example.coursework.data.local.entities.YogaCourse;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 public interface YogaClassRepository {
-    void insert(YogaClass yogaClass);
-    void update(YogaClass yogaClass);
-    void delete(YogaClass yogaClass);
-    List<YogaClass> getAll();
+    void insert(YogaCourse yogaCourse);
+    void update(YogaCourse yogaCourse);
+    void delete(YogaCourse yogaCourse);
+    List<YogaCourse> getAll();
 
-    YogaClass findById(int id);
+    YogaCourse findById(int id);
 
     void insertInstance(ClassInstance classInstance);
     List<ClassInstance> getInstance(int courseId);
@@ -22,8 +24,8 @@ public interface YogaClassRepository {
     List<ClassInstance> searchByDate(String date);
     List<ClassInstance> searchByDay(String day);
 
+    ClassInstanceWIthDetail getInstanceWithDetails(int instanceId);
 
-
-
+    boolean isConnected();
 
 }

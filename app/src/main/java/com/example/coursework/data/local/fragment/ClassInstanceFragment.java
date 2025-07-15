@@ -42,6 +42,7 @@ public class ClassInstanceFragment extends Fragment {
     private RecyclerView recyclerViewInstances;
 
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -77,17 +78,28 @@ public class ClassInstanceFragment extends Fragment {
         }
         setupRecyclerView();
         setupFab();
-    }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
         loadInstances();
     }
 
     private void setupRecyclerView() {
         recyclerViewInstances.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new ClassInstanceAdapter(new ClassInstanceAdapter.OnItemClickListener() {
+            @Override
+            public void onDeleteClick(ClassInstance classInstance) {
+                repository.deleteInstance(classInstance);
+                Toast.makeText(getContext(), "Instance Deleted", Toast.LENGTH_SHORT).show();
+                loadInstances();
+            }
+            @Override
+            public void onEditCLick(ClassInstance classInstance) {
+                showAddEditInstanceDialog(classInstance);
+            }
+
+            @Override
+            public void onItemClick(ClassInstance classInstance) {
+
+            }
+        }, true); // Pass true to show Edit/Delete buttons
         recyclerViewInstances.setAdapter(adapter);
     }
     private void setupFab() {
@@ -148,7 +160,6 @@ public class ClassInstanceFragment extends Fragment {
                 .setNegativeButton("Cancel", null)
                 .show();
     }
-
     private void loadInstances() {
         AppDatabase.databaseWriteExecutor.execute(() -> {
             List<ClassInstance> instances = repository.getInstance(courseId);
