@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.PopupMenu;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -16,6 +15,7 @@ import com.example.coursework.data.local.implementation.YogaRepositoryImplementa
 import com.example.coursework.data.local.repository.YogaClassRepository;
 import com.example.coursework.data.local.util.SyncFirebaseListener;
 import com.example.coursework.databinding.ActivityConfirmationBinding;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Objects;
 
@@ -85,10 +85,12 @@ public class ConfirmationActivity extends AppCompatActivity {
         popup.show();
     }
     private void saveAndFinish() {
+        binding.loadingIndicator.setVisibility(View.VISIBLE);
+        binding.buttonsLayout.setVisibility(View.GONE);
+
         YogaCourse yogaCourse = new YogaCourse();
         Intent intent = getIntent();
 
-        // **BUG FIX:** We now correctly parse the string data into numbers.
         yogaCourse.type = intent.getStringExtra("type");
         yogaCourse.day = intent.getStringExtra("day");
         yogaCourse.time = intent.getStringExtra("time");
@@ -103,21 +105,21 @@ public class ConfirmationActivity extends AppCompatActivity {
             @Override
             public void syncFailure(String errorMessage) {
                 runOnUiThread(() -> {
-                    Toast.makeText(ConfirmationActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+                    Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
                     navigateToMain();
                 });
             }
             @Override
             public void syncSuccess() {
                 runOnUiThread(() -> {
-                    Toast.makeText(ConfirmationActivity.this, "Class saved and synced successfully!", Toast.LENGTH_LONG).show();
+                    Snackbar.make(findViewById(android.R.id.content), "Class saved and synced successfully!", Snackbar.LENGTH_LONG).show();
                     navigateToMain();
                 });
             }
         });
 
 
-        Toast.makeText(this, "Class saved successfully!", Toast.LENGTH_LONG).show();
+        Snackbar.make(findViewById(android.R.id.content), "Class saved successfully!", Snackbar.LENGTH_LONG).show();
 
     }
 

@@ -211,8 +211,6 @@
                     app:backgroundTint="@color/colorPrimary" />
             </LinearLayout>
         </ScrollView>
-
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

@@ -42,5 +42,8 @@
     <string name="please_bring_your_own_yoga_mat_water_bottles_will_be_provided">Please bring your own yoga mat. Water bottles will be provided.</string>
     <string name="additional_comments">ADDITIONAL COMMENTS</string>
     <string name="no_description_provided">No description provided.</string>
+    <string name="add_instance">Add Instance</string>
+    <string name="date">Date</string>
+    <string name="teacher_name">Teacher Name</string>
 
 </resources>

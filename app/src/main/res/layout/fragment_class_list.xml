@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".data.local.fragment.ClassListFragment">
+    tools:context=".data.local.fragment.CourseListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewClasses"
@@ -15,6 +15,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:listitem="@layout/list_item_yoga_class" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

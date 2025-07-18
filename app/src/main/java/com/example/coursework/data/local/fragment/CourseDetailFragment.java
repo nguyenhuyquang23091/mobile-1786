@@ -4,20 +4,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import com.google.android.material.snackbar.Snackbar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.coursework.data.local.AppDatabase;
-import com.example.coursework.data.local.entities.ClassInstance;
 import com.example.coursework.data.local.entities.ClassInstanceWIthDetail;
 import com.example.coursework.data.local.implementation.YogaRepositoryImplementation;
 import com.example.coursework.data.local.repository.YogaClassRepository;
 import com.example.coursework.databinding.FragmentClassDetailBinding;
 
-public class ClassDetailFragment extends Fragment {
+public class CourseDetailFragment extends Fragment {
 
     private FragmentClassDetailBinding binding;
     private YogaClassRepository yogaClassRepository;
@@ -41,7 +40,7 @@ public class ClassDetailFragment extends Fragment {
         }
 
         if (instanceId == -1) {
-            Toast.makeText(getContext(), "Error: Class instance not found.", Toast.LENGTH_SHORT).show();
+            Snackbar.make(requireView(), "Error: Class instance not found", Snackbar.LENGTH_SHORT).show();
             Navigation.findNavController(view).popBackStack();
             return;
         }

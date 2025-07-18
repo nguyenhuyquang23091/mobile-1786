@@ -6,6 +6,39 @@
     <color name="colorAccent">#5C6B8B</color> <!-- Dusty Indigo/Purple -->
     <color name="colorBackground">#F8F8F4</color> <!-- Off-white from previous design -->
     <color name="textColorPrimary">#333333</color>
-    <!-- Dark Grey from previous design -->
     <color name="red">#F44336</color>
+
+    <!-- *** NEW VIBRANT COLOR PALETTE *** -->
+    <!-- Green for Flow Yoga -->
+    <color name="yoga_green_dark">#00796B</color>
+    <color name="yoga_green_light">#E0F2F1</color>
+
+    <!-- Blue for Aerial Yoga -->
+    <color name="yoga_blue_dark">#0288D1</color>
+    <color name="yoga_blue_light">#E1F5FE</color>
+
+    <!-- Pink for Family Yoga -->
+    <color name="yoga_pink_dark">#C2185B</color>
+    <color name="yoga_pink_light">#FCE4EC</color>
+
+    <!-- Default/Fallback Colors -->
+    <color name="yoga_default_dark">#5C6B8B</color>
+    <color name="yoga_default_light">#F5F5F5</color>
+
+    <color name="colorCardDay">#E3F2FD</color> <!-- Light Blue -->
+    <color name="colorCardTime">#FCE4EC</color> <!-- Light Pink -->
+    <color name="colorCardCapacity">#FFF3E0</color> <!-- Light Orange -->
+    <color name="colorCardDuration">#E8F5E9</color> <!-- Light Green -->
+    <color name="colorCardPrice">#E0F2F1</color> <!-- Light Teal -->
+    <color name="colorCardIntensity">#FFFDE7</color> <!-- Light Yellow -->
+
+    <!-- Gradient Colors -->
+    <color name="gradient_start">#C2185B</color> <!-- Pink -->
+    <color name="gradient_end">#7B1FA2</color> <!-- Purple -->
+    
+    <!-- Material 3 Theme Colors -->
+    <color name="colorPrimaryVariant">#c8411b</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
+    <color name="colorSecondary">#FF8A50</color>
+    <color name="colorOnSecondary">#FFFFFF</color>
 </resources>

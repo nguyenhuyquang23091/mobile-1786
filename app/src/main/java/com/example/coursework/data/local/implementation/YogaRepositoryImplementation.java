@@ -101,7 +101,8 @@ public class YogaRepositoryImplementation implements YogaClassRepository {
             yogaClassDAO.insertInstance(classInstance);
             if (isConnected()) {
                 // Call the helper method after inserting
-                firebaseRepository.syncAllClassInstances(classInstance.courseId);
+                List<ClassInstance> instances = yogaClassDAO.getInstances(classInstance.courseId);
+                firebaseRepository.syncAllClassInstances(String.valueOf(classInstance.courseId), instances);
             }
         });
     }
@@ -110,19 +111,17 @@ public class YogaRepositoryImplementation implements YogaClassRepository {
     public List<ClassInstance> getInstance(int courseId) {
         return yogaClassDAO.getInstances(courseId);
     }
-
     @Override
     public void updateInstance(ClassInstance classInstance) {
         AppDatabase.databaseWriteExecutor.execute(() -> yogaClassDAO.updateInstance(classInstance));
-
     }
-
     @Override
     public void deleteInstance(ClassInstance classInstance) {
-        AppDatabase.databaseWriteExecutor.execute(() -> yogaClassDAO.deleteInstance(classInstance));
-
+        AppDatabase.databaseWriteExecutor.execute(() ->
+                yogaClassDAO.deleteInstance(classInstance));
+                if(isConnected()){
+                    firebaseRepository.deleteInstance(classInstance);}
     }
-
     @Override
     public List<ClassInstance> searchByTeacher(String teacher) {
         return yogaClassDAO.searchByTeacher(teacher);

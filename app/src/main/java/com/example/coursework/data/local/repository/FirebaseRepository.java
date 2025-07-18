@@ -27,8 +27,7 @@ public class FirebaseRepository {
                     Log.d("FirebaseRepository", "Yoga course synced successfully");
                 })
                 .addOnFailureListener(e -> {
-                    Log.d("FirebaseRepository", "Failed to sync Yoga course")
-                    ;
+                    Log.d("FirebaseRepository", "Failed to sync Yoga course");
                 });
     }
 
@@ -48,16 +47,20 @@ public class FirebaseRepository {
     public void syncAllClassInstances(String courseId, List<ClassInstance> instances) {
 
         WriteBatch writeBatch = firestore.batch();
-
         CollectionReference instanceRef = firestore.collection("yoga_classes").document(courseId).collection("instances");
 
         for ( ClassInstance instance : instances) {
             DocumentReference documentReference = instanceRef.document(String.valueOf(instance.getId()));
             writeBatch.set(documentReference, instance, SetOptions.merge());
-
         }
         writeBatch.commit()
-                .addOnSuccessListener(avoid -> {Log.d("FirebaseRepository", "All class instances synced successfully");})
-                .addOnFailureListener(e -> Log.d("Failed to sync", "Failed to sync"));
+                .addOnSuccessListener(avoid -> {Log.d("FirebaseRepository", "All class instances synced successfully for course id: " + courseId);})
+                .addOnFailureListener(e -> Log.d("Failed to sync", "Failed to sync for course id :" + courseId ));
+    }
+    public void deleteInstance(ClassInstance classInstance) {
+        if(classInstance == null ) return;
+        String courseId = String.valueOf(classInstance.courseId);
+        String instanceId = String.valueOf(classInstance.getId());
+        firestore.collection("yoga_classes").document(courseId).collection("instances").document(instanceId).delete();
     }
 }

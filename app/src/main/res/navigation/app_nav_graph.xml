@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/createClassFragment"
-        android:name="com.example.coursework.data.local.fragment.CreateClassFragment"
+        android:name="com.example.coursework.data.local.fragment.CreateCourseFragment"
         android:label="fragment_create_class"
         tools:layout="@layout/fragment_create_class" />
 
     <fragment
         android:id="@+id/classListFragment"
-        android:name="com.example.coursework.data.local.fragment.ClassListFragment"
+        android:name="com.example.coursework.data.local.fragment.CourseListFragment"
         android:label="fragment_class_list"
         tools:layout="@layout/fragment_class_list">
         <action
@@ -42,7 +42,7 @@
     </fragment>
     <fragment
         android:id="@+id/classDetailFragment"
-        android:name="com.example.coursework.data.local.fragment.ClassDetailFragment"
+        android:name="com.example.coursework.data.local.fragment.CourseDetailFragment"
         android:label="fragment_class_detail"
         tools:layout="@layout/fragment_class_detail" >
         <argument

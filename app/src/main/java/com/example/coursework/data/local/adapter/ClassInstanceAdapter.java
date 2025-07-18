@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.coursework.R;
 import com.example.coursework.data.local.entities.ClassInstance;
+import com.example.coursework.databinding.ListItemInstanceBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +40,9 @@ public class ClassInstanceAdapter extends RecyclerView.Adapter<ClassInstanceAdap
     @NonNull
     @Override
     public ClassInstanceAdapter.ClassInstanceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_instance, parent, false);
-        return new ClassInstanceAdapter.ClassInstanceViewHolder(itemView);
+        ListItemInstanceBinding binding = ListItemInstanceBinding.inflate(
+                LayoutInflater.from(parent.getContext()), parent, false);
+        return new ClassInstanceAdapter.ClassInstanceViewHolder(binding);
     }
 
     @Override
@@ -60,45 +62,33 @@ public class ClassInstanceAdapter extends RecyclerView.Adapter<ClassInstanceAdap
     }
 
     static class ClassInstanceViewHolder extends RecyclerView.ViewHolder {
+        private final ListItemInstanceBinding binding;
 
-        private final TextView instance_date;
-        private final TextView instance_teacher;
-        private final Button delete_button;
-        private final Button edit_button;
-        private View actions_layout;
-        private Button viewDetailButton;
-
-        public ClassInstanceViewHolder(@NonNull View itemView) {
-            super(itemView);
-            instance_date = itemView.findViewById(R.id.instance_date);
-            instance_teacher = itemView.findViewById(R.id.instance_teacher);
-            delete_button = itemView.findViewById(R.id.delete_button);
-            edit_button = itemView.findViewById(R.id.edit_button);
-            actions_layout = itemView.findViewById(R.id.actions_layout);
-            viewDetailButton = itemView.findViewById(R.id.view_button);
-
+        public ClassInstanceViewHolder(@NonNull ListItemInstanceBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
         private void bind(ClassInstance classInstance, OnItemClickListener listener, boolean showButtons) {
-            instance_date.setText(classInstance.date);
+            binding.instanceDate.setText(classInstance.date);
             String teacher_text = "Taught by" + classInstance.teacher;
-            instance_teacher.setText(teacher_text);
+            binding.instanceTeacher.setText(teacher_text);
             if (showButtons) {
-                actions_layout.setVisibility(View.VISIBLE);
-                viewDetailButton.setVisibility(View.GONE);
-                delete_button.setOnClickListener(v -> {
+                binding.actionsLayout.setVisibility(View.VISIBLE);
+                binding.viewButton.setVisibility(View.GONE);
+                binding.deleteButton.setOnClickListener(v -> {
                     if(listener != null ){
                         listener.onDeleteClick(classInstance);
                     }
                 });
-                edit_button.setOnClickListener(v -> {
+                binding.editButton.setOnClickListener(v -> {
                     if(listener != null ){
                         listener.onEditCLick(classInstance);
                     }
                 });
             } else {
-                actions_layout.setVisibility(View.GONE);
-                viewDetailButton.setVisibility(View.VISIBLE);
-                itemView.setOnClickListener(v -> {
+                binding.actionsLayout.setVisibility(View.GONE);
+                binding.viewButton.setVisibility(View.VISIBLE);
+                binding.getRoot().setOnClickListener(v -> {
                     if(listener != null ){
                         listener.onItemClick(classInstance);
                     }

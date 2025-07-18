@@ -1,10 +1,12 @@
 package com.example.coursework.data.local.fragment;
 
+import static android.app.ProgressDialog.show;
+
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,10 +21,11 @@ import com.example.coursework.data.local.AppDatabase;
 import com.example.coursework.data.local.adapter.ClassInstanceAdapter;
 import com.example.coursework.data.local.entities.ClassInstance;
 import com.example.coursework.data.local.implementation.YogaRepositoryImplementation;
-import com.example.coursework.databinding.FragmentCreateClassBinding;
+import com.example.coursework.databinding.FragmentClassInstanceBinding;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -32,38 +35,33 @@ import java.util.Objects;
 import java.util.TimeZone;
 
 public class ClassInstanceFragment extends Fragment {
-
-    public static final String EXTRA_COURSE_ID = "com.example.coursework.EXTRA_COURSE_ID";
+    private FragmentClassInstanceBinding binding;
     private YogaRepositoryImplementation repository;
     private ClassInstanceAdapter adapter;
     private int courseId;
-
-    private ExtendedFloatingActionButton addInstanceFab;
-    private RecyclerView recyclerViewInstances;
 
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_class_instance, container, false);
+        binding = FragmentClassInstanceBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        addInstanceFab = view.findViewById(R.id.add_instance_fab);
-        recyclerViewInstances = view.findViewById(R.id.recyclerViewInstances);
         repository = new YogaRepositoryImplementation(requireActivity().getApplication());
 
-        recyclerViewInstances.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        binding.recyclerViewInstances.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView rv, int dx, int dy) {
                 super.onScrolled(rv, dx, dy);
-                if (dy > 0 && addInstanceFab.isExtended()) {
-                    addInstanceFab.shrink();
-                } else if (dy < 0 && !addInstanceFab.isExtended()) {
-                    addInstanceFab.extend();
+                if (dy > 0 && binding.addInstanceFab.isExtended()) {
+                    binding.addInstanceFab.shrink();
+                } else if (dy < 0 && !binding.addInstanceFab.isExtended()) {
+                    binding.addInstanceFab.extend();
                 }
             }
         });
@@ -71,7 +69,7 @@ public class ClassInstanceFragment extends Fragment {
             courseId = ClassInstanceFragmentArgs.fromBundle(getArguments()).getCourseId();
         }
         if (courseId == -1) {
-            Toast.makeText(getContext(), "Error: Course ID not found.", Toast.LENGTH_SHORT).show();
+            Snackbar.make(requireView(), "Error: Course ID not found", Snackbar.LENGTH_SHORT).show();
             //go back if no return
             Navigation.findNavController(view).popBackStack();
             return;
@@ -82,12 +80,21 @@ public class ClassInstanceFragment extends Fragment {
     }
 
     private void setupRecyclerView() {
-        recyclerViewInstances.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.recyclerViewInstances.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new ClassInstanceAdapter(new ClassInstanceAdapter.OnItemClickListener() {
             @Override
             public void onDeleteClick(ClassInstance classInstance) {
-                repository.deleteInstance(classInstance);
-                Toast.makeText(getContext(), "Instance Deleted", Toast.LENGTH_SHORT).show();
+                new MaterialAlertDialogBuilder(requireContext())
+                        .setTitle("Confirm Deletion")
+                                .setMessage("Are you sure you want to delete this instance?")
+                                        .setNegativeButton("Cancel", null)
+                                                .setPositiveButton("Delete", ((dialog, which) -> {
+                                                    repository.deleteInstance(classInstance);
+                                                    Snackbar.make(requireView(), "Instance Deleted", Snackbar.LENGTH_LONG).show();
+                                                })).show();
+
+
+
                 loadInstances();
             }
             @Override
@@ -99,12 +106,11 @@ public class ClassInstanceFragment extends Fragment {
             public void onItemClick(ClassInstance classInstance) {
 
             }
-        }, true); // Pass true to show Edit/Delete buttons
-        recyclerViewInstances.setAdapter(adapter);
+        }, true); // pass true to show Edit/Delete buttons
+        binding.recyclerViewInstances.setAdapter(adapter);
     }
     private void setupFab() {
-        ExtendedFloatingActionButton fab = requireView().findViewById(R.id.add_instance_fab);
-        fab.setOnClickListener(v -> showAddEditInstanceDialog(null));
+        binding.addInstanceFab.setOnClickListener(v -> showAddEditInstanceDialog(null));
     }
     private void showAddEditInstanceDialog(final ClassInstance instanceToEdit) {
         LayoutInflater inflater = this.getLayoutInflater();
@@ -119,7 +125,6 @@ public class ClassInstanceFragment extends Fragment {
                 .build();
 
         datePicker.addOnPositiveButtonClickListener(selection -> {
-            // *** FIX: Use UTC timezone to match the search format ***
             SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault());
             sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
             dateInput.setText(sdf.format(new Date(selection)));
@@ -139,7 +144,7 @@ public class ClassInstanceFragment extends Fragment {
                     String teacher = Objects.requireNonNull(teacherInput.getText()).toString();
 
                     if (date.isEmpty() || teacher.isEmpty()) {
-                        Toast.makeText(getContext(), "Fields cannot be empty", Toast.LENGTH_SHORT).show();
+                        Snackbar.make(requireView(), "Please fill in all fields", Snackbar.LENGTH_SHORT).show();
                         return;
                     }
                     if (instanceToEdit == null) {
@@ -148,12 +153,12 @@ public class ClassInstanceFragment extends Fragment {
                         newInstance.teacher = teacher;
                         newInstance.courseId = this.courseId;
                         repository.insertInstance(newInstance);
-                        Toast.makeText(getContext(), "Instance Saved", Toast.LENGTH_SHORT).show();
+                        Snackbar.make(requireView(), "Instance saved successfully", Snackbar.LENGTH_SHORT).show();
                     } else {
                         instanceToEdit.date = date;
                         instanceToEdit.teacher = teacher;
                         repository.updateInstance(instanceToEdit);
-                        Toast.makeText(getContext(), "Instance Updated", Toast.LENGTH_SHORT).show();
+                        Snackbar.make(requireView(), "Instance updated successfully", Snackbar.LENGTH_SHORT).show();
                     }
                     loadInstances();
                 })
@@ -165,5 +170,11 @@ public class ClassInstanceFragment extends Fragment {
             List<ClassInstance> instances = repository.getInstance(courseId);
             requireActivity().runOnUiThread(() -> adapter.setClasses(instances));
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

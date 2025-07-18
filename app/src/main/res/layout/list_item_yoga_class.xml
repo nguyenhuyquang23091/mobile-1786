@@ -5,184 +5,211 @@
     android:id="@+id/myCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
+    android:layout_marginStart="8dp"
     android:layout_marginTop="8dp"
-    android:layout_marginEnd="16dp"
-    android:clickable="true"
-    android:focusable="true"
-    android:foreground="?attr/selectableItemBackground"
-    android:layout_marginBottom="8dp">
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp"
+    app:strokeColor="@color/yoga_green_dark"
+    app:strokeWidth="2dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="30dp">
+        android:layout_height="wrap_content"
+        android:padding="16dp">
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/itemClassType"
+        <!-- Top section with colored label -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/classTypeContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/yoga_green_dark"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/itemClassType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="4dp"
+                android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
+                android:textColor="@color/white"
+                tools:text="Flow Yoga" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Main Title (e.g., "Flow Yoga") -->
+        <TextView
+            android:id="@+id/mainTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_marginTop="12dp"
             android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+            android:textColor="?attr/colorOnSurface"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/classTypeContainer"
             tools:text="Flow Yoga" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/itemDayTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-            android:textColor="?attr/colorOnSurfaceVariant"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/itemClassType"
-            tools:text="Monday at 10:00" />
-
-        <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/divider"
+        <!-- Price -->
+        <TextView
+            android:id="@+id/priceValue"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="4dp"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+            android:textColor="?attr/colorOnSurface"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/itemDayTime" />
+            app:layout_constraintTop_toBottomOf="@id/mainTitle"
+            tools:text="£22.00" />
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/iconCapacity"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginTop="16dp"
-            android:contentDescription="Capacity"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider"
-            app:srcCompat="@drawable/ic_group"
-            app:tint="?attr/colorOnSurfaceVariant" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/itemCapacity"
-            style="@style/TextAppearance.Material3.BodyMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="@id/iconCapacity"
-            app:layout_constraintStart_toEndOf="@id/iconCapacity"
-            app:layout_constraintTop_toTopOf="@id/iconCapacity"
-            tools:text="15 people" />
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/iconDuration"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginTop="8dp"
-            android:contentDescription="Duration"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iconCapacity"
-            app:srcCompat="@drawable/ic_timer"
-            app:tint="?attr/colorOnSurfaceVariant" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/duration"
-            style="@style/TextAppearance.Material3.BodyMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="@id/iconDuration"
-            app:layout_constraintStart_toEndOf="@id/iconDuration"
-            app:layout_constraintTop_toTopOf="@id/iconDuration"
-            tools:text="60 minutes" />
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/iconPrice"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginTop="8dp"
-            android:contentDescription="Price"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iconDuration"
-            app:srcCompat="@drawable/ic_payments"
-            app:tint="?attr/colorOnSurfaceVariant" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/price"
-            style="@style/TextAppearance.Material3.BodyMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="@id/iconPrice"
-            app:layout_constraintStart_toEndOf="@id/iconPrice"
-            app:layout_constraintTop_toTopOf="@id/iconPrice"
-            tools:text="£10.00" />
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/iconIntensity"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginTop="8dp"
-            android:contentDescription="Intensity"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iconPrice"
-            app:srcCompat="@drawable/ic_fitness_center"
-            app:tint="?attr/colorOnSurfaceVariant" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/itemIntensity"
-            style="@style/TextAppearance.Material3.BodyMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="@id/iconIntensity"
-            app:layout_constraintStart_toEndOf="@id/iconIntensity"
-            app:layout_constraintTop_toTopOf="@id/iconIntensity"
-            tools:text="Moderate" />
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/iconDescription"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginTop="8dp"
-            android:contentDescription="Description"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iconIntensity"
-            app:srcCompat="@drawable/ic_notes"
-            app:tint="?attr/colorOnSurfaceVariant" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/itemDescription"
-            style="@style/TextAppearance.Material3.BodyMedium"
+        <!-- Description -->
+        <TextView
+            android:id="@+id/descriptionValue"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:ellipsize="end"
             android:maxLines="2"
+            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+            android:textColor="?attr/colorOnSurfaceVariant"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/iconDescription"
-            app:layout_constraintTop_toTopOf="@id/iconDescription"
-            tools:text="A flowing, dynamic yoga class to energize the body and mind. Suitable for all levels." />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/priceValue"
+            tools:text="Dynamic flowing sequences connecting breath with movement in a graceful..." />
 
+        <!-- Day of the week container -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/dayContainer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardBackgroundColor="@color/yoga_green_light"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionValue">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    app:srcCompat="@drawable/ic_timer"
+                    app:tint="@color/yoga_green_dark" />
+
+                <TextView
+                    android:id="@+id/itemDayTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:textColor="@color/yoga_green_dark"
+                    tools:text="Monday at 12:31" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Bottom details container -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/detailsContainer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:cardBackgroundColor="@color/yoga_green_light"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dayContainer">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="12dp">
+                <!-- Capacity -->
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    app:srcCompat="@drawable/ic_group"
+                    app:tint="@color/yoga_green_dark" />
+                <TextView
+                    android:id="@+id/itemCapacity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:textColor="@color/yoga_green_dark"
+                    tools:text="145 people" />
+                <!-- Duration -->
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    app:srcCompat="@drawable/ic_time"
+                    app:tint="@color/yoga_green_dark" />
+                <TextView
+                    android:id="@+id/duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:textColor="@color/yoga_green_dark"
+                    tools:text="44 minutes" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Intensity is not in the template, but you can add another container if you wish -->
+        <TextView
+            android:id="@+id/valIntensity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:text="Moderate"
+            app:layout_constraintTop_toBottomOf="@id/detailsContainer"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <!-- Action Buttons -->
         <LinearLayout
             android:id="@+id/actions_layout"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/itemDescription">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/detailsContainer"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/edit_button"
-                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
-                android:layout_width="wrap_content"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Edit" />
+                android:layout_weight="1"
+                android:text="@string/edit"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/delete_button"
-                style="@style/Widget.Material3.Button.Icon"
-                android:layout_width="wrap_content"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="Delete" />
+                android:layout_weight="1"
+                android:text="@string/delete"
+                android:textColor="?attr/colorError"/>
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

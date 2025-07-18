@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
+import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,7 +30,7 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.Objects;
 
-public class CreateClassFragment extends Fragment {
+public class CreateCourseFragment extends Fragment {
     private FragmentCreateClassBinding binding;
     private YogaClassRepository yogaClassRepository;
     private YogaCourse editYogaCourse = null;
@@ -55,7 +55,6 @@ public class CreateClassFragment extends Fragment {
                 loadEditClass(uid);
             }
         }
-
     }
     private void loadEditClass(int classId){
         AppDatabase.databaseWriteExecutor.execute(() -> {
@@ -64,7 +63,6 @@ public class CreateClassFragment extends Fragment {
 
         });
     }
-
     private void populateForm(YogaCourse yogaCourse){
         if (yogaCourse == null ) return;
         binding.dayOfWeekInput.setText(yogaCourse.day, false);
@@ -102,15 +100,15 @@ public class CreateClassFragment extends Fragment {
         binding.saveCourseButton.setOnClickListener(v -> {
             if (validateForm()) {
                 // Your original success toast
-                Toast.makeText(getContext(), "Form submitted", Toast.LENGTH_SHORT).show();
+                Snackbar.make(requireView(), "Form submitted successfully", Snackbar.LENGTH_SHORT).show();
 
                 new Handler(Looper.getMainLooper()).postDelayed(() -> {
                     if (editYogaCourse != null) {
                         // UPDATE existing class
                         updateClass();
-                        Toast.makeText(getContext(), "Class Updated!", Toast.LENGTH_SHORT).show();
+                        Snackbar.make(requireView(), "Class updated successfully!", Snackbar.LENGTH_SHORT).show();
                         // Go back to the list after updating
-                        startActivity(new Intent(requireActivity(), ClassListFragment.class));
+                        startActivity(new Intent(requireActivity(), CourseListFragment.class));
                         requireActivity().finish();
                     } else {
                         // INSERT new class
@@ -205,7 +203,6 @@ public class CreateClassFragment extends Fragment {
         binding.capacityLayout.setError(null);
         binding.durationLayout.setError(null);
         binding.priceLayout.setError(null);
-        // FIX: Get the parent TextInputLayout to clear the error
         ((TextInputLayout) binding.classTypeInput.getParent().getParent()).setError(null);
     }
 

@@ -13,6 +13,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.coursework.R;
+import com.example.coursework.databinding.FragmentSearchBinding;
 import com.example.coursework.data.local.AppDatabase;
 import com.example.coursework.data.local.adapter.ClassInstanceAdapter;
 import com.example.coursework.data.local.entities.ClassInstance;
@@ -30,30 +31,28 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 public class SearchFragment extends Fragment {
+    private FragmentSearchBinding binding;
     private YogaClassRepository yogaClassRepository;
     private ClassInstanceAdapter adapter;
-    private SearchView searchView;
-    private SearchBar searchBar;
-
     private boolean allowTextChange = false;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_search, container, false);
+        binding = FragmentSearchBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         yogaClassRepository = new YogaRepositoryImplementation(requireActivity().getApplication());
-        setUpRecyclerView(view);
-        setUpSearch(view);
+        setUpRecyclerView();
+        setUpSearch();
     }
 
-    private void setUpRecyclerView(View view){
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_search_results);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    private void setUpRecyclerView(){
+        binding.recyclerViewSearchResults.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new ClassInstanceAdapter(new ClassInstanceAdapter.OnItemClickListener() {
 
             @Override
@@ -63,7 +62,6 @@ public class SearchFragment extends Fragment {
             public void onEditCLick(ClassInstance classInstance) {
 
             }
-
             @Override
             public void onItemClick(ClassInstance classInstance) {
                 SearchFragmentDirections.SearchToDetail action = SearchFragmentDirections.searchToDetail(classInstance.id);
@@ -71,14 +69,11 @@ public class SearchFragment extends Fragment {
 
             }
         }, false);
-        recyclerView.setAdapter(adapter);
+        binding.recyclerViewSearchResults.setAdapter(adapter);
     }
 
-    private void setUpSearch(View view){
-        searchView = view.findViewById(R.id.search_view);
-        searchBar = view.findViewById(R.id.search_bar);
-
-        searchView.getEditText().addTextChangedListener(new TextWatcher() {
+    private void setUpSearch(){
+        binding.searchView.getEditText().addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             @Override
@@ -91,7 +86,7 @@ public class SearchFragment extends Fragment {
             }
         });
 
-        searchBar.setOnMenuItemClickListener(item -> {
+        binding.searchBar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.action_filter) {
                 showFilterDialog();
                 return true;
@@ -154,12 +149,11 @@ public class SearchFragment extends Fragment {
             requireActivity().runOnUiThread(() -> adapter.setClasses(results));
         });
     }
-
     private void performSearchByDate(String date) {
         AppDatabase.databaseWriteExecutor.execute(() -> {
             List<ClassInstance> results = yogaClassRepository.searchByDate(date);
             requireActivity().runOnUiThread(() -> {
-                searchView.show();
+                binding.searchView.show();
                 adapter.setClasses(results);
                 updateSearchBarText("Date: " + date);
             });
@@ -169,7 +163,7 @@ public class SearchFragment extends Fragment {
         AppDatabase.databaseWriteExecutor.execute(() -> {
             List<ClassInstance> results = yogaClassRepository.searchByDay(day);
             requireActivity().runOnUiThread(() -> {
-                searchView.show();
+                binding.searchView.show();
                 adapter.setClasses(results);
                 updateSearchBarText("Day: " + day);
             });
@@ -177,7 +171,13 @@ public class SearchFragment extends Fragment {
     }
     private void updateSearchBarText(String text) {
         allowTextChange = true;
-        searchBar.setText(text);
+        binding.searchBar.setText(text);
         allowTextChange = false;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }
