@@ -17,7 +17,7 @@ import java.util.List;
 public interface YogaClassDAO {
 
     @Insert
-    void insert(YogaCourse yogaCourse);
+    long insert(YogaCourse yogaCourse);
     @Update
     void update(YogaCourse yogaCourse);
     @Delete()

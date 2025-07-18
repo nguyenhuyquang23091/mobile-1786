@@ -17,6 +17,7 @@ kotlin-serialization = "2.0.21"
 nav = "2.9.1"
 kotlinx-serialization-json = "1.7.3"
 firebaseFirestore = "25.1.4"
+gms = "17.0.0"
 
 [libraries]
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }

@@ -31,20 +31,32 @@ public class YogaRepositoryImplementation implements YogaClassRepository {
         return connectivityCheck.isConnected();
     }
     @Override
-    public void insert(YogaCourse yogaCourse, SyncFirebaseListener syncFirebaseListener) {
+    public void insert(YogaCourse yogaCourse, SyncFirebaseListener listener) {
         AppDatabase.databaseWriteExecutor.execute(() -> {
-            yogaClassDAO.insert(yogaCourse);
-            if(isConnected()) {
-                YogaCourse recentCreatedYoga = yogaClassDAO.getCourseById(yogaCourse.uid);
-                if(recentCreatedYoga != null ){
-                    firebaseRepository.syncYogaCourse(recentCreatedYoga);
-                    if(syncFirebaseListener != null){
-                        syncFirebaseListener.syncSuccess();
+            // 1. Insert locally AND get the new auto-generated ID back from the database.
+            long newUid = yogaClassDAO.insert(yogaCourse);
+
+            // 2. Now check if the device is online.
+            if (isConnected()) {
+                // 3. Use the new, correct ID to fetch the definitive object from the database.
+                YogaCourse classToSync = yogaClassDAO.getCourseById((int) newUid);
+
+                if (classToSync != null) {
+                    // 4. Sync the correct object to Firebase and report success.
+                    firebaseRepository.syncYogaCourse(classToSync);
+                    if (listener != null) {
+                        listener.syncSuccess();
                     }
                 } else {
-                    if(syncFirebaseListener != null ){
-                        syncFirebaseListener.syncFailure("No Network Connection");
+                    // This would be a rare database error.
+                    if (listener != null) {
+                        listener.syncFailure("Error: Could not retrieve saved course from local DB.");
                     }
+                }
+            } else {
+                // 5. If offline, report the correct reason for sync failure.
+                if (listener != null) {
+                    listener.syncFailure("No network connection. Data saved locally.");
                 }
             }
         });
@@ -85,8 +97,13 @@ public class YogaRepositoryImplementation implements YogaClassRepository {
     ///INSTANCE IMPLEMENTATION
     @Override
     public void insertInstance(ClassInstance classInstance) {
-        AppDatabase.databaseWriteExecutor.execute(() -> yogaClassDAO.insertInstance(classInstance));
-
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            yogaClassDAO.insertInstance(classInstance);
+            if (isConnected()) {
+                // Call the helper method after inserting
+                firebaseRepository.syncAllClassInstances(classInstance.courseId);
+            }
+        });
     }
 
     @Override
