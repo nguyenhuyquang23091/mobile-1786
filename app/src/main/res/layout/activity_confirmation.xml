@@ -239,7 +239,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="8dp"
-                    android:text="Confirm &amp; Create Class"
+                    android:text="@string/confirm"
+                    android:textColor="@color/colorOnButton"
+                    app:backgroundTint="@color/colorButton"
                     app:icon="@drawable/calendar"/>
 
             </LinearLayout>

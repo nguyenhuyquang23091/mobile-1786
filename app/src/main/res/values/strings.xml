@@ -45,5 +45,6 @@
     <string name="add_instance">Add Instance</string>
     <string name="date">Date</string>
     <string name="teacher_name">Teacher Name</string>
+    <string name="confirm">Confirm</string>
 
 </resources>

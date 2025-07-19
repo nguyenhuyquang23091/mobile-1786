@@ -52,6 +52,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/edit"
+                android:textColor="@color/colorOnButton"
+                app:strokeColor="@color/colorButton"
                 />
 
             <Button
@@ -61,6 +63,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="@string/delete"
+                android:textColor="@color/colorOnButton"
+                app:backgroundTint="@color/colorButton"
                />
 
         </LinearLayout>
@@ -70,6 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/view"
+            android:textColor="@color/colorButton"
             app:icon="@drawable/ic_open_in_new"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

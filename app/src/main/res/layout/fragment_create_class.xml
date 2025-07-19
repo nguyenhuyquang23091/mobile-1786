@@ -207,8 +207,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
                     android:text="Review and Save"
+                    android:textColor="@color/colorOnButton"
                     android:padding="12dp"
-                    app:backgroundTint="@color/colorPrimary" />
+                    app:backgroundTint="@color/colorButton" />
             </LinearLayout>
         </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,14 +3,17 @@
     <style name="Base.Theme.COURSEWORK" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
-        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        <item name="colorOnPrimary">@color/colorOnButton</item>
         <item name="colorSecondary">@color/colorSecondary</item>
         <item name="colorOnSecondary">@color/colorOnSecondary</item>
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="materialButtonStyle">@style/Widget.App.Button</item>
+        <item name="materialTimePickerStyle">@style/Widget.App.TimePicker</item>
     </style>
 
     <style name="Theme.COURSEWORK" parent="Base.Theme.COURSEWORK" />
 
+    <!-- New Styles for Vibrant Confirmation Screen -->
     <style name="VibrantDetailCard" parent="Widget.Material3.CardView.Filled">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
@@ -35,12 +38,32 @@
     </style>
 
     <style name="VibrantDetailCardLabel" parent="TextAppearance.Material3.LabelMedium">
+        <!-- *** ADD THESE TWO LINES *** -->
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
     </style>
 
     <style name="VibrantDetailCardValue" parent="TextAppearance.Material3.BodyLarge">
+        <!-- *** ADD THESE TWO LINES *** -->
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Custom Button Style with Black Text -->
+    <style name="Widget.App.Button" parent="Widget.Material3.Button">
+        <item name="android:textColor">@color/colorOnButton</item>
+        <item name="backgroundTint">@color/colorButton</item>
+    </style>
+
+    <!-- Custom TimePicker Style with Black Text -->
+    <style name="Widget.App.TimePicker" parent="Widget.Material3.MaterialTimePicker">
+        <item name="android:textColorPrimary">@color/black</item>
+        <item name="android:textColorSecondary">@color/black</item>
+        <item name="colorOnSurface">@color/black</item>
+        <item name="colorOnSurfaceVariant">@color/black</item>
     </style>
 
 </resources>

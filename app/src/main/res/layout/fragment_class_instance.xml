@@ -28,8 +28,8 @@
         android:text="@string/add_instance"
         app:icon="@drawable/add"
         app:iconPadding="12dp"
-        app:backgroundTint="?attr/colorPrimary"
-        app:iconTint="@android:color/white"
-        android:textColor="@android:color/white"
+        app:backgroundTint="@color/colorButton"
+        app:iconTint="@color/colorOnButton"
+        android:textColor="@color/colorOnButton"
         app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
