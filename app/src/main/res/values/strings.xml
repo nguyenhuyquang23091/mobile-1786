@@ -46,5 +46,12 @@
     <string name="date">Date</string>
     <string name="teacher_name">Teacher Name</string>
     <string name="confirm">Confirm</string>
+    <string name="review_and_save">Review and Save</string>
+    <string name="vigorous">Vigorous</string>
+    <string name="moderate">Moderate</string>
+    <string name="intensity_level">Intensity Level</string>
+    <string name="type_of_class">Type of class</string>
+    <string name="edit_details">Edit Details</string>
+    <string name="create_a_new_course">Create a New Course</string>
 
 </resources>

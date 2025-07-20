@@ -42,7 +42,6 @@ public interface YogaClassDAO {
     List<ClassInstance> searchByDate(String date);
     @Query("SELECT ci.* FROM class_instance ci JOIN yoga_classes yc ON ci.courseId = yc.uid WHERE yc.day LIKE '%' || :day || '%'")
     List<ClassInstance> searchByDay(String day);
-
     @Transaction
     @Query("SELECT * FROM class_instance WHERE id = :instanceId")
     ClassInstanceWIthDetail getInstanceWithDetails(int instanceId);

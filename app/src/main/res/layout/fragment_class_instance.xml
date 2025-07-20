@@ -5,6 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
+    android:transitionName="shared_element_container"
+    android:fitsSystemWindows="true"
+
     tools:context=".data.local.fragment.ClassInstanceFragment">
 
     <!-- RecyclerView with bottom padding to avoid overlap -->
@@ -25,11 +29,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="24dp"
-        android:text="@string/add_instance"
-        app:icon="@drawable/add"
+        android:text="Add Instance"
+        app:icon="@drawable/ic_add"
         app:iconPadding="12dp"
-        app:backgroundTint="@color/colorButton"
-        app:iconTint="@color/colorOnButton"
-        android:textColor="@color/colorOnButton"
+        app:backgroundTint="?attr/colorPrimary"
+        app:iconTint="@android:color/white"
+        android:textColor="@android:color/white"
         app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

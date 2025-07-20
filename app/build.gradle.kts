@@ -69,4 +69,6 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.firebase.analytics)
     implementation(platform(libs.firebase.bom))
+    implementation(libs.shimmer)
+
 }

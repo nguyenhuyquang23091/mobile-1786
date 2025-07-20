@@ -4,6 +4,7 @@ import static android.app.ProgressDialog.show;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,15 +26,19 @@ import com.example.coursework.data.local.implementation.YogaRepositoryImplementa
 import com.example.coursework.databinding.FragmentClassInstanceBinding;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.transition.MaterialContainerTransform; // Add this
+
+import java.util.Calendar;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.TimeZone;
+
 
 public class ClassInstanceFragment extends Fragment {
     private FragmentClassInstanceBinding binding;
@@ -53,6 +59,9 @@ public class ClassInstanceFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         repository = new YogaRepositoryImplementation(requireActivity().getApplication());
+        MaterialContainerTransform transform = new MaterialContainerTransform();
+        transform.setScrimColor(ContextCompat.getColor(requireContext(), R.color.colorBackground));
+        setSharedElementEnterTransition(transform);
 
         binding.recyclerViewInstances.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -143,24 +152,36 @@ public class ClassInstanceFragment extends Fragment {
                     String date = Objects.requireNonNull(dateInput.getText()).toString();
                     String teacher = Objects.requireNonNull(teacherInput.getText()).toString();
 
-                    if (date.isEmpty() || teacher.isEmpty()) {
-                        Snackbar.make(requireView(), "Please fill in all fields", Snackbar.LENGTH_SHORT).show();
-                        return;
-                    }
-                    if (instanceToEdit == null) {
-                        ClassInstance newInstance = new ClassInstance();
-                        newInstance.date = date;
-                        newInstance.teacher = teacher;
-                        newInstance.courseId = this.courseId;
-                        repository.insertInstance(newInstance);
-                        Snackbar.make(requireView(), "Instance saved successfully", Snackbar.LENGTH_SHORT).show();
-                    } else {
-                        instanceToEdit.date = date;
-                        instanceToEdit.teacher = teacher;
-                        repository.updateInstance(instanceToEdit);
-                        Snackbar.make(requireView(), "Instance updated successfully", Snackbar.LENGTH_SHORT).show();
-                    }
-                    loadInstances();
+                    AppDatabase.databaseWriteExecutor.execute(() -> {
+                        String courseday = repository.findById(courseId).day;
+                        requireActivity().runOnUiThread(() -> {
+                            if(!isValidDate(date, courseday)) {
+                                Snackbar.make(requireView(),
+                                        "Error: This course is scheduled for " + courseday +
+                                                "s only. Please select a " + courseday + " date.",
+                                        Snackbar.LENGTH_LONG).show();
+                                return;
+                            }
+                            if (date.isEmpty() || teacher.isEmpty()) {
+                                Snackbar.make(requireView(), "Please fill in all fields", Snackbar.LENGTH_SHORT).show();
+                                return;
+                            }
+                            if (instanceToEdit == null) {
+                                ClassInstance newInstance = new ClassInstance();
+                                newInstance.date = date;
+                                newInstance.teacher = teacher;
+                                newInstance.courseId = this.courseId;
+                                repository.insertInstance(newInstance);
+                                Snackbar.make(requireView(), "Instance saved successfully", Snackbar.LENGTH_SHORT).show();
+                            } else {
+                                instanceToEdit.date = date;
+                                instanceToEdit.teacher = teacher;
+                                repository.updateInstance(instanceToEdit);
+                                Snackbar.make(requireView(), "Instance updated successfully", Snackbar.LENGTH_SHORT).show();
+                            }
+                            loadInstances();
+                        });
+                    });
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
@@ -170,6 +191,26 @@ public class ClassInstanceFragment extends Fragment {
             List<ClassInstance> instances = repository.getInstance(courseId);
             requireActivity().runOnUiThread(() -> adapter.setClasses(instances));
         });
+    }
+
+    private boolean isValidDate(String selectedDate, String  courseDay){
+
+            try {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault());
+                Date date = simpleDateFormat.parse(selectedDate);
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(date);
+                int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+                String[] daysOfWeek = {"", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+                String selectedDayOfWeek = daysOfWeek[dayOfWeek];
+
+                return selectedDayOfWeek.equalsIgnoreCase(courseDay);
+
+            } catch (ParseException e) {
+                Log.d("Error while parsing", Objects.requireNonNull(e.getMessage()));
+                throw new RuntimeException(e);
+            }
+
     }
 
     @Override

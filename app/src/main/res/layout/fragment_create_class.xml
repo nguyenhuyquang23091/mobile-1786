@@ -7,7 +7,8 @@
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorBackground"
+        android:background="@color/white"
+        android:fitsSystemWindows="true"
         tools:context=".data.local.MainActivity">
 
         <ScrollView
@@ -31,7 +32,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Create a New Class"
+                    android:text="@string/create_a_new_course"
                     android:textSize="24sp"
                     android:textColor="@color/textColorPrimary"
                     android:layout_marginBottom="24dp"/>
@@ -133,7 +134,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:hint="Type of class"
+                    android:hint="@string/type_of_class"
                     app:errorEnabled="true">
                     <AutoCompleteTextView
                         android:id="@+id/classTypeInput"
@@ -146,7 +147,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Intensity Level"
+                    android:text="@string/intensity_level"
                     android:layout_marginTop="24dp"
                     android:textColor="#555555"
                     android:textSize="16sp"/>
@@ -173,14 +174,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/chip_text_state"
-                        android:text="Moderate"/>
+                        android:text="@string/moderate"/>
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipVigorous"
                         style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/chip_text_state"
-                        android:text="Vigorous"/>
+                        android:text="@string/vigorous"/>
                 </com.google.android.material.chip.ChipGroup>
 
                 <!-- Description -->
@@ -206,10 +207,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
-                    android:text="Review and Save"
-                    android:textColor="@color/colorOnButton"
+                    android:text="@string/review_and_save"
                     android:padding="12dp"
-                    app:backgroundTint="@color/colorButton" />
+                    android:textColor="@color/textColorPrimary"
+                    app:backgroundTint="@color/colorPrimary" />
             </LinearLayout>
         </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

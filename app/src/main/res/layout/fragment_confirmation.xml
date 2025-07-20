@@ -9,7 +9,9 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         android:fillViewport="true"
+        android:fitsSystemWindows="true"
         tools:context=".data.local.fragment.ConfirmationActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,11 +24,10 @@
                 android:id="@+id/header_icon"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:src="@drawable/calendar"
+                android:src="@drawable/ic_yoga_man"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:tint="?attr/colorPrimary" />
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <TextView
                 android:id="@+id/tvTitle"
@@ -35,7 +36,7 @@
                 android:layout_marginTop="16dp"
                 android:text="Confirm Your Yoga Class"
                 android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-                android:textColor="?attr/colorOnSurface"
+                android:textColor="@color/textColorPrimary"
                 android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@id/header_icon"
                 app:layout_constraintStart_toStartOf="parent"
@@ -48,7 +49,7 @@
                 android:layout_marginTop="4dp"
                 android:text="Please review the details below before confirming"
                 android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textColor="@color/vibrant_text_secondary"
                 app:layout_constraintTop_toBottomOf="@id/tvTitle"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
@@ -81,8 +82,8 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/calendar"
-                            app:tint="@android:color/white"/>
+                            android:src="@drawable/ic_calendar"
+                           />
 
                         <TextView
                             android:id="@+id/valType"
@@ -90,7 +91,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="12dp"
                             android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                            android:textColor="@android:color/white"
+                            android:textColor="@color/textColorPrimary"
                             android:textStyle="bold"
                             tools:text="Vinyasa Flow" />
                     </LinearLayout>
@@ -106,9 +107,9 @@
                         <!-- Day -->
                         <com.google.android.material.card.MaterialCardView
                             style="@style/VibrantDetailCard"
-                            app:cardBackgroundColor="@color/colorCardDay">
+                            app:cardBackgroundColor="@color/yoga_blue_light">
                             <LinearLayout style="@style/VibrantDetailCardContent">
-                                <ImageView style="@style/VibrantDetailCardIcon" android:src="@drawable/calendar" />
+                                <ImageView style="@style/VibrantDetailCardIcon" android:src="@drawable/ic_calendar" />
                                 <TextView style="@style/VibrantDetailCardLabel" android:text="Day" />
                                 <TextView android:id="@+id/valDay" style="@style/VibrantDetailCardValue" tools:text="Monday" />
                             </LinearLayout>
@@ -117,7 +118,7 @@
                         <!-- Time -->
                         <com.google.android.material.card.MaterialCardView
                             style="@style/VibrantDetailCard"
-                            app:cardBackgroundColor="@color/colorCardTime">
+                            app:cardBackgroundColor="@color/yoga_pink_light">
                             <LinearLayout style="@style/VibrantDetailCardContent">
                                 <ImageView style="@style/VibrantDetailCardIcon" android:src="@drawable/ic_time" />
                                 <TextView style="@style/VibrantDetailCardLabel" android:text="Time" />
@@ -128,7 +129,7 @@
                         <!-- Capacity -->
                         <com.google.android.material.card.MaterialCardView
                             style="@style/VibrantDetailCard"
-                            app:cardBackgroundColor="@color/colorCardCapacity">
+                            app:cardBackgroundColor="@color/vibrant_card_capacity">
                             <LinearLayout style="@style/VibrantDetailCardContent">
                                 <ImageView style="@style/VibrantDetailCardIcon" android:src="@drawable/ic_group" />
                                 <TextView style="@style/VibrantDetailCardLabel" android:text="Capacity" />
@@ -139,7 +140,7 @@
                         <!-- Duration -->
                         <com.google.android.material.card.MaterialCardView
                             style="@style/VibrantDetailCard"
-                            app:cardBackgroundColor="@color/colorCardDuration">
+                            app:cardBackgroundColor="@color/vibrant_card_duration">
                             <LinearLayout style="@style/VibrantDetailCardContent">
                                 <ImageView style="@style/VibrantDetailCardIcon" android:src="@drawable/ic_timer" />
                                 <TextView style="@style/VibrantDetailCardLabel" android:text="Duration" />
@@ -150,7 +151,7 @@
                         <!-- Price -->
                         <com.google.android.material.card.MaterialCardView
                             style="@style/VibrantDetailCard"
-                            app:cardBackgroundColor="@color/colorCardPrice">
+                            app:cardBackgroundColor="@color/vibrant_card_price">
                             <LinearLayout style="@style/VibrantDetailCardContent">
                                 <ImageView style="@style/VibrantDetailCardIcon" android:src="@drawable/ic_payments" />
                                 <TextView style="@style/VibrantDetailCardLabel" android:text="Price" />
@@ -161,7 +162,7 @@
                         <!-- Intensity -->
                         <com.google.android.material.card.MaterialCardView
                             style="@style/VibrantDetailCard"
-                            app:cardBackgroundColor="@color/colorCardIntensity">
+                            app:cardBackgroundColor="@color/vibrant_card_intensity">
                             <LinearLayout style="@style/VibrantDetailCardContent">
                                 <ImageView style="@style/VibrantDetailCardIcon" android:src="@drawable/ic_fitness_center" />
                                 <TextView style="@style/VibrantDetailCardLabel" android:text="Intensity" />
@@ -189,14 +190,14 @@
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:src="@drawable/ic_notes"
-                                app:tint="?attr/colorOnSurfaceVariant"/>
+                                app:tint="@color/vibrant_text_secondary"/>
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
                                 android:text="Class Description"
                                 android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
-                                android:textColor="?attr/colorOnSurface"/>
+                                android:textColor="@color/textColorPrimary"/>
                         </LinearLayout>
 
                         <TextView
@@ -205,7 +206,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:textColor="@color/vibrant_text_secondary"
                             tools:text="A dynamic flowing sequence that links movement and breath to build strength, flexibility, and mindfulness." />
                     </LinearLayout>
 
@@ -230,7 +231,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
-                    android:text="Edit Details" />
+                    android:text="@string/edit_details"
+                    android:textColor="@color/textColorPrimary"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/confirmButton"
@@ -240,9 +242,8 @@
                     android:layout_weight="1"
                     android:layout_marginStart="8dp"
                     android:text="@string/confirm"
-                    android:textColor="@color/colorOnButton"
-                    app:backgroundTint="@color/colorButton"
-                    app:icon="@drawable/calendar"/>
+                    android:textColor="@color/textColorPrimary"
+                    />
 
             </LinearLayout>
 

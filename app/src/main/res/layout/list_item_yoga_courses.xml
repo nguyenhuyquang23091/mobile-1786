@@ -31,7 +31,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/itemClassType"
+                android:id="@+id/intensityClassType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="10dp"
@@ -40,7 +40,7 @@
                 android:paddingBottom="4dp"
                 android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
                 android:textColor="@color/white"
-                tools:text="Flow Yoga" />
+                tools:text="Moderate" />
         </com.google.android.material.card.MaterialCardView>
 
         <!-- Main Title (e.g., "Flow Yoga") -->
@@ -171,15 +171,6 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Intensity is not in the template, but you can add another container if you wish -->
-        <TextView
-            android:id="@+id/valIntensity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            tools:text="Moderate"
-            app:layout_constraintTop_toBottomOf="@id/detailsContainer"
-            app:layout_constraintStart_toStartOf="parent"/>
 
         <!-- Action Buttons -->
         <LinearLayout
@@ -200,8 +191,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/edit"
-                android:textColor="@color/colorOnButton"
-                app:strokeColor="@color/colorButton"/>
+                android:textColor="@color/textColorPrimary"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/delete_button"

@@ -3,6 +3,7 @@ package com.example.coursework.data.local.fragment;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -161,7 +162,12 @@ public class SearchFragment extends Fragment {
     }
     private void performSearchByDay(String day) {
         AppDatabase.databaseWriteExecutor.execute(() -> {
+            Log.d("SearchFragment", "Searching for day: " + day);
             List<ClassInstance> results = yogaClassRepository.searchByDay(day);
+            Log.d("SearchFragment", "Search results count: " + results.size());
+            if(results.isEmpty()){
+                Log.d("SearchFragment", "No results found for day: " + day);
+            }
             requireActivity().runOnUiThread(() -> {
                 binding.searchView.show();
                 adapter.setClasses(results);

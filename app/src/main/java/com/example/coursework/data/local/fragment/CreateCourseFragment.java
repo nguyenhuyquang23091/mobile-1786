@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.example.coursework.R;
 import com.example.coursework.data.local.AppDatabase;
@@ -207,26 +209,20 @@ public class CreateCourseFragment extends Fragment {
     }
 
     private void passDataToConfirmation() {
-        Intent intent = new Intent(requireActivity(), ConfirmationActivity.class);
-        //store intent information in object
 
-        intent.putExtra("day", binding.dayOfWeekInput.getText().toString());
-        intent.putExtra("time", Objects.requireNonNull(binding.timeInput.getText()).toString());
-        intent.putExtra("capacity", Objects.requireNonNull(binding.capacityInput.getText()).toString());
-        intent.putExtra("duration", Objects.requireNonNull(binding.durationInput.getText()).toString());
-        intent.putExtra("price", Objects.requireNonNull(binding.priceInput.getText()).toString());
-        intent.putExtra("type", binding.classTypeInput.getText().toString());
-        intent.putExtra("description", Objects.requireNonNull(binding.descriptionInput.getText()).toString());
-
-        // Find the selected chip's text from the ChipGroup
+        String day = binding.dayOfWeekInput.getText().toString();
+        String time = Objects.requireNonNull(binding.timeInput.getText()).toString();
+        int capacity = Integer.parseInt(Objects.requireNonNull(binding.capacityInput.getText()).toString());
+        int duration = Integer.parseInt(Objects.requireNonNull(binding.durationInput.getText()).toString());
+        double price =  Integer.parseInt(Objects.requireNonNull(binding.priceInput.getText()).toString());
+        String type = binding.classTypeInput.getText().toString();
+        String description = Objects.requireNonNull(binding.descriptionInput.getText()).toString();
         int selectedChipId = binding.intensityChipGroup.getCheckedChipId();
-        if (selectedChipId != View.NO_ID) {
-            Chip selectedChip = binding.getRoot().findViewById(selectedChipId);
-            intent.putExtra("intensity", selectedChip.getText().toString());
-        } else {
-            intent.putExtra("intensity", "Not specified");
-        }
-        startActivity(intent);
+        Chip selectedChip = binding.getRoot().findViewById(selectedChipId);
+        CreateCourseFragmentDirections.ActionCreateClassFragmentToConfirmFragment action =
+                CreateCourseFragmentDirections.actionCreateClassFragmentToConfirmFragment
+                        (type, day, time, selectedChip.getText().toString(), capacity, duration, String.valueOf(price), description);
+        Navigation.findNavController(requireView()).navigate(action);
     }
     @Override
     public void onDestroyView() {

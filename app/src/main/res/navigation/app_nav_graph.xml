@@ -4,12 +4,53 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/app_nav_graph"
     app:startDestination="@id/createClassFragment">
-
     <fragment
         android:id="@+id/createClassFragment"
         android:name="com.example.coursework.data.local.fragment.CreateCourseFragment"
         android:label="fragment_create_class"
-        tools:layout="@layout/fragment_create_class" />
+        tools:layout="@layout/fragment_create_class">
+
+        <action
+            android:id="@+id/action_createClassFragment_to_confirmFragment"
+            app:destination="@id/confirmationFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/confirmationFragment"
+        android:name="com.example.coursework.data.local.fragment.ConfirmationFragment"
+        android:label="fragment_confirmation"
+        tools:layout="@layout/fragment_confirmation"
+        >
+        <action
+            android:id="@+id/action_confirmationFragment_to_createClassFragment"
+            app:destination="@id/createClassFragment"/>
+        <argument
+            android:name="type"
+            app:argType="string" />
+        <argument
+            android:name="day"
+            app:argType="string" />
+        <argument
+            android:name="time"
+            app:argType="string" />
+        <argument
+            android:name="intensity"
+            app:argType="string" />
+        <argument
+            android:name="capacity"
+            app:argType="integer" />
+        <argument
+            android:name="duration"
+            app:argType="integer" />
+        <argument
+            android:name="price"
+            app:argType="string" />
+        <argument
+            android:name="description"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+
 
     <fragment
         android:id="@+id/classListFragment"
@@ -20,6 +61,8 @@
             android:id="@+id/action_classListFragment_to_classInstanceFragment"
             app:destination="@id/classInstanceFragment" />
     </fragment>
+
+
 
     <fragment
         android:id="@+id/classInstanceFragment"
@@ -35,7 +78,6 @@
         android:name="com.example.coursework.data.local.fragment.SearchFragment"
         android:label="Search"
         tools:layout="@layout/fragment_search" >
-        <!-- *** ADD THIS ACTION *** -->
         <action
             android:id="@+id/search_to_detail"
             app:destination="@id/classDetailFragment" />

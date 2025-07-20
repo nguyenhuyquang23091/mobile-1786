@@ -1,24 +1,22 @@
 package com.example.coursework.data.local.adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.navigation.fragment.FragmentNavigator;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.coursework.R;
 import com.example.coursework.data.local.entities.YogaCourse;
-import com.example.coursework.databinding.ListItemYogaClassBinding;
-import com.google.android.material.card.MaterialCardView;
+import com.example.coursework.databinding.ListItemYogaCoursesBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +29,7 @@ public class YogaClassAdapter extends RecyclerView.Adapter<YogaClassAdapter.Yoga
 
     public interface OnItemClickListener {
         void onDeleteClick(YogaCourse yogaCourse);
-        void onItemClick(YogaCourse yogaCourse);
+        void onItemClick(YogaCourse yogaCourse, FragmentNavigator.Extras extras);
 
     }
     public YogaClassAdapter(OnItemClickListener listener){
@@ -42,7 +40,7 @@ public class YogaClassAdapter extends RecyclerView.Adapter<YogaClassAdapter.Yoga
     @NonNull
     @Override
     public YogaClassAdapter.YogaClassViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ListItemYogaClassBinding binding = ListItemYogaClassBinding.inflate(
+        ListItemYogaCoursesBinding binding = ListItemYogaCoursesBinding.inflate(
                 LayoutInflater.from(parent.getContext()), parent, false);
         return new YogaClassViewHolder(binding);
     }
@@ -50,7 +48,8 @@ public class YogaClassAdapter extends RecyclerView.Adapter<YogaClassAdapter.Yoga
     @Override
     public void onBindViewHolder(@NonNull YogaClassViewHolder holder, int position) {
         YogaCourse currentClass = yogaCourses.get(position);
-        holder.bind(currentClass, listener);
+        String transitionname = "yoga_class_" + currentClass.uid;
+        holder.bind(currentClass, listener, transitionname);
 
     }
 
@@ -64,20 +63,19 @@ public class YogaClassAdapter extends RecyclerView.Adapter<YogaClassAdapter.Yoga
         notifyDataSetChanged();
     }
     static class YogaClassViewHolder extends RecyclerView.ViewHolder {
-        private final ListItemYogaClassBinding binding;
+        private final ListItemYogaCoursesBinding binding;
 
-        public YogaClassViewHolder(@NonNull ListItemYogaClassBinding binding) {
+        public YogaClassViewHolder(@NonNull ListItemYogaCoursesBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
 
-        public void bind(final YogaCourse yogaCourse, final OnItemClickListener listener){
-            binding.itemClassType.setText((yogaCourse.type));
+        public void bind(final YogaCourse yogaCourse, final OnItemClickListener listener, final String transitionname){
             binding.mainTitle.setText(yogaCourse.type);
             String dayTime = yogaCourse.day + " at " + yogaCourse.time;
             binding.itemDayTime.setText(dayTime);
             binding.descriptionValue.setText(yogaCourse.description);
-            binding.valIntensity.setText(yogaCourse.intensity);
+            binding.intensityClassType.setText(yogaCourse.intensity);
             binding.itemCapacity.setText(String.valueOf(yogaCourse.capacity));
             binding.duration.setText(String.format("%d min", yogaCourse.duration));
             binding.priceValue.setText("£" + yogaCourse.price);
@@ -96,7 +94,7 @@ public class YogaClassAdapter extends RecyclerView.Adapter<YogaClassAdapter.Yoga
                 colorLightRes = R.color.yoga_pink_light;
             } else {
                 colorDarkRes = R.color.yoga_default_dark;
-                colorLightRes = R.color.yoga_default_light;
+                colorLightRes = R.color.yoga_default_dark;
             }
 
             int colorDark = ContextCompat.getColor(context, colorDarkRes);
@@ -134,9 +132,14 @@ public class YogaClassAdapter extends RecyclerView.Adapter<YogaClassAdapter.Yoga
                     listener.onDeleteClick(yogaCourse);
                 }
             });
+
+            binding.getRoot().setTransitionName(transitionname);
+            
             binding.getRoot().setOnClickListener(v -> {
                 if(listener != null){
-                    listener.onItemClick(yogaCourse);
+                    FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
+                            .addSharedElement(binding.getRoot(), transitionname).build();
+                    listener.onItemClick(yogaCourse, extras);
                 }
             });
         }

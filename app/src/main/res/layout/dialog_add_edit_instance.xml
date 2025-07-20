@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/date"
-        app:startIconDrawable="@drawable/calendar">
+        app:startIconDrawable="@drawable/ic_calendar">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/date_input"
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:hint="@string/teacher_name"
-        app:startIconDrawable="@drawable/teacher"> <!-- ADD THIS ICON -->
+        app:startIconDrawable="@drawable/ic_teacher"> <!-- ADD THIS ICON -->
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/teacher_input"
