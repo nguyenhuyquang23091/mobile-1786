@@ -1,12 +1,11 @@
 package com.example.coursework.data.local.implementation;
 
 import android.app.Application;
-import android.util.Log;
 
 import com.example.coursework.data.local.AppDatabase;
 import com.example.coursework.data.local.DAO.YogaClassDAO;
-import com.example.coursework.data.local.entities.ClassInstance;
-import com.example.coursework.data.local.entities.ClassInstanceWIthDetail;
+import com.example.coursework.data.local.entities.YogaClass;
+import com.example.coursework.data.local.entities.YogaClassWithDetail;
 import com.example.coursework.data.local.entities.YogaCourse;
 import com.example.coursework.data.local.repository.YogaClassRepository;
 import com.example.coursework.data.local.repository.FirebaseRepository;
@@ -33,28 +32,18 @@ public class YogaRepositoryImplementation implements YogaClassRepository {
     @Override
     public void insert(YogaCourse yogaCourse, SyncFirebaseListener listener) {
         AppDatabase.databaseWriteExecutor.execute(() -> {
-            // 1. Insert locally AND get the new auto-generated ID back from the database.
             long newUid = yogaClassDAO.insert(yogaCourse);
-
-            // 2. Now check if the device is online.
             if (isConnected()) {
-                // 3. Use the new, correct ID to fetch the definitive object from the database.
                 YogaCourse classToSync = yogaClassDAO.getCourseById((int) newUid);
 
                 if (classToSync != null) {
-                    // 4. Sync the correct object to Firebase and report success.
-                    firebaseRepository.syncYogaCourse(classToSync);
-                    if (listener != null) {
-                        listener.syncSuccess();
-                    }
+                    firebaseRepository.syncYogaCourse(classToSync, listener);
                 } else {
-                    // This would be a rare database error.
                     if (listener != null) {
                         listener.syncFailure("Error: Could not retrieve saved course from local DB.");
                     }
                 }
             } else {
-                // 5. If offline, report the correct reason for sync failure.
                 if (listener != null) {
                     listener.syncFailure("No network connection. Data saved locally.");
                 }
@@ -96,51 +85,49 @@ public class YogaRepositoryImplementation implements YogaClassRepository {
     }
     ///INSTANCE IMPLEMENTATION
     @Override
-    public void insertInstance(ClassInstance classInstance) {
+    public void insertInstance(YogaClass yogaClass) {
         AppDatabase.databaseWriteExecutor.execute(() -> {
-            yogaClassDAO.insertInstance(classInstance);
+            yogaClassDAO.insertInstance(yogaClass);
             if (isConnected()) {
                 // Call the helper method after inserting
-                List<ClassInstance> instances = yogaClassDAO.getInstances(classInstance.courseId);
-                firebaseRepository.syncAllClassInstances(String.valueOf(classInstance.courseId), instances);
+                List<YogaClass> instances = yogaClassDAO.getInstances(yogaClass.courseId);
+                firebaseRepository.syncAllClassInstances(String.valueOf(yogaClass.courseId), instances);
             }
         });
     }
 
     @Override
-    public List<ClassInstance> getInstance(int courseId) {
+    public List<YogaClass> getInstance(int courseId) {
         return yogaClassDAO.getInstances(courseId);
     }
     @Override
-    public void updateInstance(ClassInstance classInstance) {
-        AppDatabase.databaseWriteExecutor.execute(() -> yogaClassDAO.updateInstance(classInstance));
+    public void updateInstance(YogaClass yogaClass) {
+        AppDatabase.databaseWriteExecutor.execute(() -> yogaClassDAO.updateInstance(yogaClass));
     }
     @Override
-    public void deleteInstance(ClassInstance classInstance) {
+    public void deleteInstance(YogaClass yogaClass) {
         AppDatabase.databaseWriteExecutor.execute(() ->
-                yogaClassDAO.deleteInstance(classInstance));
+                yogaClassDAO.deleteInstance(yogaClass));
                 if(isConnected()){
-                    firebaseRepository.deleteInstance(classInstance);}
+                    firebaseRepository.deleteInstance(yogaClass);}
     }
     @Override
-    public List<ClassInstance> searchByTeacher(String teacher) {
+    public List<YogaClass> searchByTeacher(String teacher) {
         return yogaClassDAO.searchByTeacher(teacher);
     }
 
     @Override
-    public List<ClassInstance> searchByDate(String date) {
+    public List<YogaClass> searchByDate(String date) {
         return yogaClassDAO.searchByDate(date);
     }
 
     @Override
-    public List<ClassInstance> searchByDay(String day) {
+    public List<YogaClass> searchByDay(String day) {
         return yogaClassDAO.searchByDay(day);
     }
 
     @Override
-    public ClassInstanceWIthDetail getInstanceWithDetails(int instanceId) {
+    public YogaClassWithDetail getInstanceWithDetails(int instanceId) {
        return yogaClassDAO.getInstanceWithDetails(instanceId);
     }
-
-
 }

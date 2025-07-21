@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.coursework.data.local.entities.YogaClassWithDetail;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.coursework.data.local.AppDatabase;
-import com.example.coursework.data.local.entities.ClassInstanceWIthDetail;
 import com.example.coursework.data.local.implementation.YogaRepositoryImplementation;
 import com.example.coursework.data.local.repository.YogaClassRepository;
 import com.example.coursework.databinding.FragmentClassDetailBinding;
@@ -50,13 +51,13 @@ public class CourseDetailFragment extends Fragment {
 
     private void loadClassDetail(){
         AppDatabase.databaseWriteExecutor.execute(() ->{
-            ClassInstanceWIthDetail detail = yogaClassRepository.getInstanceWithDetails(instanceId);
+            YogaClassWithDetail detail = yogaClassRepository.getInstanceWithDetails(instanceId);
             bind(detail);
         });
 
     }
 
-    private void bind(ClassInstanceWIthDetail detail){
+    private void bind(YogaClassWithDetail detail){
 
 
         binding.courseTitle.setText(detail.yogaCourse.type);
@@ -71,8 +72,8 @@ public class CourseDetailFragment extends Fragment {
         binding.priceValue.setText(price);
          binding.descriptionValue.setText(detail.yogaCourse.description);
 
-        binding.dateValue.setText(detail.classInstance.date);
-        binding.teacherValue.setText(detail.classInstance.teacher);
+        binding.dateValue.setText(detail.yogaClass.date);
+        binding.teacherValue.setText(detail.yogaClass.teacher);
     }
     @Override
     public void onDestroyView() {

@@ -12,18 +12,17 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.coursework.R;
+import com.example.coursework.data.local.entities.YogaClass;
 import com.example.coursework.databinding.FragmentSearchBinding;
 import com.example.coursework.data.local.AppDatabase;
-import com.example.coursework.data.local.adapter.ClassInstanceAdapter;
-import com.example.coursework.data.local.entities.ClassInstance;
+import com.example.coursework.data.local.adapter.YogaClassAdapter;
 import com.example.coursework.data.local.implementation.YogaRepositoryImplementation;
 import com.example.coursework.data.local.repository.YogaClassRepository;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.search.SearchBar;
-import com.google.android.material.search.SearchView;
+
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
@@ -34,7 +33,7 @@ import java.util.TimeZone;
 public class SearchFragment extends Fragment {
     private FragmentSearchBinding binding;
     private YogaClassRepository yogaClassRepository;
-    private ClassInstanceAdapter adapter;
+    private YogaClassAdapter adapter;
     private boolean allowTextChange = false;
 
     @Nullable
@@ -54,18 +53,18 @@ public class SearchFragment extends Fragment {
 
     private void setUpRecyclerView(){
         binding.recyclerViewSearchResults.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new ClassInstanceAdapter(new ClassInstanceAdapter.OnItemClickListener() {
+        adapter = new YogaClassAdapter(new YogaClassAdapter.OnItemClickListener() {
 
             @Override
-            public void onDeleteClick(ClassInstance classInstance) {
+            public void onDeleteClick(YogaClass yogaClass) {
             }
             @Override
-            public void onEditCLick(ClassInstance classInstance) {
+            public void onEditCLick(YogaClass yogaClass) {
 
             }
             @Override
-            public void onItemClick(ClassInstance classInstance) {
-                SearchFragmentDirections.SearchToDetail action = SearchFragmentDirections.searchToDetail(classInstance.id);
+            public void onItemClick(YogaClass yogaClass) {
+                SearchFragmentDirections.SearchToDetail action = SearchFragmentDirections.searchToDetail(yogaClass.id);
                 Navigation.findNavController(requireView()).navigate(action);
 
             }
@@ -146,13 +145,13 @@ public class SearchFragment extends Fragment {
             return;
         }
         AppDatabase.databaseWriteExecutor.execute(() -> {
-            List<ClassInstance> results = yogaClassRepository.searchByTeacher(query);
+            List<YogaClass> results = yogaClassRepository.searchByTeacher(query);
             requireActivity().runOnUiThread(() -> adapter.setClasses(results));
         });
     }
     private void performSearchByDate(String date) {
         AppDatabase.databaseWriteExecutor.execute(() -> {
-            List<ClassInstance> results = yogaClassRepository.searchByDate(date);
+            List<YogaClass> results = yogaClassRepository.searchByDate(date);
             requireActivity().runOnUiThread(() -> {
                 binding.searchView.show();
                 adapter.setClasses(results);
@@ -163,7 +162,7 @@ public class SearchFragment extends Fragment {
     private void performSearchByDay(String day) {
         AppDatabase.databaseWriteExecutor.execute(() -> {
             Log.d("SearchFragment", "Searching for day: " + day);
-            List<ClassInstance> results = yogaClassRepository.searchByDay(day);
+            List<YogaClass> results = yogaClassRepository.searchByDay(day);
             Log.d("SearchFragment", "Search results count: " + results.size());
             if(results.isEmpty()){
                 Log.d("SearchFragment", "No results found for day: " + day);

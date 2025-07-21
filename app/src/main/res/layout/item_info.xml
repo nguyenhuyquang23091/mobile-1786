@@ -27,14 +27,14 @@
                 android:layout_height="wrap_content"
                 android:text="Label"
                 android:textColor="?attr/colorOnSurfaceVariant"
-                android:textAppearance="?attr/textAppearanceLabelSmall" />
+                android:textAppearance="@style/TextAppearance.Material3.LabelSmall" />
 
             <TextView
                 android:id="@+id/info_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Value"
-                android:textAppearance="?attr/textAppearanceBodyMedium" />
+                android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
         </LinearLayout>
     </LinearLayout>
 

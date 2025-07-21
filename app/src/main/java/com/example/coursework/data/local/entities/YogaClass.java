@@ -13,7 +13,7 @@ import androidx.room.PrimaryKey;
 import com.google.firebase.firestore.Exclude;
 
 
-@Entity(tableName = "class_instance",
+@Entity(tableName = "yoga_classes",
         foreignKeys = @ForeignKey(
                 entity = YogaCourse.class,
                 parentColumns = "uid",
@@ -22,7 +22,7 @@ import com.google.firebase.firestore.Exclude;
         ),
         indices = @Index(value = "courseId")
 )
-public class ClassInstance {
+public class YogaClass {
     @PrimaryKey(autoGenerate = true)
     @Exclude
     public int id;
@@ -34,47 +34,16 @@ public class ClassInstance {
     public String date;
     @ColumnInfo(name = "teacher")
     public String teacher;
-    public ClassInstance(){
+    @ColumnInfo(name = "title")
+    public String title;
+    @ColumnInfo(name = "description")
+    public String description;
+    
+    @ColumnInfo(name = "courseType")
+    public String courseType;
+    public YogaClass(){
 
     }
 
-    public String getTeacher() {
-        return teacher;
-    }
-
-    public void setTeacher(String teacher) {
-        this.teacher = teacher;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public int getCourseId() {
-        return courseId;
-    }
-
-    public void setCourseId(int courseId) {
-        this.courseId = courseId;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public ClassInstance(int id, int courseId, String date, String teacher) {
-        this.id = id;
-        this.courseId = courseId;
-        this.date = date;
-        this.teacher = teacher;
-    }
 
 }

@@ -40,12 +40,12 @@
                 <!-- Course Details Header -->
                 <ImageView
                     android:id="@+id/courseIcon"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-
+                    android:layout_width="@dimen/icon_size_small"
+                    android:layout_height="@dimen/icon_size_small"
+                    android:contentDescription="@null"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/material_on_surface_emphasis_medium" />
+                    app:tint="?attr/colorOnSurfaceVariant" />
 
                 <TextView
                     android:id="@+id/courseDetailsTitle"
@@ -53,7 +53,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="Course Details"
-                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
                     app:layout_constraintBottom_toBottomOf="@+id/courseIcon"
                     app:layout_constraintStart_toEndOf="@+id/courseIcon"
                     app:layout_constraintTop_toTopOf="@+id/courseIcon" />
@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="Vinyasa Flow for Beginners"
-                    android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+                    android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/courseDetailsTitle" />
@@ -77,7 +77,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="Gentle"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/colorOnSurface"
                     app:chipBackgroundColor="#FF6B6B"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/courseTitle" />
@@ -89,18 +89,19 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:text="DAY"
-                    android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                    android:textColor="@color/material_on_surface_emphasis_medium"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/levelChip" />
 
                 <ImageView
                     android:id="@+id/dayIcon"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="@dimen/icon_size_small"
+                    android:layout_height="@dimen/icon_size_small"
+                    android:contentDescription="@null"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/dayLabel"
-                    app:tint="@color/material_on_surface_emphasis_high_type" />
+                    app:tint="?attr/colorOnSurface" />
 
                 <TextView
                     android:id="@+id/dayValue"
@@ -108,7 +109,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="Monday"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                    android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
                     app:layout_constraintBottom_toBottomOf="@+id/dayIcon"
                     app:layout_constraintStart_toEndOf="@+id/dayIcon"
                     app:layout_constraintTop_toTopOf="@+id/dayIcon" />
@@ -120,19 +121,20 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="120dp"
                     android:text="TIME"
-                    android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                    android:textColor="@color/material_on_surface_emphasis_medium"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     app:layout_constraintStart_toEndOf="@+id/dayLabel"
                     app:layout_constraintTop_toTopOf="@+id/dayLabel" />
 
                 <ImageView
                     android:id="@+id/timeIcon"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="@dimen/icon_size_small"
+                    android:layout_height="@dimen/icon_size_small"
+                    android:contentDescription="@null"
                     android:src="@drawable/ic_time"
                     app:layout_constraintStart_toStartOf="@+id/timeLabel"
                     app:layout_constraintTop_toBottomOf="@+id/timeLabel"
-                    app:tint="@color/material_on_surface_emphasis_high_type" />
+                    app:tint="?attr/colorOnSurface" />
 
                 <TextView
                     android:id="@+id/timeValue"
@@ -140,7 +142,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="6:00 PM"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                    android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
                     app:layout_constraintBottom_toBottomOf="@+id/timeIcon"
                     app:layout_constraintStart_toEndOf="@+id/timeIcon"
                     app:layout_constraintTop_toTopOf="@+id/timeIcon" />
@@ -152,18 +154,19 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:text="CAPACITY"
-                    android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                    android:textColor="@color/material_on_surface_emphasis_medium"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/dayIcon" />
 
                 <ImageView
                     android:id="@+id/capacityIcon"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="@dimen/icon_size_small"
+                    android:layout_height="@dimen/icon_size_small"
+                    android:contentDescription="@null"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/capacityLabel"
-                    app:tint="@color/material_on_surface_emphasis_high_type" />
+                    app:tint="?attr/colorOnSurface" />
 
                 <TextView
                     android:id="@+id/capacityValue"
@@ -171,7 +174,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="20 students"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                    android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
                     app:layout_constraintBottom_toBottomOf="@+id/capacityIcon"
                     app:layout_constraintStart_toEndOf="@+id/capacityIcon"
                     app:layout_constraintTop_toTopOf="@+id/capacityIcon" />
@@ -182,19 +185,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="DURATION"
-                    android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                    android:textColor="@color/material_on_surface_emphasis_medium"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     app:layout_constraintStart_toStartOf="@+id/timeLabel"
                     app:layout_constraintTop_toTopOf="@+id/capacityLabel" />
 
                 <ImageView
                     android:id="@+id/durationIcon"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="@dimen/icon_size_small"
+                    android:layout_height="@dimen/icon_size_small"
+                    android:contentDescription="@null"
                     android:src="@drawable/ic_time"
                     app:layout_constraintStart_toStartOf="@+id/durationLabel"
                     app:layout_constraintTop_toBottomOf="@+id/durationLabel"
-                    app:tint="@color/material_on_surface_emphasis_high_type" />
+                    app:tint="?attr/colorOnSurface" />
 
                 <TextView
                     android:id="@+id/durationValue"
@@ -202,7 +206,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="1h"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                    android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
                     app:layout_constraintBottom_toBottomOf="@+id/durationIcon"
                     app:layout_constraintStart_toEndOf="@+id/durationIcon"
                     app:layout_constraintTop_toTopOf="@+id/durationIcon" />
@@ -214,18 +218,19 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:text="PRICE PER CLASS"
-                    android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                    android:textColor="@color/material_on_surface_emphasis_medium"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/capacityIcon" />
 
                 <ImageView
                     android:id="@+id/priceIcon"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="@dimen/icon_size_small"
+                    android:layout_height="@dimen/icon_size_small"
+                    android:contentDescription="@null"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/priceLabel"
-                    app:tint="@color/material_on_surface_emphasis_high_type" />
+                    app:tint="?attr/colorOnSurface" />
 
                 <TextView
                     android:id="@+id/priceValue"
@@ -233,7 +238,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="$25"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                    android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
                     app:layout_constraintBottom_toBottomOf="@+id/priceIcon"
                     app:layout_constraintStart_toEndOf="@+id/priceIcon"
                     app:layout_constraintTop_toTopOf="@+id/priceIcon" />
@@ -245,8 +250,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:text="DESCRIPTION"
-                    android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                    android:textColor="@color/material_on_surface_emphasis_medium"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/priceIcon" />
 
@@ -256,7 +261,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="A gentle introduction to Vinyasa yoga focusing on breath-synchronized movement. Perfect for those new to yoga or looking to refine their foundation."
-                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/descriptionLabel" />
@@ -285,11 +290,12 @@
                 <!-- Class Instance Header -->
                 <ImageView
                     android:id="@+id/locationIcon"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="@dimen/icon_size_small"
+                    android:layout_height="@dimen/icon_size_small"
+                    android:contentDescription="@null"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/material_on_surface_emphasis_medium" />
+                    app:tint="?attr/colorOnSurfaceVariant" />
 
                 <TextView
                     android:id="@+id/classInstanceTitle"
@@ -297,7 +303,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="Class Instance Details"
-                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
                     app:layout_constraintBottom_toBottomOf="@+id/locationIcon"
                     app:layout_constraintStart_toEndOf="@+id/locationIcon"
                     app:layout_constraintTop_toTopOf="@+id/locationIcon" />
@@ -309,18 +315,19 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="DATE"
-                    android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                    android:textColor="@color/material_on_surface_emphasis_medium"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/classInstanceTitle" />
 
                 <ImageView
                     android:id="@+id/dateIcon"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="@dimen/icon_size_small"
+                    android:layout_height="@dimen/icon_size_small"
+                    android:contentDescription="@null"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/dateLabel"
-                    app:tint="@color/material_on_surface_emphasis_high_type" />
+                    app:tint="?attr/colorOnSurface" />
 
                 <TextView
                     android:id="@+id/dateValue"
@@ -328,7 +335,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="Monday, January 15, 2024"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                    android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
                     app:layout_constraintBottom_toBottomOf="@+id/dateIcon"
                     app:layout_constraintStart_toEndOf="@+id/dateIcon"
                     app:layout_constraintTop_toTopOf="@+id/dateIcon" />
@@ -340,25 +347,26 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:text="TEACHER"
-                    android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                    android:textColor="@color/material_on_surface_emphasis_medium"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/dateIcon" />
 
                 <ImageView
                     android:id="@+id/teacherIcon"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="@dimen/icon_size_small"
+                    android:layout_height="@dimen/icon_size_small"
+                    android:contentDescription="@null"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/teacherLabel"
-                    app:tint="@color/material_on_surface_emphasis_high_type" />
+                    app:tint="?attr/colorOnSurface" />
                 <TextView
                     android:id="@+id/teacherValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="Sarah Johnson"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                    android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
                     app:layout_constraintBottom_toBottomOf="@+id/teacherIcon"
                     app:layout_constraintStart_toEndOf="@+id/teacherIcon"
                     app:layout_constraintTop_toTopOf="@+id/teacherIcon" />
@@ -369,9 +377,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:text="@string/additional_comments"
+                    android:text="@string/description"
                     android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                    android:textColor="@color/material_on_surface_emphasis_medium"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/teacherIcon" />
 
@@ -391,7 +399,7 @@
                         android:layout_height="wrap_content"
                         android:padding="12dp"
                         android:text="@string/please_bring_your_own_yoga_mat_water_bottles_will_be_provided"
-                        android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
                 </com.google.android.material.card.MaterialCardView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>

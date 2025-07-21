@@ -16,8 +16,9 @@
         <com.google.android.material.search.SearchBar
             android:id="@+id/search_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/min_touch_target"
             android:hint="Search by teacher name..."
+            android:contentDescription="@string/search_classes"
             app:menu="@menu/search_menu"/>
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -27,6 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:hint="Search by teacher name..."
+        android:contentDescription="@string/search_classes"
         app:layout_anchor="@id/search_bar">
 
         <androidx.recyclerview.widget.RecyclerView

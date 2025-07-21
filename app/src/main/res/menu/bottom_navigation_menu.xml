@@ -5,7 +5,7 @@
         android:title="@string/detail"
         android:icon="@drawable/ic_detail_selector"/>
     <item
-        android:id="@+id/classListFragment"
+        android:id="@+id/courseListFragment"
         android:title="@string/storage"
         android:icon="@drawable/ic_storage_selector"/>
     <item

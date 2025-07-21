@@ -2,8 +2,9 @@ package com.example.coursework.data.local.repository;
 
 import android.util.Log;
 
-import com.example.coursework.data.local.entities.ClassInstance;
+import com.example.coursework.data.local.entities.YogaClass;
 import com.example.coursework.data.local.entities.YogaCourse;
+import com.example.coursework.data.local.util.SyncFirebaseListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -19,15 +20,19 @@ public class FirebaseRepository {
         this.firestore = FirebaseFirestore.getInstance();
     }
 
-    public void syncYogaCourse(YogaCourse yogaCourse) {
-        if (yogaCourse == null) return;
+    public void syncYogaCourse(YogaCourse yogaCourse, SyncFirebaseListener listener) {
+        if (yogaCourse == null) {
+            return;
+        }
         String docId = String.valueOf(yogaCourse.uid);
         firestore.collection("yoga_classes").document(docId).set(yogaCourse)
                 .addOnSuccessListener(aVoid -> {
                     Log.d("FirebaseRepository", "Yoga course synced successfully");
+                    if (listener != null) listener.syncSuccess();
                 })
                 .addOnFailureListener(e -> {
-                    Log.d("FirebaseRepository", "Failed to sync Yoga course");
+                    Log.d("FirebaseRepository", "Failed to sync Yoga course: " + e.getMessage());
+                    if (listener != null) listener.syncFailure("Failed to sync: " + e.getMessage());
                 });
     }
 
@@ -44,23 +49,23 @@ public class FirebaseRepository {
                 });
     }
 
-    public void syncAllClassInstances(String courseId, List<ClassInstance> instances) {
+    public void syncAllClassInstances(String courseId, List<YogaClass> classes) {
 
         WriteBatch writeBatch = firestore.batch();
-        CollectionReference instanceRef = firestore.collection("yoga_classes").document(courseId).collection("instances");
+        CollectionReference instanceRef = firestore.collection("yoga_classes").document(courseId).collection("classes");
 
-        for ( ClassInstance instance : instances) {
-            DocumentReference documentReference = instanceRef.document(String.valueOf(instance.getId()));
-            writeBatch.set(documentReference, instance, SetOptions.merge());
+        for ( YogaClass yogaClass : classes) {
+            DocumentReference documentReference = instanceRef.document(String.valueOf(yogaClass.id));
+            writeBatch.set(documentReference, yogaClass, SetOptions.merge());
         }
         writeBatch.commit()
-                .addOnSuccessListener(avoid -> {Log.d("FirebaseRepository", "All class instances synced successfully for course id: " + courseId);})
+                .addOnSuccessListener(avoid -> {Log.d("FirebaseRepository", "All class classes synced successfully for course id: " + courseId);})
                 .addOnFailureListener(e -> Log.d("Failed to sync", "Failed to sync for course id :" + courseId ));
     }
-    public void deleteInstance(ClassInstance classInstance) {
-        if(classInstance == null ) return;
-        String courseId = String.valueOf(classInstance.courseId);
-        String instanceId = String.valueOf(classInstance.getId());
+    public void deleteInstance(YogaClass yogaClass) {
+        if(yogaClass == null ) return;
+        String courseId = String.valueOf(yogaClass.courseId);
+        String instanceId = String.valueOf(yogaClass.id);
         firestore.collection("yoga_classes").document(courseId).collection("instances").document(instanceId).delete();
     }
 }

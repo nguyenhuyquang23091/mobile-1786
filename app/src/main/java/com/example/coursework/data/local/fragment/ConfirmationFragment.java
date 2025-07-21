@@ -59,9 +59,9 @@ public class ConfirmationFragment extends Fragment {
             binding.valType.setText(type);
             binding.valTime.setText(time);
             binding.valIntensity.setText(intensity);
-            binding.valCapacity.setText(String.valueOf(capacity));
-            binding.valDuration.setText(String.valueOf(duration));
-            binding.valPrice.setText(String.valueOf(price));
+            binding.valCapacity.setText(capacity + " people");
+            binding.valDuration.setText(duration + " min");
+            binding.valPrice.setText("£" + String.format("%.2f", price));
             if (description != null && !description.isEmpty()) {
                 binding.valDescription.setText(description);
             } else {
@@ -75,6 +75,7 @@ public class ConfirmationFragment extends Fragment {
     private void setupClickListeners() {
         binding.confirmButton.setOnClickListener(v -> {
             saveAndFinish();
+
         });
 
         binding.moreActionsButton.setOnClickListener(this::showMoreActionsMenu);
@@ -95,6 +96,9 @@ public class ConfirmationFragment extends Fragment {
         popup.show();
     }
     private void saveAndFinish() {
+        binding.loadingIndicator.setVisibility(View.VISIBLE);
+        binding.confirmButton.setEnabled(false);
+        binding.moreActionsButton.setEnabled(false);
 
         YogaCourse yogaCourse = new YogaCourse();
         String day = ConfirmationFragmentArgs.fromBundle(getArguments()).getDay();
@@ -120,20 +124,28 @@ public class ConfirmationFragment extends Fragment {
             @Override
             public void syncFailure(String errorMessage) {
                 requireActivity().runOnUiThread(() -> {
-                    Snackbar.make(binding.getRoot(), errorMessage, Snackbar.LENGTH_LONG).show();
-                    navigateToMain();
+                    binding.getRoot().postDelayed(() -> {
+                        binding.loadingIndicator.setVisibility(View.GONE);
+                        binding.confirmButton.setEnabled(true);
+                        binding.moreActionsButton.setEnabled(true);
+                        Snackbar.make(binding.getRoot(), errorMessage, Snackbar.LENGTH_LONG).show();
+                        navigateToMain();
+                    }, 2000);
                 });
             }
             @Override
             public void syncSuccess() {
                 requireActivity().runOnUiThread(() -> {
-                    Snackbar.make(binding.getRoot(), "Class saved and synced successfully!", Snackbar.LENGTH_LONG).show();
-                    navigateToMain();
+                    binding.getRoot().postDelayed(() -> {
+                        binding.loadingIndicator.setVisibility(View.GONE);
+                        binding.confirmButton.setEnabled(true);
+                        binding.moreActionsButton.setEnabled(true);
+                        Snackbar.make(binding.getRoot(), "Class saved and synced successfully!", Snackbar.LENGTH_LONG).show();
+                        navigateToMain();
+                    }, 2000);
                 });
             }
         });
-
-        Snackbar.make(binding.getRoot(), "Class saved successfully!", Snackbar.LENGTH_LONG).show();
     }
 
     private void navigateToMain(){

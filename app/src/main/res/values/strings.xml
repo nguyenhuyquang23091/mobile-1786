@@ -40,7 +40,7 @@
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
     <string name="please_bring_your_own_yoga_mat_water_bottles_will_be_provided">Please bring your own yoga mat. Water bottles will be provided.</string>
-    <string name="additional_comments">ADDITIONAL COMMENTS</string>
+    <string name="description">DESCRIPTION</string>
     <string name="no_description_provided">No description provided.</string>
     <string name="add_instance">Add Instance</string>
     <string name="date">Date</string>
@@ -53,5 +53,27 @@
     <string name="type_of_class">Type of class</string>
     <string name="edit_details">Edit Details</string>
     <string name="create_a_new_course">Create a New Course</string>
+
+    <!-- Content descriptions for accessibility -->
+    <string name="edit_yoga_class">Edit yoga class</string>
+    <string name="delete_yoga_class">Delete yoga class</string>
+    <string name="edit_class_instance">Edit class instance</string>
+    <string name="delete_class_instance">Delete class instance</string>
+    <string name="view_class_details">View class details</string>
+    <string name="add_new_class">Add New Class</string>
+    <string name="add_new_instance">Add new class instance</string>
+    <string name="search_classes">Search yoga classes</string>
+    <string name="clear_search">Clear search</string>
+    <string name="select_date">Select date</string>
+    <string name="select_time">Select time</string>
+    <string name="class_type_icon">Class type indicator</string>
+    <string name="teacher_icon">Teacher</string>
+    <string name="calendar_icon">Calendar</string>
+    <string name="time_icon">Time</string>
+    <string name="capacity_icon">Capacity</string>
+    <string name="duration_icon">Duration</string>
+    <string name="yoga_pose_illustration">Yoga pose illustration</string>
+    <string name="yoga_class_image">Yoga class preview image</string>
+
 
 </resources>

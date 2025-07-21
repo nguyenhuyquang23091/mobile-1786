@@ -1,31 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Your existing colors -->
+    <!-- Core Material Design colors -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="colorPrimary">#A7A666</color>
-    <color name="colorAccent">#5C6B8B</color>
-    <color name="colorBackground">#FFFFFF</color>
-    <color name="textColorPrimary">#333333</color>
-    <color name="red">#F44336</color>
-    <color name="yoga_green_dark">#00796B</color>
-    <color name="yoga_green_light">#E0F2F1</color>
-    <color name="yoga_blue_dark">#0288D1</color>
-    <color name="yoga_blue_light">#E1F5FE</color>
-    <color name="yoga_pink_dark">#C2185B</color>
-    <color name="yoga_pink_light">#FCE4EC</color>
-    <color name="yoga_default_dark">#5C6B8B</color>
-    <color name="yoga_default_light">#F5F5F5</color>
-    <color name="shimmer_placeholder">#E0E0E0</color>
+    <color name="transparent">#00000000</color>
 
-    <!-- *** ADD THESE NEW COLORS FOR THE VIBRANT LAYOUT *** -->
-    <color name="vibrant_purple">#7B1FA2</color>
-    <color name="vibrant_pink">#C2185B</color>
-    <color name="vibrant_background">#FFFFFF</color>
-    <color name="vibrant_text_secondary">#757575</color>
+    <!-- Primary brand colors -->
+    <color name="primary">#A7A666</color>
+    <color name="primary_variant">#8A8F4F</color>
+    <color name="secondary">#5C6B8B</color>
+    <color name="secondary_variant">#4A5774</color>
+
+    <!-- System colors -->
+    <color name="error">#B3261E</color>
+    <color name="success">#00796B</color>
+    <color name="warning">#FF8F00</color>
+    <color name="info">#0288D1</color>
+
+    <!-- Surface colors (for light theme) -->
+    <color name="surface">#FFFBFE</color>
+    <color name="surface_variant">#F4EFF4</color>
+    <color name="surface_container">#F7F2FA</color>
+    <color name="surface_container_high">#F1ECF4</color>
+
+    <!-- Text colors (for light theme) -->
+    <color name="on_surface">#1D1B20</color>
+    <color name="on_surface_variant">#49454F</color>
+    <color name="outline">#79747E</color>
+    <color name="outline_variant">#CAC4D0</color>
+
+    <!-- Placeholder and shimmer colors -->
+    <color name="shimmer_placeholder">@color/outline_variant</color>
+
+    <!-- Legacy colors (to be phased out) -->
+    <color name="colorPrimary">@color/primary</color>
+    <color name="colorAccent">@color/secondary</color>
+    <color name="colorBackground">@color/surface</color>
+    <color name="textColorPrimary">@color/on_surface</color>
+    <color name="red">@color/error</color>
+    
+    <!-- Vibrant card colors for confirmation fragment -->
+    <color name="yoga_blue_light">#E1F5FE</color>
+    <color name="yoga_pink_light">#FCE4EC</color>
     <color name="vibrant_card_capacity">#FFF3E0</color>
     <color name="vibrant_card_duration">#E8F5E9</color>
     <color name="vibrant_card_price">#E0F2F1</color>
     <color name="vibrant_card_intensity">#FFFDE7</color>
-
+    <color name="vibrant_text_secondary">#757575</color>
+    
+    <!-- Java adapter compatibility colors -->
+    <color name="yoga_green_dark">@color/success</color>
+    <color name="yoga_green_light">@color/surface_container</color>
+    <color name="yoga_blue_dark">@color/info</color>
+    <color name="yoga_pink_dark">#C2185B</color>
+    <color name="yoga_default_dark">@color/secondary</color>
+    
+    <!-- Gradient colors for enhanced cards -->
+    <color name="gradient_start_primary">#A7A666</color>
+    <color name="gradient_end_primary">#8A8F4F</color>
+    <color name="gradient_start_secondary">#5C6B8B</color>
+    <color name="gradient_end_secondary">#4A5774</color>
+    <color name="gradient_start_accent">#81C784</color>
+    <color name="gradient_end_accent">#66BB6A</color>
+    
+    <!-- Enhanced surface colors -->
+    <color name="surface_elevated">#FFFFFF</color>
+    <color name="surface_tinted">#F8F6FF</color>
+    <color name="shadow_light">#1A000000</color>
+    <color name="shadow_medium">#33000000</color>
 </resources>

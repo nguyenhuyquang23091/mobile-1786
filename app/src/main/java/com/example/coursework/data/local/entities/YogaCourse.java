@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
 import com.google.firebase.firestore.Exclude;
 
 
-@Entity(tableName = "yoga_classes")
+@Entity(tableName = "yoga_courses")
 public class YogaCourse {
     @PrimaryKey(autoGenerate = true)
     @Exclude
@@ -25,7 +25,7 @@ public class YogaCourse {
     public Double price;
     @ColumnInfo(name = "type")
     public String type;
-    @ColumnInfo(name = "description")
+    @ColumnInfo(name = "    description")
     public String description;
     @ColumnInfo(name = "intensity")
     public String intensity;

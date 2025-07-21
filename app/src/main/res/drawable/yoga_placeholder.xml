@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="80dp"
+    android:viewportWidth="120"
+    android:viewportHeight="80">
+    
+    <!-- Background -->
+    <path
+        android:fillColor="@color/surface_container"
+        android:pathData="M0,0h120v80h-120z" />
+    
+    <!-- Yoga pose silhouette -->
+    <group android:translateX="60" android:translateY="40">
+        <!-- Head -->
+        <path
+            android:fillColor="@color/outline_variant"
+            android:pathData="M-8,-15 A8,8 0 1,1 8,-15 A8,8 0 1,1 -8,-15" />
+        
+        <!-- Body -->
+        <path
+            android:strokeColor="@color/outline_variant"
+            android:strokeWidth="3"
+            android:strokeLineCap="round"
+            android:pathData="M0,-7 L0,15 M-15,5 L15,5 M-12,15 L-8,25 M8,15 L12,25" />
+    </group>
+</vector>

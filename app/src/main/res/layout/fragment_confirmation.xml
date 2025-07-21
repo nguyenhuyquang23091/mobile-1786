@@ -22,8 +22,9 @@
 
             <ImageView
                 android:id="@+id/header_icon"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="@dimen/icon_size_large"
+                android:layout_height="@dimen/icon_size_large"
+                android:contentDescription="@string/yoga_pose_illustration"
                 android:src="@drawable/ic_yoga_man"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -36,8 +37,7 @@
                 android:layout_marginTop="16dp"
                 android:text="Confirm Your Yoga Class"
                 android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-                android:textColor="@color/textColorPrimary"
-                android:textStyle="bold"
+                android:textColor="?attr/colorOnSurface"
                 app:layout_constraintTop_toBottomOf="@id/header_icon"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
@@ -49,7 +49,7 @@
                 android:layout_marginTop="4dp"
                 android:text="Please review the details below before confirming"
                 android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-                android:textColor="@color/vibrant_text_secondary"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 app:layout_constraintTop_toBottomOf="@id/tvTitle"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
@@ -80,8 +80,9 @@
                         android:gravity="center_vertical">
 
                         <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
+                            android:layout_width="@dimen/icon_size_small"
+                            android:layout_height="@dimen/icon_size_small"
+                            android:contentDescription="@null"
                             android:src="@drawable/ic_calendar"
                            />
 
@@ -91,8 +92,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="12dp"
                             android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                            android:textColor="@color/textColorPrimary"
-                            android:textStyle="bold"
+                            android:textColor="?attr/colorOnSurface"
                             tools:text="Vinyasa Flow" />
                     </LinearLayout>
 
@@ -109,7 +109,7 @@
                             style="@style/VibrantDetailCard"
                             app:cardBackgroundColor="@color/yoga_blue_light">
                             <LinearLayout style="@style/VibrantDetailCardContent">
-                                <ImageView style="@style/VibrantDetailCardIcon" android:src="@drawable/ic_calendar" />
+                                <ImageView style="@style/VibrantDetailCardIcon" android:src="@drawable/ic_calendar" android:contentDescription="@null" />
                                 <TextView style="@style/VibrantDetailCardLabel" android:text="Day" />
                                 <TextView android:id="@+id/valDay" style="@style/VibrantDetailCardValue" tools:text="Monday" />
                             </LinearLayout>
@@ -120,7 +120,7 @@
                             style="@style/VibrantDetailCard"
                             app:cardBackgroundColor="@color/yoga_pink_light">
                             <LinearLayout style="@style/VibrantDetailCardContent">
-                                <ImageView style="@style/VibrantDetailCardIcon" android:src="@drawable/ic_time" />
+                                <ImageView style="@style/VibrantDetailCardIcon" android:src="@drawable/ic_time" android:contentDescription="@null" />
                                 <TextView style="@style/VibrantDetailCardLabel" android:text="Time" />
                                 <TextView android:id="@+id/valTime" style="@style/VibrantDetailCardValue" tools:text="7:00 AM" />
                             </LinearLayout>
@@ -131,9 +131,9 @@
                             style="@style/VibrantDetailCard"
                             app:cardBackgroundColor="@color/vibrant_card_capacity">
                             <LinearLayout style="@style/VibrantDetailCardContent">
-                                <ImageView style="@style/VibrantDetailCardIcon" android:src="@drawable/ic_group" />
+                                <ImageView style="@style/VibrantDetailCardIcon" android:src="@drawable/ic_group" android:contentDescription="@null" />
                                 <TextView style="@style/VibrantDetailCardLabel" android:text="Capacity" />
-                                <TextView android:id="@+id/valCapacity" style="@style/VibrantDetailCardValue" tools:text="20 students" />
+                                <TextView android:id="@+id/valCapacity" style="@style/VibrantDetailCardValue" tools:text="20 people" />
                             </LinearLayout>
                         </com.google.android.material.card.MaterialCardView>
 
@@ -142,9 +142,9 @@
                             style="@style/VibrantDetailCard"
                             app:cardBackgroundColor="@color/vibrant_card_duration">
                             <LinearLayout style="@style/VibrantDetailCardContent">
-                                <ImageView style="@style/VibrantDetailCardIcon" android:src="@drawable/ic_timer" />
+                                <ImageView style="@style/VibrantDetailCardIcon" android:src="@drawable/ic_timer" android:contentDescription="@null" />
                                 <TextView style="@style/VibrantDetailCardLabel" android:text="Duration" />
-                                <TextView android:id="@+id/valDuration" style="@style/VibrantDetailCardValue" tools:text="60 minutes" />
+                                <TextView android:id="@+id/valDuration" style="@style/VibrantDetailCardValue" tools:text="60 min" />
                             </LinearLayout>
                         </com.google.android.material.card.MaterialCardView>
 
@@ -153,9 +153,9 @@
                             style="@style/VibrantDetailCard"
                             app:cardBackgroundColor="@color/vibrant_card_price">
                             <LinearLayout style="@style/VibrantDetailCardContent">
-                                <ImageView style="@style/VibrantDetailCardIcon" android:src="@drawable/ic_payments" />
+                                <ImageView style="@style/VibrantDetailCardIcon" android:src="@drawable/ic_payments" android:contentDescription="@null" />
                                 <TextView style="@style/VibrantDetailCardLabel" android:text="Price" />
-                                <TextView android:id="@+id/valPrice" style="@style/VibrantDetailCardValue" tools:text="£10" />
+                                <TextView android:id="@+id/valPrice" style="@style/VibrantDetailCardValue" tools:text="£10.00" />
                             </LinearLayout>
                         </com.google.android.material.card.MaterialCardView>
 
@@ -164,7 +164,7 @@
                             style="@style/VibrantDetailCard"
                             app:cardBackgroundColor="@color/vibrant_card_intensity">
                             <LinearLayout style="@style/VibrantDetailCardContent">
-                                <ImageView style="@style/VibrantDetailCardIcon" android:src="@drawable/ic_fitness_center" />
+                                <ImageView style="@style/VibrantDetailCardIcon" android:src="@drawable/ic_fitness_center" android:contentDescription="@null" />
                                 <TextView style="@style/VibrantDetailCardLabel" android:text="Intensity" />
                                 <TextView android:id="@+id/valIntensity" style="@style/VibrantDetailCardValue" tools:text="Intermediate" />
                             </LinearLayout>
@@ -187,8 +187,9 @@
                             android:orientation="horizontal"
                             android:gravity="center_vertical">
                             <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
+                                android:layout_width="@dimen/icon_size_small"
+                                android:layout_height="@dimen/icon_size_small"
+                                android:contentDescription="@null"
                                 android:src="@drawable/ic_notes"
                                 app:tint="@color/vibrant_text_secondary"/>
                             <TextView
@@ -197,7 +198,7 @@
                                 android:layout_marginStart="8dp"
                                 android:text="Class Description"
                                 android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
-                                android:textColor="@color/textColorPrimary"/>
+                                android:textColor="?attr/colorOnSurface"/>
                         </LinearLayout>
 
                         <TextView
@@ -206,7 +207,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-                            android:textColor="@color/vibrant_text_secondary"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             tools:text="A dynamic flowing sequence that links movement and breath to build strength, flexibility, and mindfulness." />
                     </LinearLayout>
 
@@ -228,36 +229,40 @@
                     android:id="@+id/moreActionsButton"
                     style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/min_touch_target"
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
                     android:text="@string/edit_details"
-                    android:textColor="@color/textColorPrimary"/>
+                    android:contentDescription="@string/edit_details"
+                    android:textColor="?attr/colorOnSurface"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/confirmButton"
                     style="@style/Widget.Material3.Button.Icon"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/min_touch_target"
                     android:layout_weight="1"
                     android:layout_marginStart="8dp"
                     android:text="@string/confirm"
-                    android:textColor="@color/textColorPrimary"
+                    android:contentDescription="@string/confirm"
+                    android:textColor="?attr/colorOnPrimary"
                     />
 
             </LinearLayout>
 
+            <!-- Add this progress indicator (already exists but enhance it) -->
             <com.google.android.material.progressindicator.CircularProgressIndicator
                 android:id="@+id/loadingIndicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:indeterminate="true"
                 android:visibility="gone"
-                app:layout_constraintTop_toTopOf="@id/buttonsLayout"
-                app:layout_constraintBottom_toBottomOf="@id/buttonsLayout"
+                android:layout_marginTop="16dp"
+                style="@style/Widget.Material3.CircularProgressIndicator.Medium"
+                app:indicatorColor="?attr/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@id/buttonsLayout"
                 app:layout_constraintStart_toStartOf="@id/buttonsLayout"
-                app:layout_constraintEnd_toEndOf="@id/buttonsLayout"
-                tools:visibility="visible"/>
+                app:layout_constraintEnd_toEndOf="@id/buttonsLayout" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

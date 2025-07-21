@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/surface"
     android:fitsSystemWindows="true"
     tools:context=".data.local.fragment.CourseListFragment">
 
@@ -25,7 +25,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             >
-
             <include layout="@layout/list_item_yoga_course_placeholder" />
             <include layout="@layout/list_item_yoga_course_placeholder" />
             <include layout="@layout/list_item_yoga_course_placeholder" />
@@ -39,11 +38,15 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="gone"
+        android:paddingTop="8dp"
+        android:paddingBottom="16dp"
+        android:clipToPadding="false"
+        android:scrollbars="none"
+        android:overScrollMode="never"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:listitem="@layout/list_item_yoga_courses"
         tools:visibility="visible"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

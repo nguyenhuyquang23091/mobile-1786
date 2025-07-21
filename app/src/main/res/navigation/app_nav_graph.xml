@@ -8,7 +8,7 @@
         android:id="@+id/createClassFragment"
         android:name="com.example.coursework.data.local.fragment.CreateCourseFragment"
         android:label="fragment_create_class"
-        tools:layout="@layout/fragment_create_class">
+        tools:layout="@layout/fragment_create_course">
 
         <action
             android:id="@+id/action_createClassFragment_to_confirmFragment"
@@ -53,10 +53,10 @@
 
 
     <fragment
-        android:id="@+id/classListFragment"
+        android:id="@+id/courseListFragment"
         android:name="com.example.coursework.data.local.fragment.CourseListFragment"
         android:label="fragment_class_list"
-        tools:layout="@layout/fragment_class_list">
+        tools:layout="@layout/fragment_course_list">
         <action
             android:id="@+id/action_classListFragment_to_classInstanceFragment"
             app:destination="@id/classInstanceFragment" />
@@ -66,7 +66,7 @@
 
     <fragment
         android:id="@+id/classInstanceFragment"
-        android:name="com.example.coursework.data.local.fragment.ClassInstanceFragment"
+        android:name="com.example.coursework.data.local.fragment.YogaClassFragment"
         android:label="fragment_class_instance"
         tools:layout="@layout/fragment_class_instance">
         <argument

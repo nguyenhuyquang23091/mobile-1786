@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+
+import com.example.coursework.databinding.FragmentCreateCourseBinding;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
@@ -22,7 +24,6 @@ import com.example.coursework.data.local.AppDatabase;
 import com.example.coursework.data.local.entities.YogaCourse;
 import com.example.coursework.data.local.implementation.YogaRepositoryImplementation;
 import com.example.coursework.data.local.repository.YogaClassRepository;
-import com.example.coursework.databinding.FragmentCreateClassBinding;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.timepicker.MaterialTimePicker;
@@ -33,14 +34,14 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class CreateCourseFragment extends Fragment {
-    private FragmentCreateClassBinding binding;
+    private FragmentCreateCourseBinding binding;
     private YogaClassRepository yogaClassRepository;
     private YogaCourse editYogaCourse = null;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentCreateClassBinding.inflate(inflater, container, false);
+        binding = FragmentCreateCourseBinding.inflate(inflater, container, false);
 
         return binding.getRoot();
     }
@@ -103,7 +104,6 @@ public class CreateCourseFragment extends Fragment {
             if (validateForm()) {
                 // Your original success toast
                 Snackbar.make(requireView(), "Form submitted successfully", Snackbar.LENGTH_SHORT).show();
-
                 new Handler(Looper.getMainLooper()).postDelayed(() -> {
                     if (editYogaCourse != null) {
                         // UPDATE existing class
@@ -157,15 +157,13 @@ public class CreateCourseFragment extends Fragment {
         // Clear previous errors before validating again
         clearAllErrors();
 
-        // --- Your Validation Logic (Upgraded & Fixed) ---
-        // Day input
+
         if (TextUtils.isEmpty(binding.dayOfWeekInput.getText())) {
             // FIX: Get the parent TextInputLayout to set the error
             ((TextInputLayout) binding.dayOfWeekInput.getParent().getParent()).setError("Please select a valid day");
             valid = false;
         }
 
-        // Time input
         if (TextUtils.isEmpty(binding.timeInput.getText())) {
             binding.timeLayout.setError("Please select a time");
             valid = false;
@@ -199,7 +197,6 @@ public class CreateCourseFragment extends Fragment {
         return valid;
     }
     private void clearAllErrors() {
-        // FIX: Get the parent TextInputLayout to clear the error
         ((TextInputLayout) binding.dayOfWeekInput.getParent().getParent()).setError(null);
         binding.timeLayout.setError(null);
         binding.capacityLayout.setError(null);

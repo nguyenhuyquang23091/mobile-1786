@@ -3,10 +3,10 @@ package com.example.coursework.data.local.entities;
 import androidx.room.Embedded;
 import androidx.room.Relation;
 
-public class ClassInstanceWIthDetail {
+public class YogaClassWithDetail {
 
     @Embedded
-    public ClassInstance classInstance;
+    public YogaClass yogaClass;
     @Relation(
             parentColumn = "courseId",
             entityColumn = "uid"
