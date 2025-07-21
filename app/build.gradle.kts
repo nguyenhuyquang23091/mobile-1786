@@ -69,6 +69,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.firebase.analytics)
     implementation(platform(libs.firebase.bom))
+    implementation("com.google.cloud:google-cloud-firestore:3.15.0")
     implementation(libs.shimmer)
 
 }

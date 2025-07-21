@@ -37,7 +37,7 @@ public class YogaRepositoryImplementation implements YogaClassRepository {
                 YogaCourse classToSync = yogaClassDAO.getCourseById((int) newUid);
 
                 if (classToSync != null) {
-                    firebaseRepository.syncYogaCourse(classToSync, listener);
+                    firebaseRepository.insertYogaCourse(classToSync, listener);
                 } else {
                     if (listener != null) {
                         listener.syncFailure("Error: Could not retrieve saved course from local DB.");
@@ -88,7 +88,7 @@ public class YogaRepositoryImplementation implements YogaClassRepository {
     public void insertInstance(YogaClass yogaClass) {
         AppDatabase.databaseWriteExecutor.execute(() -> {
             yogaClassDAO.insertInstance(yogaClass);
-            if (isConnected()) {
+                if (isConnected()) {
                 // Call the helper method after inserting
                 List<YogaClass> instances = yogaClassDAO.getInstances(yogaClass.courseId);
                 firebaseRepository.syncAllClassInstances(String.valueOf(yogaClass.courseId), instances);
@@ -130,4 +130,10 @@ public class YogaRepositoryImplementation implements YogaClassRepository {
     public YogaClassWithDetail getInstanceWithDetails(int instanceId) {
        return yogaClassDAO.getInstanceWithDetails(instanceId);
     }
+
+
+
+
+    //CREATE CHECK CONNECTION HELPER
+
 }

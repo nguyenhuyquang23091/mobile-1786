@@ -5,22 +5,50 @@ import android.util.Log;
 import com.example.coursework.data.local.entities.YogaClass;
 import com.example.coursework.data.local.entities.YogaCourse;
 import com.example.coursework.data.local.util.SyncFirebaseListener;
+import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.WriteBatch;
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.FirestoreOptions;
 
+import java.util.Collections;
 import java.util.List;
 
 public class FirebaseRepository {
     private FirebaseFirestore firestore;
+    private Firestore cloudFirestore;
 
     public FirebaseRepository() {
         this.firestore = FirebaseFirestore.getInstance();
+        this.cloudFirestore = FirestoreOptions.getDefaultInstance().getService();
     }
+    //loadYogaCourse
 
-    public void syncYogaCourse(YogaCourse yogaCourse, SyncFirebaseListener listener) {
+
+    public void getYogaCourse(List<YogaCourse> yogaCourses, SyncFirebaseListener listener) throws Exception {
+    if (yogaCourses == null) {
+        List<YogaCourse> emptyList = Collections.emptyList();
+        return;
+    }
+        CollectionReference collectionReference = firestore.collection("yoga_classes");
+        ApiFuture<QuerySnapshot> querySnapshotApiFuture = cloudFirestore.collection(String.valueOf(collectionReference)).get();
+
+
+
+
+
+
+
+
+
+    }
+    //Synce if changes, push all changes to firebase
+    //sync
+    public void insertYogaCourse(YogaCourse yogaCourse, SyncFirebaseListener listener) {
         if (yogaCourse == null) {
             return;
         }
@@ -36,6 +64,9 @@ public class FirebaseRepository {
                 });
     }
 
+    //get
+
+
     public void deteleYogaCourse(YogaCourse yogaCourse) {
         if (yogaCourse == null) return;
         String docId = String.valueOf(yogaCourse.uid);
@@ -48,7 +79,6 @@ public class FirebaseRepository {
                     ;
                 });
     }
-
     public void syncAllClassInstances(String courseId, List<YogaClass> classes) {
 
         WriteBatch writeBatch = firestore.batch();

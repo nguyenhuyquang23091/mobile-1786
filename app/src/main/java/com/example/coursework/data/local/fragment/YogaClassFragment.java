@@ -157,7 +157,6 @@ public class YogaClassFragment extends Fragment {
                 .setView(dialogView)
                 .create();
 
-        dialog.getWindow().setWindowAnimations(R.style.DialogSlideAnimation);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
         saveButton.setOnClickListener(v -> {
@@ -183,10 +182,10 @@ public class YogaClassFragment extends Fragment {
                         loadingIndicator.setVisibility(View.GONE);
                         saveButton.setEnabled(true);
                         cancelButton.setEnabled(true);
-                        
+
                         new MaterialAlertDialogBuilder(requireContext())
                                 .setTitle("Invalid Date")
-                                .setMessage("This course is scheduled for " + courseday + 
+                                .setMessage("This course is scheduled for " + courseday +
                                         "s only. Please select a " + courseday + " date.")
                                 .setIcon(R.drawable.ic_caution)
                                 .setPositiveButton("OK", null)
@@ -210,7 +209,6 @@ public class YogaClassFragment extends Fragment {
                             instanceToEdit.date = date;
                             instanceToEdit.teacher = teacher;
                             instanceToEdit.description = description;
-                            instanceToEdit.courseType = courseType;
                             repository.updateInstance(instanceToEdit);
                             Snackbar.make(requireView(), "Class updated successfully", Snackbar.LENGTH_SHORT).show();
                         }
@@ -232,21 +230,21 @@ public class YogaClassFragment extends Fragment {
     }
 
     private boolean isValidDate(String selectedDate, String  courseDay){
-            try {
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault());
-                Date date = simpleDateFormat.parse(selectedDate);
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(date);
-                int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
-                String[] daysOfWeek = {"", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
-                String selectedDayOfWeek = daysOfWeek[dayOfWeek];
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault());
+            Date date = simpleDateFormat.parse(selectedDate);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+            String[] daysOfWeek = {"", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+            String selectedDayOfWeek = daysOfWeek[dayOfWeek];
 
-                return selectedDayOfWeek.equalsIgnoreCase(courseDay);
+            return selectedDayOfWeek.equalsIgnoreCase(courseDay);
 
-            } catch (ParseException e) {
-                Log.d("Error while parsing", Objects.requireNonNull(e.getMessage()));
-                throw new RuntimeException(e);
-            }
+        } catch (ParseException e) {
+            Log.d("Error while parsing", Objects.requireNonNull(e.getMessage()));
+            throw new RuntimeException(e);
+        }
     }
     @Override
     public void onDestroyView() {
