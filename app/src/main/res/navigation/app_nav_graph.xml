@@ -3,7 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/app_nav_graph"
-    app:startDestination="@id/createClassFragment">
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.coursework.data.local.fragment.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_sign_in">
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_createClassFragment"
+            app:destination="@id/createClassFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.coursework.data.local.fragment.SignUpFragment"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_sign_up" />
+
     <fragment
         android:id="@+id/createClassFragment"
         android:name="com.example.coursework.data.local.fragment.CreateCourseFragment"
@@ -19,8 +41,7 @@
         android:id="@+id/confirmationFragment"
         android:name="com.example.coursework.data.local.fragment.ConfirmationFragment"
         android:label="fragment_confirmation"
-        tools:layout="@layout/fragment_confirmation"
-        >
+        tools:layout="@layout/fragment_confirmation">
         <action
             android:id="@+id/action_confirmationFragment_to_createClassFragment"
             app:destination="@id/createClassFragment"/>
@@ -51,7 +72,6 @@
             app:nullable="true" />
     </fragment>
 
-
     <fragment
         android:id="@+id/courseListFragment"
         android:name="com.example.coursework.data.local.fragment.CourseListFragment"
@@ -62,8 +82,6 @@
             app:destination="@id/classInstanceFragment" />
     </fragment>
 
-
-
     <fragment
         android:id="@+id/classInstanceFragment"
         android:name="com.example.coursework.data.local.fragment.YogaClassFragment"
@@ -73,6 +91,7 @@
             android:name="courseId"
             app:argType="integer" />
     </fragment>
+
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.coursework.data.local.fragment.SearchFragment"
@@ -82,6 +101,7 @@
             android:id="@+id/search_to_detail"
             app:destination="@id/classDetailFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/classDetailFragment"
         android:name="com.example.coursework.data.local.fragment.CourseDetailFragment"

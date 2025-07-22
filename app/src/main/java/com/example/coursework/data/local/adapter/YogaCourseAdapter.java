@@ -15,7 +15,7 @@ import androidx.navigation.fragment.FragmentNavigator;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.coursework.R;
-import com.example.coursework.data.local.entities.YogaCourse;
+import com.example.coursework.data.local.entities.yogaEntity.YogaCourse;
 import com.example.coursework.databinding.ListItemYogaCoursesBinding;
 
 import java.util.ArrayList;

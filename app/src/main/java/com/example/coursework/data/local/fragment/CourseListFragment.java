@@ -23,9 +23,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.coursework.databinding.FragmentCourseListBinding;
 import com.example.coursework.data.local.AppDatabase;
 import com.example.coursework.data.local.adapter.YogaCourseAdapter;
-import com.example.coursework.data.local.entities.YogaCourse;
+import com.example.coursework.data.local.entities.yogaEntity.YogaCourse;
 import com.example.coursework.data.local.implementation.YogaRepositoryImplementation;
-import com.example.coursework.data.local.repository.YogaClassRepository;
+import com.example.coursework.data.local.repository.YogaRepository;
 import com.example.coursework.data.local.util.SyncFirebaseListener;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.transition.MaterialElevationScale;
@@ -36,7 +36,7 @@ import java.util.Objects;
 
 public class CourseListFragment extends Fragment {
     private FragmentCourseListBinding binding;
-    private YogaClassRepository yogaClassRepository;
+    private YogaRepository yogaRepository;
     private YogaCourseAdapter yogaCourseAdapter;
 
     private RecyclerView recylerView;
@@ -55,7 +55,7 @@ public class CourseListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        yogaClassRepository = new YogaRepositoryImplementation(requireActivity().getApplication());
+        yogaRepository = new YogaRepositoryImplementation(requireActivity().getApplication());
         recylerView = binding.recyclerViewClasses;
         shimmerFrameLayout = binding.shimmerLayout;
         setExitTransition(new MaterialElevationScale(false));
@@ -77,7 +77,7 @@ public class CourseListFragment extends Fragment {
                         .setMessage("Are you sure you want to delete \"" + yogaCourse.type + "\"? This action cannot be undone.")
                         .setNegativeButton("Cancel", null)
                         .setPositiveButton("Delete", (dialog, which) -> {
-                            yogaClassRepository.delete(yogaCourse);
+                            yogaRepository.delete(yogaCourse);
                             Snackbar.make(requireView(), "Class deleted successfully", Snackbar.LENGTH_SHORT).show();
                             loadClasses();
                         })
@@ -102,9 +102,9 @@ public class CourseListFragment extends Fragment {
         shimmerFrameLayout.setVisibility(View.VISIBLE);
         shimmerFrameLayout.startShimmer();
         binding.recyclerViewClasses.setVisibility(View.GONE);
-        
+
         // First try to load from Firebase, then fall back to local data
-        yogaClassRepository.loadAllCoursesFromFirebase(new SyncFirebaseListener() {
+        yogaRepository.loadAllCoursesFromFirebase(new SyncFirebaseListener() {
             @Override
             public void syncFirebasewithLocal() {
                 Log.d("CourseListFragment", "Successfully loaded courses from Firebase");
@@ -123,7 +123,7 @@ public class CourseListFragment extends Fragment {
             }
         });
     }
-    
+
     private void loadLocalCourses() {
         AppDatabase.databaseWriteExecutor.execute(() -> {
             try {
@@ -131,7 +131,7 @@ public class CourseListFragment extends Fragment {
             } catch (InterruptedException e){
                 Log.e("Error", Objects.requireNonNull(e.getMessage()));
             }
-            List<YogaCourse> courses = yogaClassRepository.getAll();
+            List<YogaCourse> courses = yogaRepository.getAll();
             if (getActivity() != null ){
                 getActivity().runOnUiThread(() -> {
                     shimmerFrameLayout.stopShimmer();
@@ -139,7 +139,7 @@ public class CourseListFragment extends Fragment {
                     binding.recyclerViewClasses.setVisibility(View.VISIBLE);
                     yogaCourseAdapter.setCourses(courses);
                     if (courses.isEmpty()) {
-                        Snackbar.make(requireView(), "No courses found. Create your first course!", 
+                        Snackbar.make(requireView(), "No courses found. Create your first course!",
                                 Snackbar.LENGTH_LONG).show();
                     } else {
                         Log.d("CourseListFragment", "Loaded " + courses.size() + " courses");

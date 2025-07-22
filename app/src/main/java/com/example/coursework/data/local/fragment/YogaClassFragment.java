@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.coursework.R;
 import com.example.coursework.data.local.AppDatabase;
 import com.example.coursework.data.local.adapter.YogaClassAdapter;
-import com.example.coursework.data.local.entities.YogaClass;
+import com.example.coursework.data.local.entities.yogaEntity.YogaClass;
 import com.example.coursework.data.local.implementation.YogaRepositoryImplementation;
 import com.example.coursework.databinding.FragmentClassInstanceBinding;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -34,7 +34,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.TimeZone;
 
 
 public class YogaClassFragment extends Fragment {

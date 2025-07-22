@@ -14,12 +14,12 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.coursework.R;
-import com.example.coursework.data.local.entities.YogaClass;
+import com.example.coursework.data.local.entities.yogaEntity.YogaClass;
 import com.example.coursework.databinding.FragmentSearchBinding;
 import com.example.coursework.data.local.AppDatabase;
 import com.example.coursework.data.local.adapter.YogaClassAdapter;
 import com.example.coursework.data.local.implementation.YogaRepositoryImplementation;
-import com.example.coursework.data.local.repository.YogaClassRepository;
+import com.example.coursework.data.local.repository.YogaRepository;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -32,7 +32,7 @@ import java.util.TimeZone;
 
 public class SearchFragment extends Fragment {
     private FragmentSearchBinding binding;
-    private YogaClassRepository yogaClassRepository;
+    private YogaRepository yogaRepository;
     private YogaClassAdapter adapter;
     private boolean allowTextChange = false;
 
@@ -46,7 +46,7 @@ public class SearchFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        yogaClassRepository = new YogaRepositoryImplementation(requireActivity().getApplication());
+        yogaRepository = new YogaRepositoryImplementation(requireActivity().getApplication());
         setUpRecyclerView();
         setUpSearch();
     }
@@ -145,13 +145,13 @@ public class SearchFragment extends Fragment {
             return;
         }
         AppDatabase.databaseWriteExecutor.execute(() -> {
-            List<YogaClass> results = yogaClassRepository.searchByTeacher(query);
+            List<YogaClass> results = yogaRepository.searchByTeacher(query);
             requireActivity().runOnUiThread(() -> adapter.setClasses(results));
         });
     }
     private void performSearchByDate(String date) {
         AppDatabase.databaseWriteExecutor.execute(() -> {
-            List<YogaClass> results = yogaClassRepository.searchByDate(date);
+            List<YogaClass> results = yogaRepository.searchByDate(date);
             requireActivity().runOnUiThread(() -> {
                 binding.searchView.show();
                 adapter.setClasses(results);
@@ -162,7 +162,7 @@ public class SearchFragment extends Fragment {
     private void performSearchByDay(String day) {
         AppDatabase.databaseWriteExecutor.execute(() -> {
             Log.d("SearchFragment", "Searching for day: " + day);
-            List<YogaClass> results = yogaClassRepository.searchByDay(day);
+            List<YogaClass> results = yogaRepository.searchByDay(day);
             Log.d("SearchFragment", "Search results count: " + results.size());
             if(results.isEmpty()){
                 Log.d("SearchFragment", "No results found for day: " + day);

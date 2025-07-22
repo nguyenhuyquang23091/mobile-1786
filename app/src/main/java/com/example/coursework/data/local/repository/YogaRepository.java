@@ -1,13 +1,13 @@
 package com.example.coursework.data.local.repository;
 
-import com.example.coursework.data.local.entities.YogaClass;
-import com.example.coursework.data.local.entities.YogaClassWithDetail;
-import com.example.coursework.data.local.entities.YogaCourse;
+import com.example.coursework.data.local.entities.yogaEntity.YogaClass;
+import com.example.coursework.data.local.entities.yogaEntity.YogaClassWithDetail;
+import com.example.coursework.data.local.entities.yogaEntity.YogaCourse;
 import com.example.coursework.data.local.util.SyncFirebaseListener;
 
 import java.util.List;
 
-public interface YogaClassRepository {
+public interface YogaRepository {
     void insert(YogaCourse yogaCourse, SyncFirebaseListener syncFirebaseListener);
 
     void update(YogaCourse yogaCourse);

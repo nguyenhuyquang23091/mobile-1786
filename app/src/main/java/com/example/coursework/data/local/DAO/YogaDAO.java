@@ -7,14 +7,14 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 import androidx.room.Update;
 
-import com.example.coursework.data.local.entities.YogaClass;
-import com.example.coursework.data.local.entities.YogaClassWithDetail;
-import com.example.coursework.data.local.entities.YogaCourse;
+import com.example.coursework.data.local.entities.yogaEntity.YogaClass;
+import com.example.coursework.data.local.entities.yogaEntity.YogaClassWithDetail;
+import com.example.coursework.data.local.entities.yogaEntity.YogaCourse;
 
 import java.util.List;
 
 @Dao
-public interface YogaClassDAO {
+public interface YogaDAO {
     @Insert
     long insert(YogaCourse yogaCourse);
     @Update

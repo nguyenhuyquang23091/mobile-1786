@@ -1,4 +1,4 @@
-package com.example.coursework.data.local.entities;
+package com.example.coursework.data.local.entities.yogaEntity;
 
 
 import androidx.room.ColumnInfo;

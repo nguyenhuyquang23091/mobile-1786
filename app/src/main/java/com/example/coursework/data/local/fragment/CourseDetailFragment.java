@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.coursework.data.local.entities.YogaClassWithDetail;
+import com.example.coursework.data.local.entities.yogaEntity.YogaClassWithDetail;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,13 +14,13 @@ import androidx.navigation.Navigation;
 
 import com.example.coursework.data.local.AppDatabase;
 import com.example.coursework.data.local.implementation.YogaRepositoryImplementation;
-import com.example.coursework.data.local.repository.YogaClassRepository;
+import com.example.coursework.data.local.repository.YogaRepository;
 import com.example.coursework.databinding.FragmentClassDetailBinding;
 
 public class CourseDetailFragment extends Fragment {
 
     private FragmentClassDetailBinding binding;
-    private YogaClassRepository yogaClassRepository;
+    private YogaRepository yogaRepository;
 
     private int instanceId = -1;
 
@@ -35,7 +35,7 @@ public class CourseDetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        yogaClassRepository = new YogaRepositoryImplementation(requireActivity().getApplication());
+        yogaRepository = new YogaRepositoryImplementation(requireActivity().getApplication());
         if (getArguments() != null) {
             instanceId = getArguments().getInt("instanceId", -1);
         }
@@ -51,7 +51,7 @@ public class CourseDetailFragment extends Fragment {
 
     private void loadClassDetail(){
         AppDatabase.databaseWriteExecutor.execute(() ->{
-            YogaClassWithDetail detail = yogaClassRepository.getInstanceWithDetails(instanceId);
+            YogaClassWithDetail detail = yogaRepository.getInstanceWithDetails(instanceId);
             bind(detail);
         });
 

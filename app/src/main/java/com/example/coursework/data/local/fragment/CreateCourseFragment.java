@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +20,9 @@ import androidx.navigation.Navigation;
 
 import com.example.coursework.R;
 import com.example.coursework.data.local.AppDatabase;
-import com.example.coursework.data.local.entities.YogaCourse;
+import com.example.coursework.data.local.entities.yogaEntity.YogaCourse;
 import com.example.coursework.data.local.implementation.YogaRepositoryImplementation;
-import com.example.coursework.data.local.repository.YogaClassRepository;
+import com.example.coursework.data.local.repository.YogaRepository;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.timepicker.MaterialTimePicker;
@@ -35,7 +34,7 @@ import java.util.Objects;
 
 public class CreateCourseFragment extends Fragment {
     private FragmentCreateCourseBinding binding;
-    private YogaClassRepository yogaClassRepository;
+    private YogaRepository yogaRepository;
     private YogaCourse editYogaCourse = null;
 
     @Nullable
@@ -49,7 +48,7 @@ public class CreateCourseFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        yogaClassRepository = new YogaRepositoryImplementation(requireActivity().getApplication());
+        yogaRepository = new YogaRepositoryImplementation(requireActivity().getApplication());
         setupAdapters();
         setupClickListeners();
         if(requireActivity().getIntent().hasExtra("uid")){
@@ -61,7 +60,7 @@ public class CreateCourseFragment extends Fragment {
     }
     private void loadEditClass(int classId){
         AppDatabase.databaseWriteExecutor.execute(() -> {
-            editYogaCourse = yogaClassRepository.findById(classId);
+            editYogaCourse = yogaRepository.findById(classId);
             requireActivity().runOnUiThread(()-> populateForm(editYogaCourse));
 
         });
@@ -128,7 +127,7 @@ public class CreateCourseFragment extends Fragment {
         editYogaCourse.duration = Integer.parseInt(Objects.requireNonNull(binding.durationInput.getText()).toString());
         editYogaCourse.price = Double.parseDouble(Objects.requireNonNull(binding.priceInput.getText()).toString());
         editYogaCourse.description = Objects.requireNonNull(binding.descriptionInput.getText()).toString();
-        yogaClassRepository.update(editYogaCourse);
+        yogaRepository.update(editYogaCourse);
     }
 
     private void showTimePickerDialog() {
