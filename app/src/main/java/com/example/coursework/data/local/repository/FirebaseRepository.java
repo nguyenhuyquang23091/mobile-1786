@@ -5,46 +5,49 @@ import android.util.Log;
 import com.example.coursework.data.local.entities.YogaClass;
 import com.example.coursework.data.local.entities.YogaCourse;
 import com.example.coursework.data.local.util.SyncFirebaseListener;
-import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.WriteBatch;
-import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.FirestoreOptions;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.ArrayList;
 
 public class FirebaseRepository {
     private FirebaseFirestore firestore;
-    private Firestore cloudFirestore;
 
     public FirebaseRepository() {
         this.firestore = FirebaseFirestore.getInstance();
-        this.cloudFirestore = FirestoreOptions.getDefaultInstance().getService();
     }
     //loadYogaCourse
 
 
-    public void getYogaCourse(List<YogaCourse> yogaCourses, SyncFirebaseListener listener) throws Exception {
-    if (yogaCourses == null) {
-        List<YogaCourse> emptyList = Collections.emptyList();
-        return;
-    }
+    public void getYogaCourse(SyncFirebaseListener listener) {
         CollectionReference collectionReference = firestore.collection("yoga_classes");
-        ApiFuture<QuerySnapshot> querySnapshotApiFuture = cloudFirestore.collection(String.valueOf(collectionReference)).get();
-
-
-
-
-
-
-
-
-
+        
+        collectionReference.get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    List<YogaCourse> yogaCourses = new ArrayList<>();
+                    
+                    for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                        try {
+                            YogaCourse yogaCourse = documentSnapshot.toObject(YogaCourse.class);
+                            yogaCourses.add(yogaCourse);
+                            Log.d("FirebaseRepository", "Loaded course: " + yogaCourse.toString());
+                        } catch (Exception e) {
+                            Log.e("FirebaseRepository", "Error parsing document: " + e.getMessage());
+                        }
+                    }
+                    
+                    Log.d("FirebaseRepository", "Successfully loaded " + yogaCourses.size() + " yoga courses");
+                    if (listener != null) listener.syncFirebasewithLocal(yogaCourses);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("FirebaseRepository", "Failed to load yoga courses: " + e.getMessage());
+                    if (listener != null) listener.syncFailure("Failed to load: " + e.getMessage());
+                });
     }
     //Synce if changes, push all changes to firebase
     //sync
@@ -56,7 +59,7 @@ public class FirebaseRepository {
         firestore.collection("yoga_classes").document(docId).set(yogaCourse)
                 .addOnSuccessListener(aVoid -> {
                     Log.d("FirebaseRepository", "Yoga course synced successfully");
-                    if (listener != null) listener.syncSuccess();
+                    if (listener != null) listener.syncFirebasewithLocal();
                 })
                 .addOnFailureListener(e -> {
                     Log.d("FirebaseRepository", "Failed to sync Yoga course: " + e.getMessage());

@@ -134,7 +134,7 @@ public class ConfirmationFragment extends Fragment {
                 });
             }
             @Override
-            public void syncSuccess() {
+            public void syncFirebasewithLocal() {
                 requireActivity().runOnUiThread(() -> {
                     binding.getRoot().postDelayed(() -> {
                         binding.loadingIndicator.setVisibility(View.GONE);

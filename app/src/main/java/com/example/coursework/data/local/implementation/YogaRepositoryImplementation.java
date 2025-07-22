@@ -80,6 +80,52 @@ public class YogaRepositoryImplementation implements YogaClassRepository {
     }
 
     @Override
+    public void loadAllCoursesFromFirebase(SyncFirebaseListener listener) {
+        if (isConnected()) {
+            firebaseRepository.getYogaCourse(new SyncFirebaseListener() {
+                @Override
+                public void syncFirebasewithLocal() {
+                    // Firebase load successful
+                    if (listener != null) {
+                        listener.syncFirebasewithLocal();
+                    }
+                }
+
+                @Override
+                public void syncFirebasewithLocal(List<YogaCourse> courses) {
+                    // Firebase load successful with data, sync to local database
+                    AppDatabase.databaseWriteExecutor.execute(() -> {
+                        for (YogaCourse course : courses) {
+                            // Check if course already exists to avoid duplicates
+                            YogaCourse existingCourse = yogaClassDAO.getCourseById(course.uid);
+                            if (existingCourse == null) {
+                                yogaClassDAO.insert(course);
+                            }
+                        }
+                    });
+                    
+                    if (listener != null) {
+                        listener.syncFirebasewithLocal();
+                    }
+                }
+
+                @Override
+                public void syncFailure(String error) {
+                    // Firebase load failed, fall back to local data
+                    if (listener != null) {
+                        listener.syncFailure("Firebase load failed: " + error + ". Using local data.");
+                    }
+                }
+            });
+        } else {
+            // No connection, use local data only
+            if (listener != null) {
+                listener.syncFailure("No internet connection. Using local data only.");
+            }
+        }
+    }
+
+    @Override
     public YogaCourse findById(int uid) {
         return yogaClassDAO.getCourseById(uid);
     }

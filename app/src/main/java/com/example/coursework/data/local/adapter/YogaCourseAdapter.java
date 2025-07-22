@@ -58,7 +58,7 @@ public class YogaCourseAdapter extends RecyclerView.Adapter<YogaCourseAdapter.Yo
         return yogaCourses.size();
     }
 
-    public void setClasses(List<YogaCourse> classes) {
+    public void setCourses(List<YogaCourse> classes) {
         this.yogaCourses = classes;
         notifyDataSetChanged();
     }

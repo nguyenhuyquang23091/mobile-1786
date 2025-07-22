@@ -29,5 +29,7 @@ public interface YogaClassRepository {
     YogaClassWithDetail getInstanceWithDetails(int instanceId);
 
     boolean isConnected();
+    
+    void loadAllCoursesFromFirebase(SyncFirebaseListener listener);
 
 }

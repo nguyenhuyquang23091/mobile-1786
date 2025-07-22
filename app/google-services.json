@@ -12,7 +12,20 @@
           "package_name": "com.example.coursework"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "560394772700-db9gdr01poivb3nfvaj9bolaqijt86op.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.coursework",
+            "certificate_hash": "4f688a35549cff45f58588184c48411c76c90b5c"
+          }
+        },
+        {
+          "client_id": "560394772700-oep9jilted3fetsr58ad240vaqsi65j4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDvWqQnW3c4zQvu9fxpjAgaSXikyIuSxXE"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "560394772700-oep9jilted3fetsr58ad240vaqsi65j4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "560394772700-9mdmgdv9mv1nt518jpuhc9a6fboee1jt.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.coursework"
+              }
+            }
+          ]
         }
       }
     }

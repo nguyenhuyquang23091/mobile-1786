@@ -11,6 +11,7 @@ public class YogaClassWithDetail {
             parentColumn = "courseId",
             entityColumn = "uid"
     )
+
     public YogaCourse yogaCourse;
 
 }
