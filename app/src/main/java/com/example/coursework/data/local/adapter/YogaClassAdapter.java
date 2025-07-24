@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.coursework.data.local.entities.yogaEntity.YogaClass;
+import com.example.coursework.data.local.entities.YogaClass;
 import com.example.coursework.databinding.ListItemYogaClassBinding;
 
 import java.util.ArrayList;
@@ -59,7 +59,7 @@ public class YogaClassAdapter extends RecyclerView.Adapter<YogaClassAdapter.Clas
     }
 
     static class ClassInstanceViewHolder extends RecyclerView.ViewHolder {
-        private final ListItemYogaClassBinding binding;
+        private ListItemYogaClassBinding binding;
 
         public ClassInstanceViewHolder(@NonNull ListItemYogaClassBinding binding) {
             super(binding.getRoot());

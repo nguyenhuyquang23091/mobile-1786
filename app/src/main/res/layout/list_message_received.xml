@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp">
+
+    <!-- Profile Avatar -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/message_avatar"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="#E8E8E8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/message_bubble">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="M"
+            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+            android:textColor="@color/textColorPrimary"
+            android:textStyle="bold" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Message Bubble -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/message_bubble"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="60dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/message_avatar"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/message_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:text="Hi! I hope you're having a peaceful day. How are you feeling today?"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            android:textColor="@color/textColorPrimary"
+            tools:text="Hi! I hope you're having a peaceful day. How are you feeling today?" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Timestamp -->
+    <TextView
+        android:id="@+id/message_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:text="10:30 AM"
+        android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+        android:textColor="@color/vibrant_text_secondary"
+        app:layout_constraintStart_toEndOf="@id/message_avatar"
+        app:layout_constraintTop_toBottomOf="@id/message_bubble"
+        tools:text="10:30 AM" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

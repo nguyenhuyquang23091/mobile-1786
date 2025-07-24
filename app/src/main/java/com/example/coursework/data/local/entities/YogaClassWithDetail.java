@@ -1,4 +1,4 @@
-package com.example.coursework.data.local.entities.yogaEntity;
+package com.example.coursework.data.local.entities;
 
 import androidx.room.Embedded;
 import androidx.room.Relation;

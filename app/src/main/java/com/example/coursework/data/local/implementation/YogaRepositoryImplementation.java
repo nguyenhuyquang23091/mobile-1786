@@ -4,9 +4,9 @@ import android.app.Application;
 
 import com.example.coursework.data.local.AppDatabase;
 import com.example.coursework.data.local.DAO.YogaDAO;
-import com.example.coursework.data.local.entities.yogaEntity.YogaClass;
-import com.example.coursework.data.local.entities.yogaEntity.YogaClassWithDetail;
-import com.example.coursework.data.local.entities.yogaEntity.YogaCourse;
+import com.example.coursework.data.local.entities.YogaClass;
+import com.example.coursework.data.local.entities.YogaClassWithDetail;
+import com.example.coursework.data.local.entities.YogaCourse;
 import com.example.coursework.data.local.repository.YogaRepository;
 import com.example.coursework.data.local.repository.firebaseRepository.YogaFirebaseRepository;
 import com.example.coursework.data.local.util.ConnectivityCheck;
@@ -35,7 +35,6 @@ public class YogaRepositoryImplementation implements YogaRepository {
             long newUid = yogaDAO.insert(yogaCourse);
             if (isConnected()) {
                 YogaCourse classToSync = yogaDAO.getCourseById((int) newUid);
-
                 if (classToSync != null) {
                     yogaFirebaseRepository.insertYogaCourse(classToSync, listener);
                 } else {
@@ -84,28 +83,33 @@ public class YogaRepositoryImplementation implements YogaRepository {
         if (isConnected()) {
             yogaFirebaseRepository.getYogaCourse(new SyncFirebaseListener() {
                 @Override
-                public void syncFirebasewithLocal() {
+                public void syncFirebaseWithLocal() {
                     // Firebase load successful
                     if (listener != null) {
-                        listener.syncFirebasewithLocal();
+                        listener.syncFirebaseWithLocal();
                     }
                 }
 
                 @Override
-                public void syncFirebasewithLocal(List<YogaCourse> courses) {
-                    // Firebase load successful with data, sync to local database
+                public void syncFirebaseWithLocal(List<YogaCourse> courses) {
+                    // Real-time Firebase update - replace local data with current Firebase state
                     AppDatabase.databaseWriteExecutor.execute(() -> {
+                        // Clear existing courses to sync with current Firebase state
+                        List<YogaCourse> existingCourses = yogaDAO.getAllClasses();
+                        for (YogaCourse existing : existingCourses) {
+                            yogaDAO.delete(existing);
+                        }
+                        
+                        // Insert all current courses from Firebase
                         for (YogaCourse course : courses) {
-                            // Check if course already exists to avoid duplicates
-                            YogaCourse existingCourse = yogaDAO.getCourseById(course.uid);
-                            if (existingCourse == null) {
-                                yogaDAO.insert(course);
-                            }
+                            // Reset UID to let Room auto-generate local IDs
+                            course.uid = 0;
+                            yogaDAO.insert(course);
                         }
                     });
 
                     if (listener != null) {
-                        listener.syncFirebasewithLocal();
+                        listener.syncFirebaseWithLocal();
                     }
                 }
 

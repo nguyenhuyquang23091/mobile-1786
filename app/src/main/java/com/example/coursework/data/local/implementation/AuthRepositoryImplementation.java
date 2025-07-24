@@ -32,10 +32,12 @@ public class AuthRepositoryImplementation implements AuthRepository {
     @Override
     public void signUp(String email, String password, AuthListener listener) {
         if(isConnected()){
-            fireBaseRepository.createUser(email, password, listener )
-            ;
+            fireBaseRepository.createUser(email, password, listener );
+        } else  {
+            if (listener != null ){
+                listener.onFailure("No internet Connection");
+            }
         }
-
     }
 
     @Override

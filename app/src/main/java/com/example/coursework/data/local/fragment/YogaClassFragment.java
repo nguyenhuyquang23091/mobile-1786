@@ -14,11 +14,12 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.coursework.R;
 import com.example.coursework.data.local.AppDatabase;
 import com.example.coursework.data.local.adapter.YogaClassAdapter;
-import com.example.coursework.data.local.entities.yogaEntity.YogaClass;
+import com.example.coursework.data.local.entities.YogaClass;
 import com.example.coursework.data.local.implementation.YogaRepositoryImplementation;
 import com.example.coursework.databinding.FragmentClassInstanceBinding;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -59,6 +60,8 @@ public class YogaClassFragment extends Fragment {
         transform.setScrimColor(ContextCompat.getColor(requireContext(), R.color.colorBackground));
         setSharedElementEnterTransition(transform);
 
+        setupToolbar();
+
         binding.recyclerViewInstances.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView rv, int dx, int dy) {
@@ -82,6 +85,15 @@ public class YogaClassFragment extends Fragment {
         setupRecyclerView();
         setupFab();
         loadInstances();
+    }
+
+    private void setupToolbar() {
+        Toolbar toolbar = binding.topAppBar;
+        
+        // Handle navigation icon click (back navigation to CourseFragment)
+        toolbar.setNavigationOnClickListener(v -> {
+            Navigation.findNavController(requireView()).popBackStack();
+        });
     }
 
     private void setupRecyclerView() {

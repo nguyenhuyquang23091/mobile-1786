@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.PopupMenu;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,12 +11,14 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.coursework.R;
-import com.example.coursework.data.local.entities.yogaEntity.YogaCourse;
+import com.example.coursework.data.local.entities.YogaCourse;
 import com.example.coursework.data.local.implementation.YogaRepositoryImplementation;
 import com.example.coursework.data.local.repository.YogaRepository;
 import com.example.coursework.data.local.util.SyncFirebaseListener;
 import com.example.coursework.databinding.FragmentConfirmationBinding;
 import com.google.android.material.snackbar.Snackbar;
+
+import java.util.List;
 
 public class ConfirmationFragment extends Fragment {
 
@@ -72,23 +73,9 @@ public class ConfirmationFragment extends Fragment {
 
         });
 
-        binding.moreActionsButton.setOnClickListener(this::showMoreActionsMenu);
+        binding.moreActionsButton.setOnClickListener(v -> navigateToCreateCourse(true));
     }
 
-    private void showMoreActionsMenu(View anchor) {
-        PopupMenu popup = new PopupMenu(requireContext(), anchor);
-        // This inflates the menu we created earlier.
-        popup.getMenuInflater().inflate(R.menu.confirmation_menu, popup.getMenu());
-        popup.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.action_edit) {
-                requireActivity().finish();
-                return true;
-            }
-            return false;
-        });
-
-        popup.show();
-    }
     private void saveAndFinish() {
         binding.loadingIndicator.setVisibility(View.VISIBLE);
         binding.confirmButton.setEnabled(false);
@@ -123,28 +110,58 @@ public class ConfirmationFragment extends Fragment {
                         binding.confirmButton.setEnabled(true);
                         binding.moreActionsButton.setEnabled(true);
                         Snackbar.make(binding.getRoot(), errorMessage, Snackbar.LENGTH_LONG).show();
-                        navigateToMain();
+                        navigateToCreateCourse(false);
                     }, 2000);
                 });
             }
             @Override
-            public void syncFirebasewithLocal() {
+            public void syncFirebaseWithLocal() {
+
+            }
+
+            @Override
+            public void syncFirebaseWithLocal(List<YogaCourse> courses) {
                 requireActivity().runOnUiThread(() -> {
                     binding.getRoot().postDelayed(() -> {
                         binding.loadingIndicator.setVisibility(View.GONE);
                         binding.confirmButton.setEnabled(true);
                         binding.moreActionsButton.setEnabled(true);
                         Snackbar.make(binding.getRoot(), "Class saved and synced successfully!", Snackbar.LENGTH_LONG).show();
-                        navigateToMain();
+                        navigateToCreateCourse(false);
                     }, 2000);
                 });
             }
         });
     }
 
-    private void navigateToMain(){
-        Navigation.findNavController(requireView()).navigate(R.id.action_confirmationFragment_to_createClassFragment);
+    private void navigateToCreateCourse(boolean passData) {
+        if (passData) {
+            // Extract data from arguments for editing
+            String day = ConfirmationFragmentArgs.fromBundle(getArguments()).getDay();
+            String time = ConfirmationFragmentArgs.fromBundle(getArguments()).getTime();
+            String intensity = ConfirmationFragmentArgs.fromBundle(getArguments()).getIntensity();
+            int capacity = ConfirmationFragmentArgs.fromBundle(getArguments()).getCapacity();
+            int duration = ConfirmationFragmentArgs.fromBundle(getArguments()).getDuration();
+            String price = ConfirmationFragmentArgs.fromBundle(getArguments()).getPrice();
+            String type = ConfirmationFragmentArgs.fromBundle(getArguments()).getType();
+            String description = ConfirmationFragmentArgs.fromBundle(getArguments()).getDescription();
 
+            // Pass the data as arguments
+            Bundle bundle = new Bundle();
+            bundle.putString("prefilled_day", day);
+            bundle.putString("prefilled_time", time);
+            bundle.putString("prefilled_intensity", intensity);
+            bundle.putInt("prefilled_capacity", capacity);
+            bundle.putInt("prefilled_duration", duration);
+            bundle.putString("prefilled_price", price);
+            bundle.putString("prefilled_type", type);
+            bundle.putString("prefilled_description", description);
+            
+            Navigation.findNavController(requireView()).navigate(R.id.action_confirmationFragment_to_createCourseFragment, bundle);
+        } else {
+            // Navigate without data (after save/sync operations)
+            Navigation.findNavController(requireView()).navigate(R.id.action_confirmationFragment_to_createCourseFragment);
+        }
     }
 
 }

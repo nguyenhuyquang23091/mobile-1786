@@ -8,8 +8,8 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.example.coursework.data.local.DAO.YogaDAO;
-import com.example.coursework.data.local.entities.yogaEntity.YogaClass;
-import com.example.coursework.data.local.entities.yogaEntity.YogaCourse;
+import com.example.coursework.data.local.entities.YogaClass;
+import com.example.coursework.data.local.entities.YogaCourse;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

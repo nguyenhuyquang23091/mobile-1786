@@ -16,9 +16,6 @@
         android:theme="@style/Base.Theme.COURSEWORK"
         tools:targetApi="31">
         <activity
-            android:name=".data.local.fragment.ConfirmationActivity"
-            android:exported="false" />
-        <activity
             android:name=".data.local.MainActivity"
             android:exported="true">
             <intent-filter>

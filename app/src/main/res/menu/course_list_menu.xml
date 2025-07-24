@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    
+    <item
+        android:id="@+id/action_create_course"
+        android:title="Create Course"
+        android:icon="@drawable/ic_add"
+        app:showAsAction="always" />
+        
+    <item
+        android:id="@+id/action_more"
+        android:title="More actions"
+        android:icon="@drawable/ic_more_vert"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/action_create_course_with_data"
+                android:title="Create Course (Pre-filled)"
+                android:icon="@drawable/ic_add" />
+        </menu>
+    </item>
+</menu>

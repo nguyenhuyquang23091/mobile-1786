@@ -8,8 +8,25 @@
     android:background="@color/white"
     android:transitionName="shared_element_container"
     android:fitsSystemWindows="true"
-
     tools:context=".data.local.fragment.YogaClassFragment">
+
+    <!-- Top App Bar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/white"
+            app:title="Class Instances"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            style="@style/Widget.Material3.Toolbar" />
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <!-- RecyclerView with bottom padding to avoid overlap -->
     <androidx.recyclerview.widget.RecyclerView

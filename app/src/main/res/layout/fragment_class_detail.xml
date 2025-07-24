@@ -17,7 +17,19 @@
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:background="@color/white"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppBar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/white"
+                app:title="Class Details"
+                app:navigationIcon="@drawable/ic_arrow_back"
+                style="@style/Widget.Material3.Toolbar" />
+
+        </com.google.android.material.appbar.AppBarLayout>
 
         <!-- Course Details Card -->
         <com.google.android.material.card.MaterialCardView

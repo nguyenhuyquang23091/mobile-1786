@@ -17,10 +17,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.appcompat.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.example.coursework.R;
 import com.example.coursework.data.local.AppDatabase;
-import com.example.coursework.data.local.entities.yogaEntity.YogaCourse;
+import com.example.coursework.data.local.entities.YogaCourse;
 import com.example.coursework.data.local.implementation.YogaRepositoryImplementation;
 import com.example.coursework.data.local.repository.YogaRepository;
 import com.google.android.material.chip.Chip;
@@ -51,8 +53,17 @@ public class CreateCourseFragment extends Fragment {
         yogaRepository = new YogaRepositoryImplementation(requireActivity().getApplication());
         setupAdapters();
         setupClickListeners();
+        handlePrefilledData();
+        // Check for edit mode from activity intent (existing functionality)
         if(requireActivity().getIntent().hasExtra("uid")){
             int uid = requireActivity().getIntent().getIntExtra("uid", -1);
+            if(uid != -1){
+                loadEditClass(uid);
+            }
+        }
+        // Check for edit mode from fragment arguments (new functionality)
+        else if(getArguments() != null && getArguments().containsKey("edit_course_uid")){
+            int uid = getArguments().getInt("edit_course_uid", -1);
             if(uid != -1){
                 loadEditClass(uid);
             }
@@ -119,6 +130,49 @@ public class CreateCourseFragment extends Fragment {
             }
         });
     }
+
+
+    private void handlePrefilledData() {
+        Bundle args = getArguments();
+        if (args != null) {
+            // Pre-fill form with data from arguments
+            if (args.containsKey("prefilled_type")) {
+                binding.classTypeInput.setText(args.getString("prefilled_type"), false);
+            }
+            if (args.containsKey("prefilled_day")) {
+                binding.dayOfWeekInput.setText(args.getString("prefilled_day"), false);
+            }
+            if (args.containsKey("prefilled_time")) {
+                binding.timeInput.setText(args.getString("prefilled_time"));
+            }
+            if (args.containsKey("prefilled_capacity")) {
+                binding.capacityInput.setText(String.valueOf(args.getInt("prefilled_capacity")));
+            }
+            if (args.containsKey("prefilled_duration")) {
+                binding.durationInput.setText(String.valueOf(args.getInt("prefilled_duration")));
+            }
+            if (args.containsKey("prefilled_price")) {
+                binding.priceInput.setText(args.getString("prefilled_price"));
+            }
+            if (args.containsKey("prefilled_description")) {
+                binding.descriptionInput.setText(args.getString("prefilled_description"));
+            }
+            if (args.containsKey("prefilled_intensity")) {
+                String intensity = args.getString("prefilled_intensity");
+                // Find and check the corresponding chip based on intensity value
+                if (intensity != null) {
+                    for (int i = 0; i < binding.intensityChipGroup.getChildCount(); i++) {
+                        Chip chip = (Chip) binding.intensityChipGroup.getChildAt(i);
+                        if (chip.getText().toString().equals(intensity)) {
+                            binding.intensityChipGroup.check(chip.getId());
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private void updateClass() {
         editYogaCourse.day = binding.dayOfWeekInput.getText().toString();
         editYogaCourse.type = binding.classTypeInput.getText().toString();

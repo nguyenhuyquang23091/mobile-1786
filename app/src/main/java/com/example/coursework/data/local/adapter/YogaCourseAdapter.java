@@ -15,7 +15,7 @@ import androidx.navigation.fragment.FragmentNavigator;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.coursework.R;
-import com.example.coursework.data.local.entities.yogaEntity.YogaCourse;
+import com.example.coursework.data.local.entities.YogaCourse;
 import com.example.coursework.databinding.ListItemYogaCoursesBinding;
 
 import java.util.ArrayList;
@@ -30,6 +30,7 @@ public class YogaCourseAdapter extends RecyclerView.Adapter<YogaCourseAdapter.Yo
     public interface OnItemClickListener {
         void onDeleteClick(YogaCourse yogaCourse);
         void onItemClick(YogaCourse yogaCourse, FragmentNavigator.Extras extras);
+        void onEditClick(YogaCourse yogaCourse);
 
     }
     public YogaCourseAdapter(OnItemClickListener listener){
@@ -63,7 +64,7 @@ public class YogaCourseAdapter extends RecyclerView.Adapter<YogaCourseAdapter.Yo
         notifyDataSetChanged();
     }
     static class YogaClassViewHolder extends RecyclerView.ViewHolder {
-        private final ListItemYogaCoursesBinding binding;
+        private ListItemYogaCoursesBinding binding;
 
         public YogaClassViewHolder(@NonNull ListItemYogaCoursesBinding binding) {
             super(binding.getRoot());
@@ -130,6 +131,12 @@ public class YogaCourseAdapter extends RecyclerView.Adapter<YogaCourseAdapter.Yo
             binding.deleteButton.setOnClickListener(v -> {
                 if(listener != null){
                     listener.onDeleteClick(yogaCourse);
+                }
+            });
+
+            binding.editButton.setOnClickListener(v -> {
+                if(listener != null){
+                    listener.onEditClick(yogaCourse);
                 }
             });
 

@@ -18,12 +18,15 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.FragmentNavigator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
+import android.view.MenuItem;
+import android.os.Bundle;
 
 
 import com.example.coursework.databinding.FragmentCourseListBinding;
 import com.example.coursework.data.local.AppDatabase;
 import com.example.coursework.data.local.adapter.YogaCourseAdapter;
-import com.example.coursework.data.local.entities.yogaEntity.YogaCourse;
+import com.example.coursework.data.local.entities.YogaCourse;
 import com.example.coursework.data.local.implementation.YogaRepositoryImplementation;
 import com.example.coursework.data.local.repository.YogaRepository;
 import com.example.coursework.data.local.util.SyncFirebaseListener;
@@ -62,6 +65,8 @@ public class CourseListFragment extends Fragment {
         setReenterTransition(new MaterialElevationScale(true));
         setupRecyclerView();
     }
+
+
     @Override
     public void onResume() {
         super.onResume();
@@ -92,7 +97,24 @@ public class CourseListFragment extends Fragment {
                 Navigation.findNavController(requireView()).navigate(action, extras);
             }
 
-
+            @Override
+            public void onEditClick(YogaCourse yogaCourse) {
+                // Create bundle with prefilled data for editing
+                Bundle bundle = new Bundle();
+                bundle.putString("prefilled_type", yogaCourse.type);
+                bundle.putString("prefilled_day", yogaCourse.day);
+                bundle.putString("prefilled_time", yogaCourse.time);
+                bundle.putInt("prefilled_capacity", yogaCourse.capacity);
+                bundle.putInt("prefilled_duration", yogaCourse.duration);
+                bundle.putString("prefilled_price", String.valueOf(yogaCourse.price));
+                bundle.putString("prefilled_description", yogaCourse.description);
+                bundle.putString("prefilled_intensity", yogaCourse.intensity);
+                bundle.putInt("edit_course_uid", yogaCourse.uid);
+                
+                // Navigate to CreateCourseFragment with prefilled data
+                Navigation.findNavController(requireView()).navigate(
+                    R.id.action_courseListFragment_to_createCourseFragment, bundle);
+            }
 
 
         });
@@ -106,7 +128,7 @@ public class CourseListFragment extends Fragment {
         // First try to load from Firebase, then fall back to local data
         yogaRepository.loadAllCoursesFromFirebase(new SyncFirebaseListener() {
             @Override
-            public void syncFirebasewithLocal() {
+            public void syncFirebaseWithLocal() {
                 Log.d("CourseListFragment", "Successfully loaded courses from Firebase");
                 loadLocalCourses();
             }

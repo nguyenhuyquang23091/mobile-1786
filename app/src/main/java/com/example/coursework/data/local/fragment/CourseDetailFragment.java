@@ -5,12 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.coursework.data.local.entities.yogaEntity.YogaClassWithDetail;
+import com.example.coursework.data.local.entities.YogaClassWithDetail;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.coursework.data.local.AppDatabase;
 import com.example.coursework.data.local.implementation.YogaRepositoryImplementation;
@@ -36,6 +37,7 @@ public class CourseDetailFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         yogaRepository = new YogaRepositoryImplementation(requireActivity().getApplication());
+        setupToolbar();
         if (getArguments() != null) {
             instanceId = getArguments().getInt("instanceId", -1);
         }
@@ -48,6 +50,14 @@ public class CourseDetailFragment extends Fragment {
         loadClassDetail();
     }
 
+    private void setupToolbar() {
+        Toolbar toolbar = binding.topAppBar;
+        
+        // Handle navigation icon click (back navigation to SearchFragment)
+        toolbar.setNavigationOnClickListener(v -> {
+            Navigation.findNavController(requireView()).popBackStack();
+        });
+    }
 
     private void loadClassDetail(){
         AppDatabase.databaseWriteExecutor.execute(() ->{
