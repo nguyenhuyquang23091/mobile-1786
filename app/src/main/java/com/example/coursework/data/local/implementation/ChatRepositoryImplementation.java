@@ -6,11 +6,13 @@ import com.example.coursework.data.local.repository.ChatRepository;
 import com.example.coursework.data.local.repository.firebaseRepository.ChatFireBaseRepository;
 import com.example.coursework.data.local.util.ConnectivityCheck;
 import com.example.coursework.data.local.util.OnMessagesReceivedListener;
+import com.google.firebase.firestore.ListenerRegistration;
 
 public class ChatRepositoryImplementation implements ChatRepository {
 
     private ChatFireBaseRepository chatFireBaseRepository;
     private ConnectivityCheck connectivityCheck;
+
 
     public ChatRepositoryImplementation(Application application) {
         this.chatFireBaseRepository = new ChatFireBaseRepository();
@@ -22,7 +24,7 @@ public class ChatRepositoryImplementation implements ChatRepository {
         return connectivityCheck.isConnected();
     }
     @Override
-    public void getMessage(String conversationId, OnMessagesReceivedListener listener) {
+    public ListenerRegistration getMessage(String conversationId, OnMessagesReceivedListener listener) {
         if(isConnected()){
             chatFireBaseRepository.getMessage(conversationId, listener);
         } else {
@@ -30,5 +32,6 @@ public class ChatRepositoryImplementation implements ChatRepository {
                 listener.onMessageFailure("No internet Connection");
             }
         }
+        return null;
     }
 }

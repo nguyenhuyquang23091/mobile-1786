@@ -180,10 +180,4 @@ public class YogaRepositoryImplementation implements YogaRepository {
     public YogaClassWithDetail getInstanceWithDetails(int instanceId) {
         return yogaDAO.getInstanceWithDetails(instanceId);
     }
-
-
-
-
-    //CREATE CHECK CONNECTION HELPER
-
 }
