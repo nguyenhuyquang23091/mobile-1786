@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.FragmentNavigator;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
@@ -63,7 +64,14 @@ public class CourseListFragment extends Fragment {
         shimmerFrameLayout = binding.shimmerLayout;
         setExitTransition(new MaterialElevationScale(false));
         setReenterTransition(new MaterialElevationScale(true));
+        setupToolbar();
         setupRecyclerView();
+    }
+
+    private void setupToolbar() {
+        binding.topAppBar.setNavigationOnClickListener(v -> {
+            Navigation.findNavController(requireView()).navigateUp();
+        });
     }
 
 
@@ -73,7 +81,7 @@ public class CourseListFragment extends Fragment {
         loadClasses();
     }
     private void setupRecyclerView() {
-        binding.recyclerViewClasses.setLayoutManager(new GridLayoutManager(requireContext(), 2));
+        binding.recyclerViewClasses.setLayoutManager(new LinearLayoutManager(requireContext()));
         yogaCourseAdapter = new YogaCourseAdapter(new YogaCourseAdapter.OnItemClickListener() {
             @Override
             public void onDeleteClick(YogaCourse yogaCourse) {
@@ -121,55 +129,48 @@ public class CourseListFragment extends Fragment {
         binding.recyclerViewClasses.setAdapter(yogaCourseAdapter);
     }
     private void loadClasses(){
+        Log.d("CourseListFragment", "Starting loadClasses() - showing shimmer and hiding RecyclerView");
         shimmerFrameLayout.setVisibility(View.VISIBLE);
         shimmerFrameLayout.startShimmer();
         binding.recyclerViewClasses.setVisibility(View.GONE);
 
         // First try to load from Firebase, then fall back to local data
+        Log.d("CourseListFragment", "Calling yogaRepository.loadAllCoursesFromFirebase()");
         yogaRepository.loadAllCoursesFromFirebase(new SyncFirebaseListener() {
             @Override
             public void syncFirebaseWithLocal() {
-                Log.d("CourseListFragment", "Successfully loaded courses from Firebase");
-                loadLocalCourses();
+                Log.d("CourseListFragment", "Firebase sync successful, but not displaying anything yet");
+            }
+
+            @Override
+            public void syncFirebaseWithLocal(List<YogaCourse> courses) {
+                Log.d("CourseListFragment", "Firebase loaded " + courses.size() + " courses directly");
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(() -> {
+                        yogaCourseAdapter.setCourses(courses);
+                        shimmerFrameLayout.stopShimmer();
+                        shimmerFrameLayout.setVisibility(View.GONE);
+                        binding.recyclerViewClasses.setVisibility(View.VISIBLE);
+                        Log.d("CourseListFragment", "UI updated with Firebase courses");
+                    });
+                }
             }
 
             @Override
             public void syncFailure(String error) {
-                Log.d("CourseListFragment", "Firebase load failed or no connection: " + error);
+                Log.e("CourseListFragment", "Firebase load failed: " + error);
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
-                        Snackbar.make(requireView(), "Loading from local storage", Snackbar.LENGTH_SHORT).show();
+                        shimmerFrameLayout.stopShimmer();
+                        shimmerFrameLayout.setVisibility(View.GONE);
+                        Snackbar.make(requireView(), "Failed to load courses: " + error, Snackbar.LENGTH_LONG).show();
                     });
                 }
-                loadLocalCourses();
             }
         });
     }
 
-    private void loadLocalCourses() {
-        AppDatabase.databaseWriteExecutor.execute(() -> {
-            try {
-                Thread.sleep(1000); // Reduced loading time
-            } catch (InterruptedException e){
-                Log.e("Error", Objects.requireNonNull(e.getMessage()));
-            }
-            List<YogaCourse> courses = yogaRepository.getAll();
-            if (getActivity() != null ){
-                getActivity().runOnUiThread(() -> {
-                    shimmerFrameLayout.stopShimmer();
-                    shimmerFrameLayout.setVisibility(View.GONE);
-                    binding.recyclerViewClasses.setVisibility(View.VISIBLE);
-                    yogaCourseAdapter.setCourses(courses);
-                    if (courses.isEmpty()) {
-                        Snackbar.make(requireView(), "No courses found. Create your first course!",
-                                Snackbar.LENGTH_LONG).show();
-                    } else {
-                        Log.d("CourseListFragment", "Loaded " + courses.size() + " courses");
-                    }
-                });
-            }
-        });
-    }
+
 
     @Override
     public void onDestroyView() {

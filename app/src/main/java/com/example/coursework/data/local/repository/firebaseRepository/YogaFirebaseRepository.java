@@ -8,6 +8,8 @@ import com.example.coursework.data.local.util.SyncFirebaseListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.WriteBatch;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 
 public class YogaFirebaseRepository {
     private FirebaseFirestore firestore;
+    private ListenerRegistration listenerRegistration;
 
     public YogaFirebaseRepository() {
         this.firestore = FirebaseFirestore.getInstance();
@@ -24,34 +27,30 @@ public class YogaFirebaseRepository {
     //loadYogaCourse
 
 
-    public void getYogaCourse(SyncFirebaseListener listener) {
+    public void syncYogaCourse(SyncFirebaseListener listener) {
+        if (listenerRegistration != null) {
+            listenerRegistration.remove();
+        }
         CollectionReference collectionReference = firestore.collection("yoga_classes");
+        listenerRegistration = collectionReference.orderBy("day", Query.Direction.ASCENDING)
+                .addSnapshotListener((queryDocumentSnapShot, e) -> {
+                    if( e != null ){
+                        Log.e("YogaFirebaseRepository", "Listen failed", e);
+                        if (listener != null) listener.syncFailure("Firestore listener failed: " + e.getMessage());
+                        return;
 
-        // Use addSnapshotListener for real-time updates
-        collectionReference.addSnapshotListener((queryDocumentSnapshots, error) -> {
-            if (error != null) {
-                Log.e("YogaFirebaseRepository", "Failed to load yoga courses: " + error.getMessage());
-                if (listener != null) listener.syncFailure("Failed to load: " + error.getMessage());
-                return;
-            }
-
-            if (queryDocumentSnapshots != null) {
-                List<YogaCourse> yogaCourses = new ArrayList<>();
-
-                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                    try {
-                        YogaCourse yogaCourse = documentSnapshot.toObject(YogaCourse.class);
-                        yogaCourses.add(yogaCourse);
-                        Log.d("YogaFirebaseRepository", "Real-time update - course: " + yogaCourse.toString());
-                    } catch (Exception e) {
-                        Log.e("YogaFirebaseRepository", "Error parsing document: " + e.getMessage());
                     }
-                }
+                    if(queryDocumentSnapShot != null) {
+                        List<YogaCourse> yogaCourses = new ArrayList<>();
+                        for(QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapShot){
+                            YogaCourse yogaCourse = queryDocumentSnapshot.toObject(YogaCourse.class);
+                            yogaCourses.add(yogaCourse);
+                        }
+                        if (listener != null) listener.syncFirebaseWithLocal(yogaCourses);
+                    }
 
-                Log.d("YogaFirebaseRepository", "Real-time sync: " + yogaCourses.size() + " yoga courses");
-                if (listener != null) listener.syncFirebaseWithLocal(yogaCourses);
-            }
-        });
+                });
+
     }
     //Synce if changes, push all changes to firebase
     //sync
@@ -74,16 +73,20 @@ public class YogaFirebaseRepository {
     //get
 
 
-    public void deteleYogaCourse(YogaCourse yogaCourse) {
-        if (yogaCourse == null) return;
+    public void deteleYogaCourse(YogaCourse yogaCourse, SyncFirebaseListener listener) {
+        if (yogaCourse == null) {
+            if (listener != null) listener.syncFailure("Course is null");
+            return;
+        }
         String docId = String.valueOf(yogaCourse.uid);
         firestore.collection("yoga_classes").document(docId).delete()
                 .addOnSuccessListener(aVoid -> {
-                    Log.d("Deleted Successfully", "Yoga course deleted successfully");
+                    Log.d("YogaFirebaseRepository", "Yoga course deleted successfully from Firestore");
+                    if (listener != null) listener.syncFirebaseWithLocal();
                 })
                 .addOnFailureListener(e -> {
-                    Log.d("Deleted Failed", "Failed to delete Yoga course")
-                    ;
+                    Log.e("YogaFirebaseRepository", "Failed to delete Yoga course from Firestore: " + e.getMessage());
+                    if (listener != null) listener.syncFailure("Failed to delete: " + e.getMessage());
                 });
     }
     public void syncAllClassInstances(String courseId, List<YogaClass> classes) {

@@ -11,8 +11,11 @@ import com.example.coursework.databinding.ListMessageReceivedBinding;
 import com.example.coursework.databinding.ListMessageSentBinding;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -27,8 +30,17 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         this.messages = messages;
         FirebaseAuth auth = FirebaseAuth.getInstance();
         this.currentUserId = auth.getCurrentUser() != null ? auth.getCurrentUser().getUid() : "";
+    }
 
+    public void updateMessages(List<Message> newMessages) {
+        this.messages.clear();
+        this.messages.addAll(newMessages);
+        notifyDataSetChanged();
+    }
 
+    private static String formatTimestamp(long timestamp) {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        return sdf.format(new Date(timestamp));
     }
 
     @NonNull
@@ -79,8 +91,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
         private void bind(Message message){
             binding.messageText.setText(message.message);
-            binding.messageTime.setText((int) message.timestamp);
-
+            binding.messageTime.setText(formatTimestamp(message.timestamp));
         }
     }
     static class MessageReceiveViewHolder extends RecyclerView.ViewHolder{
@@ -92,7 +103,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
        private void bind(Message message){
            binding.messageText.setText(message.message);
-           binding.messageTime.setText((int) message.timestamp);
+           binding.messageTime.setText(formatTimestamp(message.timestamp));
        }
     }
 }

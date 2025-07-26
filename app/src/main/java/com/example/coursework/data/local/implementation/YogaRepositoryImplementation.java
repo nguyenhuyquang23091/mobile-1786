@@ -1,6 +1,7 @@
 package com.example.coursework.data.local.implementation;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.example.coursework.data.local.AppDatabase;
 import com.example.coursework.data.local.DAO.YogaDAO;
@@ -65,13 +66,21 @@ public class YogaRepositoryImplementation implements YogaRepository {
     @Override
     public void delete(YogaCourse yogaCourse) {
         if(isConnected()) {
-            AppDatabase.databaseWriteExecutor.execute(() -> {
-                yogaDAO.delete(yogaCourse);
-                yogaFirebaseRepository.deteleYogaCourse(yogaCourse);
+            yogaFirebaseRepository.deteleYogaCourse(yogaCourse, new SyncFirebaseListener() {
+                @Override
+                public void syncFirebaseWithLocal() {
+                    Log.d("YogaRepositoryImplementation", "Course deleted from Firebase, no local action needed");
+                }
+
+                @Override
+                public void syncFailure(String errorMessage) {
+                    Log.e("YogaRepositoryImplementation", "Failed to delete from Firebase: " + errorMessage);
+                }
             });
         } else {
             AppDatabase.databaseWriteExecutor.execute(() -> yogaDAO.delete(yogaCourse));
-        }    }
+        }
+    }
 
     @Override
     public List<YogaCourse> getAll() {
@@ -80,53 +89,32 @@ public class YogaRepositoryImplementation implements YogaRepository {
 
     @Override
     public void loadAllCoursesFromFirebase(SyncFirebaseListener listener) {
-        if (isConnected()) {
-            yogaFirebaseRepository.getYogaCourse(new SyncFirebaseListener() {
+        if (isConnected()){
+            yogaFirebaseRepository.syncYogaCourse(new SyncFirebaseListener() {
+                @Override
+                public void syncFailure(String errorMessage) {
+                    if (listener != null) listener.syncFailure(errorMessage);
+                }
+
                 @Override
                 public void syncFirebaseWithLocal() {
-                    // Firebase load successful
-                    if (listener != null) {
-                        listener.syncFirebaseWithLocal();
-                    }
+
                 }
 
                 @Override
                 public void syncFirebaseWithLocal(List<YogaCourse> courses) {
-                    // Real-time Firebase update - replace local data with current Firebase state
-                    AppDatabase.databaseWriteExecutor.execute(() -> {
-                        // Clear existing courses to sync with current Firebase state
-                        List<YogaCourse> existingCourses = yogaDAO.getAllClasses();
-                        for (YogaCourse existing : existingCourses) {
-                            yogaDAO.delete(existing);
-                        }
-                        
-                        // Insert all current courses from Firebase
-                        for (YogaCourse course : courses) {
-                            // Reset UID to let Room auto-generate local IDs
-                            course.uid = 0;
-                            yogaDAO.insert(course);
-                        }
-                    });
-
-                    if (listener != null) {
-                        listener.syncFirebaseWithLocal();
-                    }
+                    Log.d("YogaRepositoryImplementation", "Received " + courses.size() + " courses from Firebase, passing to fragment");
+                    if (listener != null) listener.syncFirebaseWithLocal(courses);
                 }
 
-                @Override
-                public void syncFailure(String error) {
-                    // Firebase load failed, fall back to local data
-                    if (listener != null) {
-                        listener.syncFailure("Firebase load failed: " + error + ". Using local data.");
-                    }
-                }
             });
         } else {
-            // No connection, use local data only
             if (listener != null) {
-                listener.syncFailure("No internet connection. Using local data only.");
+                listener.syncFailure("No network connection. Data saved locally.");
             }
         }
+
+
     }
 
     @Override

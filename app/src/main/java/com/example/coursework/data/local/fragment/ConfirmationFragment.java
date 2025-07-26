@@ -116,20 +116,20 @@ public class ConfirmationFragment extends Fragment {
             }
             @Override
             public void syncFirebaseWithLocal() {
-
-            }
-
-            @Override
-            public void syncFirebaseWithLocal(List<YogaCourse> courses) {
                 requireActivity().runOnUiThread(() -> {
                     binding.getRoot().postDelayed(() -> {
                         binding.loadingIndicator.setVisibility(View.GONE);
                         binding.confirmButton.setEnabled(true);
                         binding.moreActionsButton.setEnabled(true);
-                        Snackbar.make(binding.getRoot(), "Class saved and synced successfully!", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(binding.getRoot(), "Class saved successfully!", Snackbar.LENGTH_LONG).show();
                         navigateToCreateCourse(false);
                     }, 2000);
                 });
+            }
+
+            @Override
+            public void syncFirebaseWithLocal(List<YogaCourse> courses) {
+
             }
         });
     }

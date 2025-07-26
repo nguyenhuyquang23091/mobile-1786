@@ -3,6 +3,7 @@ package com.example.coursework.data.local.DAO;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Transaction;
 import androidx.room.Update;
@@ -25,6 +26,11 @@ public interface YogaDAO {
     List<YogaCourse> getAllClasses();
     @Query("SELECT * FROM yoga_courses WHERE uid = :uid")
     YogaCourse getCourseById(int uid);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void upsert(List<YogaCourse> yogaCourse);
+
+
     @Insert
     void insertInstance(YogaClass yogaClass);
     @Update

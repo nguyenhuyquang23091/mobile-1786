@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/createClassFragment"
+        android:id="@+id/createCourseFragment"
         android:title="@string/detail"
         android:icon="@drawable/ic_detail_selector"/>
     <item
@@ -9,9 +9,9 @@
         android:title="@string/storage"
         android:icon="@drawable/ic_storage_selector"/>
     <item
-        android:id="@+id/item_3"
-        android:title="@string/manage"
-        android:icon="@drawable/ic_category_selector"/>
+        android:id="@+id/chatListFragment"
+        android:title="@string/chat"
+        android:icon="@drawable/ic_chat_selector"/>
     <item
         android:id="@+id/searchFragment"
         android:title="@string/search"

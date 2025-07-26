@@ -5,6 +5,7 @@ import android.util.Log;
 import com.example.coursework.data.local.entities.Conversation;
 import com.example.coursework.data.local.entities.Message;
 import com.example.coursework.data.local.util.OnConversationListener;
+import com.example.coursework.data.local.util.OnConversationsReceivedListener;
 import com.example.coursework.data.local.util.OnMessageSentListener;
 import com.example.coursework.data.local.util.OnMessagesReceivedListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,8 +23,6 @@ import java.util.List;
 public class ChatFireBaseRepository {
     private FirebaseFirestore db;
     private FirebaseAuth firebaseAuth;
-    private FirebaseUser user;
-
     private static final String TAG = "CHAT_REPOSITORY";
 
 
@@ -53,13 +52,14 @@ public class ChatFireBaseRepository {
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if(currentUser == null ){
             listener.onFailure("User is not authenticated");
+            return;
         }
-        String currenrUserId = currentUser.getUid();
+        String currentUserId = currentUser.getUid();
         String currentUserEmail = currentUser.getEmail();
         Message message = new Message(
                 conversationId,
-                currenrUserId,
-                "Huy Quang",
+                currentUserId,
+                currentUserEmail,
                 "Admin",
                 messageText,
                 "Android"
@@ -116,9 +116,50 @@ public class ChatFireBaseRepository {
         return firebaseAuth.getCurrentUser();
     }
 
+    public ListenerRegistration getConversations(OnConversationsReceivedListener listener) {
+        FirebaseUser currentUser = getCurrentUser();
+        if (currentUser == null) {
+            Log.e(TAG, "User is not authenticated");
+            listener.onConversationFailure("User is not authenticated");
+            return null;
+        }
 
+        String currentUserId = currentUser.getUid();
+        Log.d(TAG, "Querying conversations for user: " + currentUserId);
+        
+        return db.collection("conversations")
+                .whereArrayContains("users", currentUserId)
+                .orderBy("createdAt", Query.Direction.DESCENDING)
+                .addSnapshotListener((value, error) -> {
+                    if (error != null) {
+                        Log.w(TAG, "Listen failed", error);
+                        listener.onConversationFailure(error.getMessage());
+                        return;
+                    }
 
-
+                    List<Conversation> conversations = new ArrayList<>();
+                    if (value != null) {
+                        Log.d(TAG, "Found " + value.getDocuments().size() + " conversation documents");
+                        for (int i = 0; i < value.getDocuments().size(); i++) {
+                            Conversation conversation = value.getDocuments().get(i).toObject(Conversation.class);
+                            if (conversation != null) {
+                                conversation.id = value.getDocuments().get(i).getId();
+                                conversations.add(conversation);
+                                Log.d(TAG, "Added conversation: " + conversation.id + " with users: " + conversation.users);
+                            } else {
+                                Log.w(TAG, "Failed to parse conversation document at index " + i);
+                            }
+                        }
+                    } else {
+                        Log.d(TAG, "No conversation documents found (value is null)");
+                    }
+                    
+                    Log.d(TAG, "Sending " + conversations.size() + " conversations to listener");
+                    if (listener != null) {
+                        listener.onConversationsReceived(conversations);
+                    }
+                });
+    }
 }
 
 
