@@ -2,26 +2,27 @@ package com.example.coursework.data.local.repository.firebaseRepository;
 
 import android.util.Log;
 
-import androidx.annotation.Nullable;
-
+import com.example.coursework.data.local.entities.Conversation;
 import com.example.coursework.data.local.entities.Message;
+import com.example.coursework.data.local.util.OnConversationListener;
 import com.example.coursework.data.local.util.OnMessageSentListener;
 import com.example.coursework.data.local.util.OnMessagesReceivedListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ChatFireBaseRepository {
     private FirebaseFirestore db;
     private FirebaseAuth firebaseAuth;
+    private FirebaseUser user;
 
     private static final String TAG = "CHAT_REPOSITORY";
 
@@ -77,7 +78,43 @@ public class ChatFireBaseRepository {
                 });
     }
 
-    public void createConversation
+
+
+    public void createConversation(String userId, OnConversationListener listener) {
+        FirebaseUser currentUser = getCurrentUser();
+        if (currentUser == null) {
+            listener.onFailure("User is not authenticated");
+            return;
+        }
+
+        String currentUserId = currentUser.getUid();
+        List<String> users = Arrays.asList(currentUserId, userId);
+        Collections.sort(users);
+
+        String conversationId = users.get(0) + "" + users.get(1);
+        DocumentReference documentReference = db.collection("conversations").document(conversationId);
+        documentReference.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                if (task.getResult().exists()) {
+                    // Conversation already exists, just return the ID
+                    listener.onSuccess(conversationId);
+                } else {
+                    // Conversation doesn't exist, create it
+                    Conversation newConversation = new Conversation(conversationId, users, System.currentTimeMillis(), "Conversation started");
+                    documentReference.set(newConversation)
+                            .addOnSuccessListener(aVoid -> listener.onSuccess(conversationId))
+                            .addOnFailureListener(e -> listener.onFailure(e.getMessage()));
+                }
+            } else {
+                listener.onFailure(task.getException().getMessage());
+            }
+        });
+
+    }
+
+    public FirebaseUser getCurrentUser(){
+        return firebaseAuth.getCurrentUser();
+    }
 
 
 

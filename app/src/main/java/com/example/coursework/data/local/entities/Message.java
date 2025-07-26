@@ -1,6 +1,9 @@
 package com.example.coursework.data.local.entities;
 
+import com.google.firebase.firestore.Exclude;
+
 public class Message {
+    @Exclude
     public String conversationId;
     public String senderId;
     public String senderName;
