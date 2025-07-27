@@ -18,6 +18,7 @@ import com.example.coursework.data.local.repository.AuthRepository;
 import com.example.coursework.data.local.util.AuthListener;
 import com.example.coursework.databinding.FragmentSignUpBinding;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.transition.MaterialElevationScale;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Objects;
@@ -25,6 +26,13 @@ import java.util.Objects;
 public class SignUpFragment extends Fragment {
     private FragmentSignUpBinding binding;
     private AuthRepository authRepository;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setExitTransition(new MaterialElevationScale(false));
+        setEnterTransition(new MaterialElevationScale(true));
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -44,15 +52,16 @@ public class SignUpFragment extends Fragment {
         binding.createAccountButton.setOnClickListener(v -> handleSignUp());
         
         binding.signInLink.setOnClickListener(v -> {
-            Navigation.findNavController(v).navigateUp();
+            Navigation.findNavController(v).navigate(R.id.action_registerFragment_to_loginFragment);
         });
     }
 
     private void handleSignUp() {
         String email = Objects.requireNonNull(binding.emailInput.getText()).toString().trim();
         String password = Objects.requireNonNull(binding.passwordInput.getText()).toString().trim();
+        String confirmPassword = Objects.requireNonNull(binding.confirmPasswordInput.getText()).toString().trim();
 
-        if (validateInput(email, password)) {
+        if (validateInput(email, password, confirmPassword)) {
             setLoadingState(true);
             authRepository.signUp(email, password, new AuthListener() {
                 @Override
@@ -77,7 +86,7 @@ public class SignUpFragment extends Fragment {
             });
         }
     }
-    private boolean validateInput(String email, String password) {
+    private boolean validateInput(String email, String password, String confirmPassword) {
         boolean isValid = true;
 
         if (TextUtils.isEmpty(email)) {
@@ -100,6 +109,16 @@ public class SignUpFragment extends Fragment {
             binding.passwordLayout.setError(null);
         }
 
+        if (TextUtils.isEmpty(confirmPassword)) {
+            binding.confirmPasswordLayout.setError("Confirm password is required");
+            isValid = false;
+        } else if (!password.equals(confirmPassword)) {
+            binding.confirmPasswordLayout.setError("Passwords do not match");
+            isValid = false;
+        } else {
+            binding.confirmPasswordLayout.setError(null);
+        }
+
         return isValid;
     }
 
@@ -107,6 +126,7 @@ public class SignUpFragment extends Fragment {
         binding.createAccountButton.setEnabled(!isLoading);
         binding.emailInput.setEnabled(!isLoading);
         binding.passwordInput.setEnabled(!isLoading);
+        binding.confirmPasswordInput.setEnabled(!isLoading);
         
         if (isLoading) {
             binding.createAccountButton.setText("Creating Account...");

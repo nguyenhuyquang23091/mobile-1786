@@ -1,4 +1,4 @@
-package com.example.coursework.data.local.repository.firebaseRepository;
+package com.example.coursework.data.local.implementation;
 
 import android.util.Log;
 
@@ -30,7 +30,7 @@ public class ChatFireBaseRepository {
         this.db = FirebaseFirestore.getInstance();
         this.firebaseAuth = FirebaseAuth.getInstance();
     }
-    public ListenerRegistration getMessage(String conversationId, OnMessagesReceivedListener listener){
+     ListenerRegistration getMessage(String conversationId, OnMessagesReceivedListener listener){
       return db.collection("conversations")
                 .document(conversationId).collection("messages")
                 .orderBy("timestamp", Query.Direction.DESCENDING).addSnapshotListener((value, error) -> {
@@ -48,7 +48,7 @@ public class ChatFireBaseRepository {
                     }
                 });
     }
-    public void sendMessage(String conversationId, String messageText, OnMessageSentListener listener){
+     void sendMessage(String conversationId, String messageText, OnMessageSentListener listener){
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if(currentUser == null ){
             listener.onFailure("User is not authenticated");
@@ -80,7 +80,7 @@ public class ChatFireBaseRepository {
 
 
 
-    public void createConversation(String userId, OnConversationListener listener) {
+     void createConversation(String userId, OnConversationListener listener) {
         FirebaseUser currentUser = getCurrentUser();
         if (currentUser == null) {
             listener.onFailure("User is not authenticated");
@@ -112,11 +112,11 @@ public class ChatFireBaseRepository {
 
     }
 
-    public FirebaseUser getCurrentUser(){
+     FirebaseUser getCurrentUser(){
         return firebaseAuth.getCurrentUser();
     }
 
-    public ListenerRegistration getConversations(OnConversationsReceivedListener listener) {
+     ListenerRegistration getConversations(OnConversationsReceivedListener listener) {
         FirebaseUser currentUser = getCurrentUser();
         if (currentUser == null) {
             Log.e(TAG, "User is not authenticated");

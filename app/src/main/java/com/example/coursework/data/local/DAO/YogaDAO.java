@@ -6,7 +6,6 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Transaction;
-import androidx.room.Update;
 
 import com.example.coursework.data.local.entities.YogaClass;
 import com.example.coursework.data.local.entities.YogaClassWithDetail;
@@ -16,31 +15,26 @@ import java.util.List;
 
 @Dao
 public interface YogaDAO {
-    @Insert
-    long insert(YogaCourse yogaCourse);
-    @Update
-    void update(YogaCourse yogaCourse);
     @Delete()
     void delete(YogaCourse yogaCourse);
-    @Query("SELECT * FROM yoga_courses ORDER BY day, time")
-    List<YogaCourse> getAllClasses();
     @Query("SELECT * FROM yoga_courses WHERE uid = :uid")
-    YogaCourse getCourseById(int uid);
-
+    YogaCourse getCourseById(String uid);
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void upsert(List<YogaCourse> yogaCourse);
-
-
+    void upsertYogaCourse(YogaCourse yogaCourse);
+    
     @Insert
-    void insertInstance(YogaClass yogaClass);
-    @Update
-    void updateInstance(YogaClass yogaClass);
+    void insertYogaCourse(YogaCourse yogaCourse);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void upsertYogaClass(YogaClass yogaClass);
+    
+    @Insert
+    void insertYogaClass(YogaClass yogaClass);
     @Delete
-    void deleteInstance(YogaClass yogaClass);
+    void deleteYogaClass(YogaClass yogaClass);
     @Query("SELECT yc.*, yco.type as courseType FROM yoga_classes yc " +
            "JOIN yoga_courses yco ON yc.courseId = yco.uid " +
            "WHERE yc.courseId = :courseId")
-    List<YogaClass> getInstances(int courseId);
+    List<YogaClass> getInstances(String courseId);
     @Query("SELECT * FROM yoga_classes WHERE teacher LIKE :teacher || '%'")
     List<YogaClass> searchByTeacher(String teacher);
     @Query("SELECT * FROM yoga_classes WHERE date LIKE '%' || :date || '%'")
@@ -49,6 +43,6 @@ public interface YogaDAO {
     List<YogaClass> searchByDay(String day);
     @Transaction
     @Query("SELECT * FROM yoga_classes WHERE id = :instanceId")
-    YogaClassWithDetail getInstanceWithDetails(int instanceId);
+    YogaClassWithDetail getInstanceWithDetails(String instanceId);
 }
 

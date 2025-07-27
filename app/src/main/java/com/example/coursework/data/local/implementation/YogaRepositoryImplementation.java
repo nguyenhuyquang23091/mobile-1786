@@ -9,11 +9,12 @@ import com.example.coursework.data.local.entities.YogaClass;
 import com.example.coursework.data.local.entities.YogaClassWithDetail;
 import com.example.coursework.data.local.entities.YogaCourse;
 import com.example.coursework.data.local.repository.YogaRepository;
-import com.example.coursework.data.local.repository.firebaseRepository.YogaFirebaseRepository;
 import com.example.coursework.data.local.util.ConnectivityCheck;
-import com.example.coursework.data.local.util.SyncFirebaseListener;
+import com.example.coursework.data.local.util.SyncYogaClassesListener;
+import com.example.coursework.data.local.util.SyncYogaCourseListener;
 
 import java.util.List;
+import java.util.UUID;
 
 public class YogaRepositoryImplementation implements YogaRepository {
     private YogaDAO yogaDAO;
@@ -31,13 +32,14 @@ public class YogaRepositoryImplementation implements YogaRepository {
         return connectivityCheck.isConnected();
     }
     @Override
-    public void insert(YogaCourse yogaCourse, SyncFirebaseListener listener) {
+    public void insertYogaCourse(YogaCourse yogaCourse, SyncYogaCourseListener listener) {
         AppDatabase.databaseWriteExecutor.execute(() -> {
-            long newUid = yogaDAO.insert(yogaCourse);
+            yogaCourse.uid = java.util.UUID.randomUUID().toString();
+            yogaDAO.insertYogaCourse(yogaCourse);
             if (isConnected()) {
-                YogaCourse classToSync = yogaDAO.getCourseById((int) newUid);
+                YogaCourse classToSync = yogaDAO.getCourseById(yogaCourse.uid);
                 if (classToSync != null) {
-                    yogaFirebaseRepository.insertYogaCourse(classToSync, listener);
+                    yogaFirebaseRepository.upSertYogaCourse(classToSync, listener);
                 } else {
                     if (listener != null) {
                         listener.syncFailure("Error: Could not retrieve saved course from local DB.");
@@ -51,46 +53,52 @@ public class YogaRepositoryImplementation implements YogaRepository {
         });
     }
 
-
-
     @Override
-    public void update(YogaCourse yogaCourse) {
+    public void updateYogaCourse(YogaCourse yogaCourse) {
         AppDatabase.databaseWriteExecutor.execute(() -> {
-            yogaDAO.update(yogaCourse);});
-        if(isConnected()) {
+            yogaDAO.upsertYogaCourse(yogaCourse);
+            if (isConnected()) {
+                yogaFirebaseRepository.upSertYogaCourse(yogaCourse, new SyncYogaCourseListener() {
+                    @Override
+                    public void syncFirebaseWithLocal() {
+                        Log.d("YogaRepositoryImplementation", "Course updated in Firebase successfully");
+                    }
 
-
-        }
+                    @Override
+                    public void syncFailure(String errorMessage) {
+                        Log.e("YogaRepositoryImplementation", "Failed to updateYogaCourse course in Firebase: " + errorMessage);
+                    }
+                });
+            }
+        });
     }
 
     @Override
-    public void delete(YogaCourse yogaCourse) {
-        if(isConnected()) {
-            yogaFirebaseRepository.deteleYogaCourse(yogaCourse, new SyncFirebaseListener() {
-                @Override
-                public void syncFirebaseWithLocal() {
-                    Log.d("YogaRepositoryImplementation", "Course deleted from Firebase, no local action needed");
-                }
+    public void deleteYogaCourse(YogaCourse yogaCourse) {
+       AppDatabase.databaseWriteExecutor.execute(() -> {
+           yogaDAO.delete(yogaCourse);
+           if (isConnected()) {
+               yogaFirebaseRepository.deteleYogaCourse(yogaCourse, new SyncYogaCourseListener() {
+                   @Override
+                   public void syncFailure(String errorMessage) {
+                       Log.e("YogaRepositoryImplementation", "Failed to deleteYogaCourse course in Firebase: " + errorMessage);
+                   }
 
-                @Override
-                public void syncFailure(String errorMessage) {
-                    Log.e("YogaRepositoryImplementation", "Failed to delete from Firebase: " + errorMessage);
-                }
-            });
-        } else {
-            AppDatabase.databaseWriteExecutor.execute(() -> yogaDAO.delete(yogaCourse));
-        }
+                   @Override
+                   public void syncFirebaseWithLocal() {
+                       Log.d("YogaRepositoryImplementation", "Deleted in Firebase successfully");
+
+                   }
+               });
+           }
+       });
     }
 
-    @Override
-    public List<YogaCourse> getAll() {
-        return yogaDAO.getAllClasses();
-    }
 
     @Override
-    public void loadAllCoursesFromFirebase(SyncFirebaseListener listener) {
+    public void loadAllCoursesFromFirebase(SyncYogaCourseListener listener) {
         if (isConnected()){
-            yogaFirebaseRepository.syncYogaCourse(new SyncFirebaseListener() {
+            yogaFirebaseRepository.syncYogaCourse(new SyncYogaCourseListener() {
                 @Override
                 public void syncFailure(String errorMessage) {
                     if (listener != null) listener.syncFailure(errorMessage);
@@ -107,6 +115,36 @@ public class YogaRepositoryImplementation implements YogaRepository {
                     if (listener != null) listener.syncFirebaseWithLocal(courses);
                 }
 
+
+            });
+        } else {
+            if (listener != null) {
+                listener.syncFailure("No network connection. Data saved locally.");
+            }
+        }
+    }
+
+    @Override
+    public void loadAllClassesFromFirebase(String courseId, SyncYogaClassesListener listener) {
+        if (isConnected()){
+            yogaFirebaseRepository.syncAllYogaCLasses(courseId, new SyncYogaClassesListener() {
+                @Override
+                public void syncFailure(String errorMessage) {
+                    if (listener != null)
+                        listener.syncFailure(errorMessage);
+                }
+
+                @Override
+                public void syncClassesWithFirebase() {
+
+                }
+
+                @Override
+                public void syncClassesWithFirebase(List<YogaClass> yogaClassList) {
+                    if(listener != null){
+                        listener.syncClassesWithFirebase(yogaClassList);
+                    }
+                }
             });
         } else {
             if (listener != null) {
@@ -118,37 +156,88 @@ public class YogaRepositoryImplementation implements YogaRepository {
     }
 
     @Override
-    public YogaCourse findById(int uid) {
+    public YogaCourse findById(String uid) {
         return yogaDAO.getCourseById(uid);
     }
     ///INSTANCE IMPLEMENTATION
     @Override
-    public void insertInstance(YogaClass yogaClass) {
+    public void insertYogaClass(YogaClass yogaClass) {
+        yogaClass.id = UUID.randomUUID().toString();
         AppDatabase.databaseWriteExecutor.execute(() -> {
-            yogaDAO.insertInstance(yogaClass);
+            yogaDAO.insertYogaClass(yogaClass);
             if (isConnected()) {
-                // Call the helper method after inserting
-                List<YogaClass> instances = yogaDAO.getInstances(yogaClass.courseId);
-                yogaFirebaseRepository.syncAllClassInstances(String.valueOf(yogaClass.courseId), instances);
+                // Upload this class instance to Firebase
+                yogaFirebaseRepository.upSertYogaCLasses(yogaClass, new SyncYogaClassesListener() {
+                    @Override
+                    public void syncFailure(String errorMessage) {
+                        Log.e("YogaRepositoryImplementation", "Failed to sync class to Firebase: " + errorMessage);
+                    }
+
+                    @Override
+                    public void syncClassesWithFirebase() {
+                        Log.d("YogaRepositoryImplementation", "Class synced to Firebase successfully");
+                    }
+
+                    @Override
+                    public void syncClassesWithFirebase(List<YogaClass> yogaClassList) {
+                        // Not used for single class upload
+                    }
+                });
             }
         });
     }
 
     @Override
-    public List<YogaClass> getInstance(int courseId) {
-        return yogaDAO.getInstances(courseId);
+    public void updateYogaClass(YogaClass yogaClass) {
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            yogaDAO.upsertYogaClass(yogaClass);
+            if (isConnected()) {
+                // Upload this updated class instance to Firebase
+                yogaFirebaseRepository.upSertYogaCLasses(yogaClass, new SyncYogaClassesListener() {
+                    @Override
+                    public void syncFailure(String errorMessage) {
+                        Log.e("YogaRepositoryImplementation", "Failed to updateYogaCourse class in Firebase: " + errorMessage);
+                    }
+
+                    @Override
+                    public void syncClassesWithFirebase() {
+                        Log.d("YogaRepositoryImplementation", "Class updated in Firebase successfully");
+                    }
+
+                    @Override
+                    public void syncClassesWithFirebase(List<YogaClass> yogaClassList) {
+                        // Not used for single class upload
+                    }
+                });
+            }
+        });
     }
     @Override
-    public void updateInstance(YogaClass yogaClass) {
-        AppDatabase.databaseWriteExecutor.execute(() -> yogaDAO.updateInstance(yogaClass));
+    public void deleteYogaClass(YogaClass yogaClass) {
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            yogaDAO.deleteYogaClass(yogaClass);
+            if (isConnected()) {
+                // Delete this class instance from Firebase
+                yogaFirebaseRepository.deleteYogaCLasses(yogaClass, new SyncYogaClassesListener() {
+                    @Override
+                    public void syncFailure(String errorMessage) {
+                        Log.e("YogaRepositoryImplementation", "Failed to deleteYogaCourse class from Firebase: " + errorMessage);
+                    }
+
+                    @Override
+                    public void syncClassesWithFirebase() {
+                        Log.d("YogaRepositoryImplementation", "Class deleted from Firebase successfully");
+                    }
+
+                    @Override
+                    public void syncClassesWithFirebase(List<YogaClass> yogaClassList) {
+                        // Not used for deleteYogaCourse operation
+                    }
+                });
+            }
+        });
     }
-    @Override
-    public void deleteInstance(YogaClass yogaClass) {
-        AppDatabase.databaseWriteExecutor.execute(() ->
-                yogaDAO.deleteInstance(yogaClass));
-        if(isConnected()){
-            yogaFirebaseRepository.deleteInstance(yogaClass);}
-    }
+
     @Override
     public List<YogaClass> searchByTeacher(String teacher) {
         return yogaDAO.searchByTeacher(teacher);
@@ -165,7 +254,7 @@ public class YogaRepositoryImplementation implements YogaRepository {
     }
 
     @Override
-    public YogaClassWithDetail getInstanceWithDetails(int instanceId) {
+    public YogaClassWithDetail getInstanceWithDetails(String instanceId) {
         return yogaDAO.getInstanceWithDetails(instanceId);
     }
 }

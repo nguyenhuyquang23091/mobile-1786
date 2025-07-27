@@ -4,6 +4,7 @@ package com.example.coursework.data.local.entities;
 
 import static androidx.room.ForeignKey.CASCADE;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -23,12 +24,12 @@ import com.google.firebase.firestore.Exclude;
         indices = @Index(value = "courseId")
 )
 public class YogaClass {
-    @PrimaryKey(autoGenerate = true)
     @Exclude
-    public int id;
+    @PrimaryKey
+    @NonNull
+    public String id;
     @ColumnInfo(name = "courseId")
-    @Exclude
-    public int courseId;
+    public String courseId;
 
     @ColumnInfo(name = "date")
     public String date;
@@ -43,7 +44,11 @@ public class YogaClass {
     public String courseType;
     public YogaClass(){
 
+
     }
+
+
+
 
 
 }

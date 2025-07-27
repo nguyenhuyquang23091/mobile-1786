@@ -23,7 +23,7 @@ public class CourseDetailFragment extends Fragment {
     private FragmentClassDetailBinding binding;
     private YogaRepository yogaRepository;
 
-    private int instanceId = -1;
+    private String instanceId = null;
 
     @Nullable
     @Override
@@ -39,10 +39,10 @@ public class CourseDetailFragment extends Fragment {
         yogaRepository = new YogaRepositoryImplementation(requireActivity().getApplication());
         setupToolbar();
         if (getArguments() != null) {
-            instanceId = getArguments().getInt("instanceId", -1);
+            instanceId = getArguments().getString("instanceId");
         }
 
-        if (instanceId == -1) {
+        if (instanceId == null || instanceId.isEmpty()) {
             Snackbar.make(requireView(), "Error: Class instance not found", Snackbar.LENGTH_SHORT).show();
             Navigation.findNavController(view).popBackStack();
             return;

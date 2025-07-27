@@ -5,7 +5,6 @@ import android.app.Application;
 import androidx.lifecycle.LiveData;
 
 import com.example.coursework.data.local.repository.AuthRepository;
-import com.example.coursework.data.local.repository.firebaseRepository.AuthFireBaseRepository;
 import com.example.coursework.data.local.util.AuthListener;
 import com.example.coursework.data.local.util.ConnectivityCheck;
 import com.google.firebase.auth.FirebaseUser;

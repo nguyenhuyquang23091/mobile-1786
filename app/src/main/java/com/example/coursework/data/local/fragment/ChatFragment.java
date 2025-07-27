@@ -121,7 +121,7 @@ public class ChatFragment extends Fragment {
         chatRepository.sendMessage(conversationId, messageText, new OnMessageSentListener() {
             @Override
             public void onSuccess() {
-                // Message sent successfully - real-time listener will update UI
+                // Message sent successfully - real-time listener will updateYogaCourse UI
             }
 
             @Override

@@ -21,6 +21,7 @@ import com.example.coursework.data.local.AppDatabase;
 import com.example.coursework.data.local.adapter.YogaClassAdapter;
 import com.example.coursework.data.local.entities.YogaClass;
 import com.example.coursework.data.local.implementation.YogaRepositoryImplementation;
+import com.example.coursework.data.local.util.SyncYogaClassesListener;
 import com.example.coursework.databinding.FragmentClassInstanceBinding;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -41,9 +42,7 @@ public class YogaClassFragment extends Fragment {
     private FragmentClassInstanceBinding binding;
     private YogaRepositoryImplementation repository;
     private YogaClassAdapter adapter;
-    private int courseId;
-
-
+    private String courseId;
 
     @Nullable
     @Override
@@ -76,7 +75,7 @@ public class YogaClassFragment extends Fragment {
         if (getArguments() != null) {
             courseId = YogaClassFragmentArgs.fromBundle(getArguments()).getCourseId();
         }
-        if (courseId == -1) {
+        if (courseId == null || courseId.isEmpty()) {
             Snackbar.make(requireView(), "Error: Course ID not found", Snackbar.LENGTH_SHORT).show();
             //go back if no return
             Navigation.findNavController(view).popBackStack();
@@ -84,6 +83,12 @@ public class YogaClassFragment extends Fragment {
         }
         setupRecyclerView();
         setupFab();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         loadInstances();
     }
 
@@ -101,17 +106,21 @@ public class YogaClassFragment extends Fragment {
         adapter = new YogaClassAdapter(new YogaClassAdapter.OnItemClickListener() {
             @Override
             public void onDeleteClick(YogaClass yogaClass) {
-                new MaterialAlertDialogBuilder(requireContext())
+                androidx.appcompat.app.AlertDialog deleteDialog = new MaterialAlertDialogBuilder(requireContext())
                         .setTitle("Delete Instance")
                         .setMessage("Are you sure you want to delete the instance on \"" + yogaClass.date + "\" with teacher \"" + yogaClass.teacher + "\"? This action cannot be undone.")
                         .setIcon(R.drawable.ic_red_alert)
                         .setNegativeButton("Cancel", null)
                         .setPositiveButton("Delete", (dialog, which) -> {
-                            repository.deleteInstance(yogaClass);
-                            Snackbar.make(requireView(), "Instance Deleted", Snackbar.LENGTH_LONG).show();
-                            loadInstances();
+                            repository.deleteYogaClass(yogaClass);
+                            Snackbar.make(requireView(), "Deleting instance...", Snackbar.LENGTH_SHORT).show();
+                            // Refresh instances after a short delay to allow Firebase sync
+                            binding.getRoot().postDelayed(() -> loadInstances(), 1000);
                         })
-                        .show();
+                        .create();
+                
+                
+                deleteDialog.show();
             }
             @Override
             public void onEditCLick(YogaClass yogaClass) {
@@ -207,24 +216,28 @@ public class YogaClassFragment extends Fragment {
                     dialogView.postDelayed(() -> {
                         if (instanceToEdit == null) {
                             YogaClass newInstance = new YogaClass();
+                            newInstance.id = null;
                             newInstance.title = title;
                             newInstance.date = date;
                             newInstance.teacher = teacher;
                             newInstance.description = description;
                             newInstance.courseId = this.courseId;
                             newInstance.courseType = courseType;
-                            repository.insertInstance(newInstance);
-                            Snackbar.make(requireView(), "Class saved successfully", Snackbar.LENGTH_SHORT).show();
+                            repository.insertYogaClass(newInstance);
+                            Snackbar.make(requireView(), "Saving class...", Snackbar.LENGTH_SHORT).show();
                         } else {
                             instanceToEdit.title = title;
                             instanceToEdit.date = date;
                             instanceToEdit.teacher = teacher;
                             instanceToEdit.description = description;
-                            repository.updateInstance(instanceToEdit);
-                            Snackbar.make(requireView(), "Class updated successfully", Snackbar.LENGTH_SHORT).show();
+                            repository.updateYogaClass(instanceToEdit);
+                            Snackbar.make(requireView(), "Updating class...", Snackbar.LENGTH_SHORT).show();
                         }
-                        loadInstances();
-                        dialog.dismiss();
+                        // Refresh instances after a short delay to allow Firebase sync
+                        dialogView.postDelayed(() -> {
+                            loadInstances();
+                            dialog.dismiss();
+                        }, 1500);
                     }, 1000);
                 });
             });
@@ -234,11 +247,37 @@ public class YogaClassFragment extends Fragment {
         dialog.show();
     }
     private void loadInstances() {
-        AppDatabase.databaseWriteExecutor.execute(() -> {
-            List<YogaClass> instances = repository.getInstance(courseId);
-            requireActivity().runOnUiThread(() -> adapter.setClasses(instances));
+        Log.d("YogaClassFragment", "Loading instances from Firestore for courseId: " + courseId);
+        
+        repository.loadAllClassesFromFirebase(String.valueOf(courseId), new SyncYogaClassesListener() {
+            @Override
+            public void syncFailure(String errorMessage) {
+                Log.e("YogaClassFragment", "Failed to load classes from Firebase: " + errorMessage);
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(() -> {
+                        Snackbar.make(requireView(), "Failed to load classes: " + errorMessage, Snackbar.LENGTH_LONG).show();
+                    });
+                }
+            }
+
+            @Override
+            public void syncClassesWithFirebase() {
+                Log.d("YogaClassFragment", "Firebase sync successful, but no data returned");
+            }
+
+            @Override
+            public void syncClassesWithFirebase(List<YogaClass> yogaClassList) {
+                Log.d("YogaClassFragment", "Loaded " + yogaClassList.size() + " classes from Firebase");
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(() -> {
+                        adapter.setClasses(yogaClassList);
+                    });
+                }
+            }
         });
     }
+
+
 
     private boolean isValidDate(String selectedDate, String  courseDay){
         try {

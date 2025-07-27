@@ -1,6 +1,7 @@
 package com.example.coursework.data.local.entities;
 
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -10,9 +11,10 @@ import com.google.firebase.firestore.Exclude;
 
 @Entity(tableName = "yoga_courses")
 public class YogaCourse {
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @Exclude
-    public int uid;
+    @NonNull
+    public String uid;
     @ColumnInfo(name = "day")
     public String day;
     @ColumnInfo(name = "time")
@@ -31,6 +33,7 @@ public class YogaCourse {
     public String intensity;
 
     public YogaCourse(){
+
 
     }
 }

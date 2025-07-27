@@ -14,7 +14,7 @@ import com.example.coursework.R;
 import com.example.coursework.data.local.entities.YogaCourse;
 import com.example.coursework.data.local.implementation.YogaRepositoryImplementation;
 import com.example.coursework.data.local.repository.YogaRepository;
-import com.example.coursework.data.local.util.SyncFirebaseListener;
+import com.example.coursework.data.local.util.SyncYogaCourseListener;
 import com.example.coursework.databinding.FragmentConfirmationBinding;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -100,8 +100,8 @@ public class ConfirmationFragment extends Fragment {
         yogaCourse.price = Double.valueOf(price);
         yogaCourse.description = description;
 
-        // Use the repository to insert the class.
-        yogaRepository.insert(yogaCourse, new SyncFirebaseListener() {
+        // Use the repository to insertYogaCourse the class.
+        yogaRepository.insertYogaCourse(yogaCourse, new SyncYogaCourseListener() {
             @Override
             public void syncFailure(String errorMessage) {
                 requireActivity().runOnUiThread(() -> {

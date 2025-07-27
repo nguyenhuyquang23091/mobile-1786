@@ -12,7 +12,8 @@
         tools:layout="@layout/fragment_sign_in">
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
-            app:destination="@id/registerFragment" />
+            app:destination="@id/registerFragment"
+            />
         <action
             android:id="@+id/action_loginFragment_to_createClassFragment"
             app:destination="@id/createCourseFragment"
@@ -30,6 +31,10 @@
             app:destination="@id/createCourseFragment"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            />
     </fragment>
 
     <fragment
@@ -98,7 +103,7 @@
         tools:layout="@layout/fragment_class_instance">
         <argument
             android:name="courseId"
-            app:argType="integer" />
+            app:argType="string" />
     </fragment>
 
     <fragment
@@ -118,7 +123,7 @@
         tools:layout="@layout/fragment_class_detail" >
         <argument
             android:name="instanceId"
-            app:argType="integer" />
+            app:argType="string" />
     </fragment>
 
     <fragment

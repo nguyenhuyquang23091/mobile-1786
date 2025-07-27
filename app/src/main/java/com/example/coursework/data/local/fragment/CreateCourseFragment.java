@@ -1,6 +1,5 @@
 package com.example.coursework.data.local.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -17,8 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-import androidx.appcompat.widget.Toolbar;
-import android.view.MenuItem;
 
 import com.example.coursework.R;
 import com.example.coursework.data.local.AppDatabase;
@@ -56,20 +53,20 @@ public class CreateCourseFragment extends Fragment {
         handlePrefilledData();
         // Check for edit mode from activity intent (existing functionality)
         if(requireActivity().getIntent().hasExtra("uid")){
-            int uid = requireActivity().getIntent().getIntExtra("uid", -1);
-            if(uid != -1){
+            String uid = requireActivity().getIntent().getStringExtra("uid");
+            if(uid != null && !uid.isEmpty()){
                 loadEditClass(uid);
             }
         }
         // Check for edit mode from fragment arguments (new functionality)
         else if(getArguments() != null && getArguments().containsKey("edit_course_uid")){
-            int uid = getArguments().getInt("edit_course_uid", -1);
-            if(uid != -1){
+            String uid = getArguments().getString("edit_course_uid");
+            if(uid != null && !uid.isEmpty()){
                 loadEditClass(uid);
             }
         }
     }
-    private void loadEditClass(int classId){
+    private void loadEditClass(String classId){
         AppDatabase.databaseWriteExecutor.execute(() -> {
             editYogaCourse = yogaRepository.findById(classId);
             requireActivity().runOnUiThread(()-> populateForm(editYogaCourse));
@@ -120,8 +117,7 @@ public class CreateCourseFragment extends Fragment {
                         updateClass();
                         Snackbar.make(requireView(), "Class updated successfully!", Snackbar.LENGTH_SHORT).show();
                         // Go back to the list after updating
-                        startActivity(new Intent(requireActivity(), CourseListFragment.class));
-                        requireActivity().finish();
+                        Navigation.findNavController(requireView()).navigateUp();
                     } else {
                         // INSERT new class
                         passDataToConfirmation(); // Your existing flow for new classes
@@ -181,7 +177,7 @@ public class CreateCourseFragment extends Fragment {
         editYogaCourse.duration = Integer.parseInt(Objects.requireNonNull(binding.durationInput.getText()).toString());
         editYogaCourse.price = Double.parseDouble(Objects.requireNonNull(binding.priceInput.getText()).toString());
         editYogaCourse.description = Objects.requireNonNull(binding.descriptionInput.getText()).toString();
-        yogaRepository.update(editYogaCourse);
+        yogaRepository.updateYogaCourse(editYogaCourse);
     }
 
     private void showTimePickerDialog() {

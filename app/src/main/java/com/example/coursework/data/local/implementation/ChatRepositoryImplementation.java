@@ -3,7 +3,6 @@ package com.example.coursework.data.local.implementation;
 import android.app.Application;
 
 import com.example.coursework.data.local.repository.ChatRepository;
-import com.example.coursework.data.local.repository.firebaseRepository.ChatFireBaseRepository;
 import com.example.coursework.data.local.util.ConnectivityCheck;
 import com.example.coursework.data.local.util.OnConversationListener;
 import com.example.coursework.data.local.util.OnConversationsReceivedListener;
