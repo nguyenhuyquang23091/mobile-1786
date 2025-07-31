@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,15 +15,15 @@ import com.example.coursework.R;
 import com.example.coursework.data.local.implementation.AuthRepositoryImplementation;
 import com.example.coursework.data.local.repository.AuthRepository;
 import com.example.coursework.data.local.util.AuthListener;
-import com.example.coursework.databinding.FragmentSignUpBinding;
+import com.example.coursework.databinding.FragmentSignInBinding;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.transition.MaterialElevationScale;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Objects;
 
-public class SignUpFragment extends Fragment {
-    private FragmentSignUpBinding binding;
+public class SignInFragment extends Fragment {
+    private FragmentSignInBinding binding;
     private AuthRepository authRepository;
 
     @Override
@@ -37,7 +36,7 @@ public class SignUpFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentSignUpBinding.inflate(inflater, container, false);
+        binding = FragmentSignInBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -49,44 +48,41 @@ public class SignUpFragment extends Fragment {
     }
 
     private void setupClickListeners() {
-        binding.createAccountButton.setOnClickListener(v -> handleSignUp());
+        binding.loginButton.setOnClickListener(v -> handleSignIn());
         
-        binding.signInLink.setOnClickListener(v -> {
-            Navigation.findNavController(v).navigate(R.id.action_registerFragment_to_loginFragment);
+        binding.signupText.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_registerFragment);
         });
     }
 
-    private void handleSignUp() {
+    private void handleSignIn() {
         String email = Objects.requireNonNull(binding.emailInput.getText()).toString().trim();
         String password = Objects.requireNonNull(binding.passwordInput.getText()).toString().trim();
-        String confirmPassword = Objects.requireNonNull(binding.confirmPasswordInput.getText()).toString().trim();
 
-        if (validateInput(email, password, confirmPassword)) {
+        if (validateInput(email, password)) {
             setLoadingState(true);
-            authRepository.signUp(email, password, new AuthListener() {
+            authRepository.signIn(email, password, new AuthListener() {
                 @Override
                 public void onFailure(String errorMessage) {
-                    if(getActivity() != null && binding != null) {
-                        getActivity().runOnUiThread(() ->
-                                setLoadingState(false));
+                    if (getActivity() != null && binding != null) {
+                        getActivity().runOnUiThread(() -> setLoadingState(false));
                         Snackbar.make(binding.getRoot(), errorMessage, Snackbar.LENGTH_LONG).show();
                     }
                 }
 
                 @Override
                 public void onSuccess(FirebaseUser user) {
-                    if(getActivity() != null && binding != null) {
-                        getActivity().runOnUiThread(() ->
-                                setLoadingState(false));
-                        Snackbar.make(binding.getRoot(), "Sign up successfully", Snackbar.LENGTH_LONG).show();
-                        Navigation.findNavController(binding.getRoot()).navigate(R.id.action_registerFragment_to_createCourseFragment);
+                    if (getActivity() != null && binding != null) {
+                        getActivity().runOnUiThread(() -> setLoadingState(false));
+                        Snackbar.make(binding.getRoot(), "Sign in successful", Snackbar.LENGTH_LONG).show();
+                        Navigation.findNavController(binding.getRoot()).navigate(R.id.action_loginFragment_to_createClassFragment);
                     }
-
                 }
             });
         }
     }
-    private boolean validateInput(String email, String password, String confirmPassword) {
+
+    private boolean validateInput(String email, String password) {
         boolean isValid = true;
 
         if (TextUtils.isEmpty(email)) {
@@ -98,6 +94,7 @@ public class SignUpFragment extends Fragment {
         } else {
             binding.emailLayout.setError(null);
         }
+
         if (TextUtils.isEmpty(password)) {
             binding.passwordLayout.setError("Password is required");
             isValid = false;
@@ -107,30 +104,21 @@ public class SignUpFragment extends Fragment {
         } else {
             binding.passwordLayout.setError(null);
         }
-        if (TextUtils.isEmpty(confirmPassword)) {
-            binding.confirmPasswordLayout.setError("Confirm password is required");
-            isValid = false;
-        } else if (!password.equals(confirmPassword)) {
-            binding.confirmPasswordLayout.setError("Passwords do not match");
-            isValid = false;
-        } else {
-            binding.confirmPasswordLayout.setError(null);
-        }
+
         return isValid;
     }
 
     private void setLoadingState(boolean isLoading) {
         if (binding == null) return;
         
-        binding.createAccountButton.setEnabled(!isLoading);
+        binding.loginButton.setEnabled(!isLoading);
         binding.emailInput.setEnabled(!isLoading);
         binding.passwordInput.setEnabled(!isLoading);
-        binding.confirmPasswordInput.setEnabled(!isLoading);
         
         if (isLoading) {
-            binding.createAccountButton.setText("Creating Account...");
+            binding.loginButton.setText("Signing In...");
         } else {
-            binding.createAccountButton.setText("Create Account");
+            binding.loginButton.setText("Sign In");
         }
     }
 

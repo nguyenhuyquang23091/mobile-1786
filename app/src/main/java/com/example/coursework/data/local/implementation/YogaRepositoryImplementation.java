@@ -34,10 +34,10 @@ public class YogaRepositoryImplementation implements YogaRepository {
     @Override
     public void insertYogaCourse(YogaCourse yogaCourse, SyncYogaCourseListener listener) {
         AppDatabase.databaseWriteExecutor.execute(() -> {
-            yogaCourse.uid = java.util.UUID.randomUUID().toString();
+            yogaCourse.setUid(java.util.UUID.randomUUID().toString());
             yogaDAO.insertYogaCourse(yogaCourse);
             if (isConnected()) {
-                YogaCourse classToSync = yogaDAO.getCourseById(yogaCourse.uid);
+                YogaCourse classToSync = yogaDAO.getCourseById(yogaCourse.getUid());
                 if (classToSync != null) {
                     yogaFirebaseRepository.upSertYogaCourse(classToSync, listener);
                 } else {
@@ -162,7 +162,7 @@ public class YogaRepositoryImplementation implements YogaRepository {
     ///INSTANCE IMPLEMENTATION
     @Override
     public void insertYogaClass(YogaClass yogaClass) {
-        yogaClass.id = UUID.randomUUID().toString();
+        yogaClass.setId(UUID.randomUUID().toString());
         AppDatabase.databaseWriteExecutor.execute(() -> {
             yogaDAO.insertYogaClass(yogaClass);
             if (isConnected()) {

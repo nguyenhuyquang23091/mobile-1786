@@ -2,9 +2,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.secrets)
     id("androidx.navigation.safeargs")
     id("com.google.gms.google-services")
-
 }
 
 android {
@@ -38,11 +38,19 @@ android {
         dataBinding = true
         viewBinding = true
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.kotlinCompilerExtension.get()
     }
+}
 
+secrets {
+    // Use secrets.properties for sensitive configuration
+    propertiesFileName = "secrets.properties"
+    
+    // Fallback to local.properties for non-sensitive defaults
+    defaultPropertiesFileName = "local.properties"
 }
 
 dependencies {
@@ -70,6 +78,7 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
+    implementation(libs.firebase.messaging)
     implementation(libs.credentials)
     implementation(libs.credentials.play.services.auth)
     implementation(libs.google.id)

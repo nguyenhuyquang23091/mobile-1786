@@ -91,14 +91,14 @@ public class ConfirmationFragment extends Fragment {
         String type = ConfirmationFragmentArgs.fromBundle(getArguments()).getType();
         String description = ConfirmationFragmentArgs.fromBundle(getArguments()).getDescription();
 
-        yogaCourse.type = type;
-        yogaCourse.day = day;
-        yogaCourse.time = time;
-        yogaCourse.intensity = intensity;
-        yogaCourse.capacity = Integer.valueOf(capacity);
-        yogaCourse.duration = Integer.valueOf(duration);
-        yogaCourse.price = Double.valueOf(price);
-        yogaCourse.description = description;
+        yogaCourse.setType(type);
+        yogaCourse.setDay(day);
+        yogaCourse.setTime(time);
+        yogaCourse.setIntensity(intensity);
+        yogaCourse.setCapacity(Integer.valueOf(capacity));
+        yogaCourse.setDuration(Integer.valueOf(duration));
+        yogaCourse.setPrice(Double.valueOf(price));
+        yogaCourse.setDescription(description);
 
         // Use the repository to insertYogaCourse the class.
         yogaRepository.insertYogaCourse(yogaCourse, new SyncYogaCourseListener() {

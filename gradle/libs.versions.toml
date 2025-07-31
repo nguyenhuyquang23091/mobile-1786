@@ -19,6 +19,7 @@ kotlinx-serialization-json = "1.7.3"
 firebaseFirestore = "25.1.4"
 gms = "17.0.0"
 shimmer = "0.5.0"
+secrets = "2.0.1"
 credentials = "1.3.0"
 credentialsPlayServices = "1.3.0"
 googleId = "1.1.1"
@@ -46,6 +47,7 @@ navigation-testing = { module = "androidx.navigation:navigation-testing", versio
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
+firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
 credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
 credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentialsPlayServices" }
 google-id = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleId" }
@@ -54,5 +56,6 @@ shimmer = { group = "com.facebook.shimmer", name = "shimmer", version.ref = "shi
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-serialization" }
+secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secrets" }
 
 

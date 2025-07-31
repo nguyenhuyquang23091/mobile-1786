@@ -108,7 +108,7 @@ public class YogaClassFragment extends Fragment {
             public void onDeleteClick(YogaClass yogaClass) {
                 androidx.appcompat.app.AlertDialog deleteDialog = new MaterialAlertDialogBuilder(requireContext())
                         .setTitle("Delete Instance")
-                        .setMessage("Are you sure you want to delete the instance on \"" + yogaClass.date + "\" with teacher \"" + yogaClass.teacher + "\"? This action cannot be undone.")
+                        .setMessage("Are you sure you want to delete the instance on \"" + yogaClass.getDate() + "\" with teacher \"" + yogaClass.getTeacher() + "\"? This action cannot be undone.")
                         .setIcon(R.drawable.ic_red_alert)
                         .setNegativeButton("Cancel", null)
                         .setPositiveButton("Delete", (dialog, which) -> {
@@ -162,10 +162,10 @@ public class YogaClassFragment extends Fragment {
         dateInput.setOnClickListener(v -> datePicker.show(getParentFragmentManager(), "DATE_PICKER"));
 
         if (instanceToEdit != null) {
-            titleInput.setText(instanceToEdit.title);
-            dateInput.setText(instanceToEdit.date);
-            teacherInput.setText(instanceToEdit.teacher);
-            descriptionInput.setText(instanceToEdit.description);
+            titleInput.setText(instanceToEdit.getTitle());
+            dateInput.setText(instanceToEdit.getDate());
+            teacherInput.setText(instanceToEdit.getTeacher());
+            descriptionInput.setText(instanceToEdit.getDescription());
         }
 
         MaterialContainerTransform containerTransform = new MaterialContainerTransform();
@@ -195,8 +195,8 @@ public class YogaClassFragment extends Fragment {
             cancelButton.setEnabled(false);
 
             AppDatabase.databaseWriteExecutor.execute(() -> {
-                String courseday = repository.findById(courseId).day;
-                String courseType = repository.findById(courseId).type;
+                String courseday = repository.findById(courseId).getDay();
+                String courseType = repository.findById(courseId).getType();
                 requireActivity().runOnUiThread(() -> {
                     if (!isValidDate(date, courseday)) {
                         loadingIndicator.setVisibility(View.GONE);
@@ -216,20 +216,20 @@ public class YogaClassFragment extends Fragment {
                     dialogView.postDelayed(() -> {
                         if (instanceToEdit == null) {
                             YogaClass newInstance = new YogaClass();
-                            newInstance.id = null;
-                            newInstance.title = title;
-                            newInstance.date = date;
-                            newInstance.teacher = teacher;
-                            newInstance.description = description;
-                            newInstance.courseId = this.courseId;
-                            newInstance.courseType = courseType;
+                            newInstance.setId(null);
+                            newInstance.setTitle(title);
+                            newInstance.setDate(date);
+                            newInstance.setTeacher(teacher);
+                            newInstance.setDescription(description);
+                            newInstance.setCourseId(this.courseId);
+                            newInstance.setCourseType(courseType);
                             repository.insertYogaClass(newInstance);
                             Snackbar.make(requireView(), "Saving class...", Snackbar.LENGTH_SHORT).show();
                         } else {
-                            instanceToEdit.title = title;
-                            instanceToEdit.date = date;
-                            instanceToEdit.teacher = teacher;
-                            instanceToEdit.description = description;
+                            instanceToEdit.setTitle(title);
+                            instanceToEdit.setDate(date);
+                            instanceToEdit.setTeacher(teacher);
+                            instanceToEdit.setDescription(description);
                             repository.updateYogaClass(instanceToEdit);
                             Snackbar.make(requireView(), "Updating class...", Snackbar.LENGTH_SHORT).show();
                         }

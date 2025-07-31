@@ -70,20 +70,20 @@ public class CourseDetailFragment extends Fragment {
     private void bind(YogaClassWithDetail detail){
 
 
-        binding.courseTitle.setText(detail.yogaCourse.type);
-         binding.dayValue.setText(detail.yogaCourse.day);
-         binding.timeValue.setText(detail.yogaCourse.time);
-         String capacity = detail.yogaCourse.capacity + "people";
+        binding.courseTitle.setText(detail.yogaCourse.getType());
+         binding.dayValue.setText(detail.yogaCourse.getDay());
+         binding.timeValue.setText(detail.yogaCourse.getTime());
+         String capacity = detail.yogaCourse.getCapacity() + "people";
          binding.capacityValue.setText(capacity);
-        String duration = detail.yogaCourse.capacity + "minutes";
+        String duration = detail.yogaCourse.getDuration() + "minutes";
         binding.durationValue.setText(duration);
 
-        String price = detail.yogaCourse.price + "$";
+        String price = detail.yogaCourse.getPrice() + "$";
         binding.priceValue.setText(price);
-         binding.descriptionValue.setText(detail.yogaCourse.description);
+         binding.descriptionValue.setText(detail.yogaCourse.getDescription());
 
-        binding.dateValue.setText(detail.yogaClass.date);
-        binding.teacherValue.setText(detail.yogaClass.teacher);
+        binding.dateValue.setText(detail.yogaClass.getDate());
+        binding.teacherValue.setText(detail.yogaClass.getTeacher());
     }
     @Override
     public void onDestroyView() {

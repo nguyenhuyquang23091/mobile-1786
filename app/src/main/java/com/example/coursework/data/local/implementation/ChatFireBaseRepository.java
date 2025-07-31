@@ -4,13 +4,17 @@ import android.util.Log;
 
 import com.example.coursework.data.local.entities.Conversation;
 import com.example.coursework.data.local.entities.Message;
+import com.example.coursework.data.local.entities.User;
 import com.example.coursework.data.local.util.OnConversationListener;
-import com.example.coursework.data.local.util.OnConversationsReceivedListener;
 import com.example.coursework.data.local.util.OnMessageSentListener;
 import com.example.coursework.data.local.util.OnMessagesReceivedListener;
+import com.example.coursework.data.local.util.OnUsersReceivedListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
@@ -18,7 +22,10 @@ import com.google.firebase.firestore.Query;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 public class ChatFireBaseRepository {
     private FirebaseFirestore db;
@@ -79,87 +86,45 @@ public class ChatFireBaseRepository {
     }
 
 
-
-     void createConversation(String userId, OnConversationListener listener) {
-        FirebaseUser currentUser = getCurrentUser();
-        if (currentUser == null) {
-            listener.onFailure("User is not authenticated");
-            return;
-        }
-
-        String currentUserId = currentUser.getUid();
-        List<String> users = Arrays.asList(currentUserId, userId);
-        Collections.sort(users);
-
-        String conversationId = users.get(0) + "" + users.get(1);
-        DocumentReference documentReference = db.collection("conversations").document(conversationId);
-        documentReference.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                if (task.getResult().exists()) {
-                    // Conversation already exists, just return the ID
-                    listener.onSuccess(conversationId);
-                } else {
-                    // Conversation doesn't exist, create it
-                    Conversation newConversation = new Conversation(conversationId, users, System.currentTimeMillis(), "Conversation started");
-                    documentReference.set(newConversation)
-                            .addOnSuccessListener(aVoid -> listener.onSuccess(conversationId))
-                            .addOnFailureListener(e -> listener.onFailure(e.getMessage()));
-                }
-            } else {
-                listener.onFailure(task.getException().getMessage());
-            }
-        });
+     void createConversation(String customerEmail, OnConversationListener listener) {
 
     }
+
+    void getUsers(OnUsersReceivedListener listener){
+        FirebaseUser currentUser = getCurrentUser();
+        if (currentUser == null) {
+            listener.onUsersFailure("User is not authenticated");
+            return;
+        }
+        CollectionReference usersReference = db.collection("users");
+        Query query = usersReference.whereEqualTo("role", "customer");
+        
+        query.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                List<User> users = new ArrayList<>();
+                if (task.getResult() != null) {
+                    users = task.getResult().toObjects(User.class);
+                }
+                listener.onUsersReceived(users);
+            } else {
+                String errorMessage = task.getException() != null ? 
+                    task.getException().getMessage() : "Failed to retrieve users";
+                listener.onUsersFailure(errorMessage);
+                Log.w(TAG, "Error getting users", task.getException());
+            }
+        });
+    }
+    
+    void findExistingConversation(String adminId, String customerId, OnConversationListener listener) {
+
+    }
+
 
      FirebaseUser getCurrentUser(){
         return firebaseAuth.getCurrentUser();
     }
 
-     ListenerRegistration getConversations(OnConversationsReceivedListener listener) {
-        FirebaseUser currentUser = getCurrentUser();
-        if (currentUser == null) {
-            Log.e(TAG, "User is not authenticated");
-            listener.onConversationFailure("User is not authenticated");
-            return null;
-        }
 
-        String currentUserId = currentUser.getUid();
-        Log.d(TAG, "Querying conversations for user: " + currentUserId);
-        
-        return db.collection("conversations")
-                .whereArrayContains("users", currentUserId)
-                .orderBy("createdAt", Query.Direction.DESCENDING)
-                .addSnapshotListener((value, error) -> {
-                    if (error != null) {
-                        Log.w(TAG, "Listen failed", error);
-                        listener.onConversationFailure(error.getMessage());
-                        return;
-                    }
-
-                    List<Conversation> conversations = new ArrayList<>();
-                    if (value != null) {
-                        Log.d(TAG, "Found " + value.getDocuments().size() + " conversation documents");
-                        for (int i = 0; i < value.getDocuments().size(); i++) {
-                            Conversation conversation = value.getDocuments().get(i).toObject(Conversation.class);
-                            if (conversation != null) {
-                                conversation.id = value.getDocuments().get(i).getId();
-                                conversations.add(conversation);
-                                Log.d(TAG, "Added conversation: " + conversation.id + " with users: " + conversation.users);
-                            } else {
-                                Log.w(TAG, "Failed to parse conversation document at index " + i);
-                            }
-                        }
-                    } else {
-                        Log.d(TAG, "No conversation documents found (value is null)");
-                    }
-                    
-                    Log.d(TAG, "Sending " + conversations.size() + " conversations to listener");
-                    if (listener != null) {
-                        listener.onConversationsReceived(conversations);
-                    }
-                });
-    }
 }
 
 

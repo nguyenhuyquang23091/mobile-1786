@@ -13,3 +13,10 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Firebase config files (keep google-services.json for Firebase plugin)
+# Only ignore if using purely Secrets Plugin approach
+# app/google-services.json
+
+# Secrets (Secrets Gradle Plugin)
+secrets.properties

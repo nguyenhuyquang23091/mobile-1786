@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.coursework.data.local.fragment.LoginFragment"
+        android:name="com.example.coursework.data.local.fragment.SignInFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_sign_in">
         <action
@@ -128,11 +128,21 @@
 
     <fragment
         android:id="@+id/chatListFragment"
-        android:name="com.example.coursework.data.local.fragment.ChatListFragment"
-        android:label="Conversations"
-        tools:layout="@layout/fragment_chat_list">
+        android:name="com.example.coursework.data.local.fragment.ConversationFragent"
+        android:label="Select User to Chat"
+        tools:layout="@layout/fragment_user_list">
         <action
             android:id="@+id/action_chatListFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/userListFragment"
+        android:name="com.example.coursework.data.local.fragment.UserListFragment"
+        android:label="Select User"
+        tools:layout="@layout/fragment_user_list">
+        <action
+            android:id="@+id/action_userListFragment_to_chatFragment"
             app:destination="@id/chatFragment" />
     </fragment>
 

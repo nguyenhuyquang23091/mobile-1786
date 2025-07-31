@@ -27,28 +27,79 @@ public class YogaClass {
     @Exclude
     @PrimaryKey
     @NonNull
-    public String id;
+    private String id;
     @ColumnInfo(name = "courseId")
-    public String courseId;
+    private String courseId;
 
     @ColumnInfo(name = "date")
-    public String date;
+    private String date;
     @ColumnInfo(name = "teacher")
-    public String teacher;
+    private String teacher;
     @ColumnInfo(name = "title")
-    public String title;
+    private String title;
     @ColumnInfo(name = "description")
-    public String description;
+    private String description;
     
     @ColumnInfo(name = "courseType")
-    public String courseType;
+    private String courseType;
+    
     public YogaClass(){
-
 
     }
 
+    public String getId() {
+        return id;
+    }
 
+    public void setId(String id) {
+        this.id = id;
+    }
 
+    public String getCourseId() {
+        return courseId;
+    }
 
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
+    }
 
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(String teacher) {
+        this.teacher = teacher;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getCourseType() {
+        return courseType;
+    }
+
+    public void setCourseType(String courseType) {
+        this.courseType = courseType;
+    }
 }

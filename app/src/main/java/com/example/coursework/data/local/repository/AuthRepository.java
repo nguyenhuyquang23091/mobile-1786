@@ -10,7 +10,7 @@ public interface AuthRepository {
 
     void signUp(String email, String password, AuthListener listener);
 
-    void signIn(String email, String password);
+    void signIn(String email, String password, AuthListener listener);
     void signOut();
     void resetPassword(String email);
 }

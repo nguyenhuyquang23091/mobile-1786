@@ -49,7 +49,7 @@ public class YogaCourseAdapter extends RecyclerView.Adapter<YogaCourseAdapter.Yo
     @Override
     public void onBindViewHolder(@NonNull YogaClassViewHolder holder, int position) {
         YogaCourse currentClass = yogaCourses.get(position);
-        String transitionname = "yoga_class_" + currentClass.uid;
+        String transitionname = "yoga_class_" + currentClass.getUid();
         holder.bind(currentClass, listener, transitionname);
 
     }
@@ -72,25 +72,25 @@ public class YogaCourseAdapter extends RecyclerView.Adapter<YogaCourseAdapter.Yo
         }
 
         public void bind(final YogaCourse yogaCourse, final OnItemClickListener listener, final String transitionname){
-            binding.mainTitle.setText(yogaCourse.type);
-            String dayTime = yogaCourse.day + " at " + yogaCourse.time;
+            binding.mainTitle.setText(yogaCourse.getType());
+            String dayTime = yogaCourse.getDay() + " at " + yogaCourse.getTime();
             binding.itemDayTime.setText(dayTime);
-            binding.descriptionValue.setText(yogaCourse.description);
-            binding.intensityClassType.setText(yogaCourse.intensity);
-            binding.itemCapacity.setText(String.valueOf(yogaCourse.capacity));
-            binding.duration.setText(String.format("%d min", yogaCourse.duration));
-            binding.priceValue.setText("£" + yogaCourse.price);
+            binding.descriptionValue.setText(yogaCourse.getDescription());
+            binding.intensityClassType.setText(yogaCourse.getIntensity());
+            binding.itemCapacity.setText(String.valueOf(yogaCourse.getCapacity()));
+            binding.duration.setText(String.format("%d min", yogaCourse.getDuration()));
+            binding.priceValue.setText("£" + yogaCourse.getPrice());
             // *** NEW COLOR LOGIC ***
             Context context = binding.getRoot().getContext();
             int colorDarkRes, colorLightRes;
 
-            if (Objects.equals(yogaCourse.type, "Flow Yoga")) {
+            if (Objects.equals(yogaCourse.getType(), "Flow Yoga")) {
                 colorDarkRes = R.color.yoga_green_dark;
                 colorLightRes = R.color.yoga_green_light;
-            } else if (Objects.equals(yogaCourse.type, "Aerial Yoga")) {
+            } else if (Objects.equals(yogaCourse.getType(), "Aerial Yoga")) {
                 colorDarkRes = R.color.yoga_blue_dark;
                 colorLightRes = R.color.yoga_blue_light;
-            } else if (Objects.equals(yogaCourse.type, "Family Yoga")) {
+            } else if (Objects.equals(yogaCourse.getType(), "Family Yoga")) {
                 colorDarkRes = R.color.yoga_pink_dark;
                 colorLightRes = R.color.yoga_pink_light;
             } else {

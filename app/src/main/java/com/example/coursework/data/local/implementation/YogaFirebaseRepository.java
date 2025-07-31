@@ -39,7 +39,7 @@ public class YogaFirebaseRepository {
                         for(QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapShot){
                             YogaCourse yogaCourse = queryDocumentSnapshot.toObject(YogaCourse.class);
                             String docId = queryDocumentSnapshot.getId();
-                            yogaCourse.uid = docId;
+                            yogaCourse.setUid(docId);
                             yogaCourses.add(yogaCourse);
 
                         }
@@ -55,7 +55,7 @@ public class YogaFirebaseRepository {
         if (yogaCourse == null) {
             return;
         }
-        String docId = yogaCourse.uid;
+        String docId = yogaCourse.getUid();
         firestore.collection("yoga_classes").document(docId).set(yogaCourse)
                 .addOnSuccessListener(aVoid -> {
                     Log.d("YogaFirebaseRepository", "Yoga course synced successfully");
@@ -71,7 +71,7 @@ public class YogaFirebaseRepository {
             if (listener != null) listener.syncFailure("Course is null");
             return;
         }
-        String docId = yogaCourse.uid;
+        String docId = yogaCourse.getUid();
         firestore.collection("yoga_classes").document(docId).delete()
                 .addOnSuccessListener(aVoid -> {
                     Log.d("YogaFirebaseRepository", "Yoga course deleted successfully from Firestore");
@@ -101,7 +101,7 @@ public class YogaFirebaseRepository {
                          for(QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapShot){
                              YogaClass yogaClass = queryDocumentSnapshot.toObject(YogaClass.class);
                              String docId = queryDocumentSnapshot.getId();
-                             yogaClass.id = docId;
+                             yogaClass.setId(docId);
                              yogaClasses.add(yogaClass);
                          }
                          if (listener != null) listener.syncClassesWithFirebase(yogaClasses);
@@ -113,8 +113,8 @@ public class YogaFirebaseRepository {
         if(yogaClass == null ){
             return;
         }
-        String courseId = yogaClass.courseId;
-        String classId = yogaClass.id;
+        String courseId = yogaClass.getCourseId();
+        String classId = yogaClass.getId();
         firestore.collection("yoga_classes").document(courseId).collection("classes").document(classId).set(yogaClass)
                 .addOnSuccessListener(aVoid -> {
                     Log.d("YogaFirebaseRepository", "Yoga course synced successfully");
@@ -131,8 +131,8 @@ public class YogaFirebaseRepository {
             if (listener != null) listener.syncFailure("YogaClass is null");
             return;
         }
-        String courseId = yogaClass.courseId;
-        String classId = yogaClass.id;
+        String courseId = yogaClass.getCourseId();
+        String classId = yogaClass.getId();
         
         Log.d("YogaFirebaseRepository", "Attempting to delete class with courseId: " + courseId + ", classId: " + classId);
         

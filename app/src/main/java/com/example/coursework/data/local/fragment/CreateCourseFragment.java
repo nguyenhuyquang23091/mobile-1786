@@ -75,13 +75,13 @@ public class CreateCourseFragment extends Fragment {
     }
     private void populateForm(YogaCourse yogaCourse){
         if (yogaCourse == null ) return;
-        binding.dayOfWeekInput.setText(yogaCourse.day, false);
-        binding.classTypeInput.setText(yogaCourse.type, false);
-        binding.timeInput.setText(yogaCourse.time);
-        binding.capacityInput.setText(String.valueOf(yogaCourse.capacity));
-        binding.durationInput.setText(String.valueOf(yogaCourse.duration));
-        binding.priceInput.setText(String.valueOf(yogaCourse.price));
-        binding.descriptionInput.setText(yogaCourse.description);
+        binding.dayOfWeekInput.setText(yogaCourse.getDay(), false);
+        binding.classTypeInput.setText(yogaCourse.getType(), false);
+        binding.timeInput.setText(yogaCourse.getTime());
+        binding.capacityInput.setText(String.valueOf(yogaCourse.getCapacity()));
+        binding.durationInput.setText(String.valueOf(yogaCourse.getDuration()));
+        binding.priceInput.setText(String.valueOf(yogaCourse.getPrice()));
+        binding.descriptionInput.setText(yogaCourse.getDescription());
     }
 
     private void setupAdapters() {
@@ -170,13 +170,13 @@ public class CreateCourseFragment extends Fragment {
     }
 
     private void updateClass() {
-        editYogaCourse.day = binding.dayOfWeekInput.getText().toString();
-        editYogaCourse.type = binding.classTypeInput.getText().toString();
-        editYogaCourse.time = Objects.requireNonNull(binding.timeInput.getText()).toString();
-        editYogaCourse.capacity = Integer.parseInt(Objects.requireNonNull(binding.capacityInput.getText()).toString());
-        editYogaCourse.duration = Integer.parseInt(Objects.requireNonNull(binding.durationInput.getText()).toString());
-        editYogaCourse.price = Double.parseDouble(Objects.requireNonNull(binding.priceInput.getText()).toString());
-        editYogaCourse.description = Objects.requireNonNull(binding.descriptionInput.getText()).toString();
+        editYogaCourse.setDay(binding.dayOfWeekInput.getText().toString());
+        editYogaCourse.setType(binding.classTypeInput.getText().toString());
+        editYogaCourse.setTime(Objects.requireNonNull(binding.timeInput.getText()).toString());
+        editYogaCourse.setCapacity(Integer.parseInt(Objects.requireNonNull(binding.capacityInput.getText()).toString()));
+        editYogaCourse.setDuration(Integer.parseInt(Objects.requireNonNull(binding.durationInput.getText()).toString()));
+        editYogaCourse.setPrice(Double.parseDouble(Objects.requireNonNull(binding.priceInput.getText()).toString()));
+        editYogaCourse.setDescription(Objects.requireNonNull(binding.descriptionInput.getText()).toString());
         yogaRepository.updateYogaCourse(editYogaCourse);
     }
 

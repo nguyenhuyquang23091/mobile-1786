@@ -64,7 +64,7 @@ public class SearchFragment extends Fragment {
             }
             @Override
             public void onItemClick(YogaClass yogaClass) {
-                SearchFragmentDirections.SearchToDetail action = SearchFragmentDirections.searchToDetail(yogaClass.id);
+                SearchFragmentDirections.SearchToDetail action = SearchFragmentDirections.searchToDetail(yogaClass.getId());
                 Navigation.findNavController(requireView()).navigate(action);
 
             }

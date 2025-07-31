@@ -40,8 +40,14 @@ public class AuthRepositoryImplementation implements AuthRepository {
     }
 
     @Override
-    public void signIn(String email, String password) {
-
+    public void signIn(String email, String password, AuthListener listener) {
+        if (isConnected()) {
+            fireBaseRepository.signInWithEmailAndPassword(email, password, listener);
+        } else {
+            if (listener != null) {
+                listener.onFailure("No internet Connection");
+            }
+        }
     }
 
     @Override

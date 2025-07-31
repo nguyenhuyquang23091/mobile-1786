@@ -81,7 +81,7 @@ public class CourseListFragment extends Fragment {
             public void onDeleteClick(YogaCourse yogaCourse) {
                 new MaterialAlertDialogBuilder(requireContext())
                         .setTitle("Delete Course")
-                        .setMessage("Are you sure you want to deleteYogaCourse \"" + yogaCourse.type + "\"? This action cannot be undone.")
+                        .setMessage("Are you sure you want to deleteYogaCourse \"" + yogaCourse.getType() + "\"? This action cannot be undone.")
                         .setNegativeButton("Cancel", null)
                         .setPositiveButton("Delete", (dialog, which) -> {
                             yogaRepository.deleteYogaCourse(yogaCourse);
@@ -95,7 +95,7 @@ public class CourseListFragment extends Fragment {
             @Override
             public void onItemClick(YogaCourse yogaCourse, FragmentNavigator.Extras extras) {
                 CourseListFragmentDirections.ActionClassListFragmentToClassInstanceFragment action =
-                        CourseListFragmentDirections.actionClassListFragmentToClassInstanceFragment(yogaCourse.uid);
+                        CourseListFragmentDirections.actionClassListFragmentToClassInstanceFragment(yogaCourse.getUid());
                 Navigation.findNavController(requireView()).navigate(action, extras);
             }
 
@@ -103,15 +103,15 @@ public class CourseListFragment extends Fragment {
             public void onEditClick(YogaCourse yogaCourse) {
                 // Create bundle with prefilled data for editing
                 Bundle bundle = new Bundle();
-                bundle.putString("prefilled_type", yogaCourse.type);
-                bundle.putString("prefilled_day", yogaCourse.day);
-                bundle.putString("prefilled_time", yogaCourse.time);
-                bundle.putInt("prefilled_capacity", yogaCourse.capacity);
-                bundle.putInt("prefilled_duration", yogaCourse.duration);
-                bundle.putString("prefilled_price", String.valueOf(yogaCourse.price));
-                bundle.putString("prefilled_description", yogaCourse.description);
-                bundle.putString("prefilled_intensity", yogaCourse.intensity);
-                bundle.putString("edit_course_uid", yogaCourse.uid);
+                bundle.putString("prefilled_type", yogaCourse.getType());
+                bundle.putString("prefilled_day", yogaCourse.getDay());
+                bundle.putString("prefilled_time", yogaCourse.getTime());
+                bundle.putInt("prefilled_capacity", yogaCourse.getCapacity());
+                bundle.putInt("prefilled_duration", yogaCourse.getDuration());
+                bundle.putString("prefilled_price", String.valueOf(yogaCourse.getPrice()));
+                bundle.putString("prefilled_description", yogaCourse.getDescription());
+                bundle.putString("prefilled_intensity", yogaCourse.getIntensity());
+                bundle.putString("edit_course_uid", yogaCourse.getUid());
                 
                 // Navigate to CreateCourseFragment with prefilled data
                 Navigation.findNavController(requireView()).navigate(

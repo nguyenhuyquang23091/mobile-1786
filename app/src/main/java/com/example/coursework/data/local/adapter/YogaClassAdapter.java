@@ -66,11 +66,11 @@ public class YogaClassAdapter extends RecyclerView.Adapter<YogaClassAdapter.Clas
             this.binding = binding;
         }
         private void bind(YogaClass yogaClass, OnItemClickListener listener, boolean showButtons) {
-            binding.courseType.setText(yogaClass.courseType);
-            binding.instanceDate.setText(yogaClass.date);
-            binding.instanceTeacher.setText( yogaClass.teacher);
-            binding.classTitle.setText(yogaClass.title);
-            binding.classSubtitle.setText(yogaClass.description);
+            binding.courseType.setText(yogaClass.getCourseType());
+            binding.instanceDate.setText(yogaClass.getDate());
+            binding.instanceTeacher.setText(yogaClass.getTeacher());
+            binding.classTitle.setText(yogaClass.getTitle());
+            binding.classSubtitle.setText(yogaClass.getDescription());
             if (showButtons) {
                 binding.actionsLayout.setVisibility(View.VISIBLE);
                 binding.viewButton.setVisibility(View.GONE);
